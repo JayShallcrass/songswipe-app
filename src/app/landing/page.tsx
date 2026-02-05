@@ -52,12 +52,6 @@ export default function LandingPage() {
             >
               Create a Song 🎶
             </Link>
-            <Link
-              href="/auth/login"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-purple-600 bg-white border-2 border-purple-200 rounded-full hover:border-purple-400 transition-all"
-            >
-              Sign In 🔐
-            </Link>
           </div>
           <p className="mt-4 text-sm text-gray-500">Starting at £7.99 • 60-120 second songs • Instant download</p>
         </div>

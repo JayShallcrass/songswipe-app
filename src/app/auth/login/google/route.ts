@@ -3,8 +3,8 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function POST() {
-  const origin = process.env.NEXT_PUBLIC_APP_URL?.trim() || 'https://songswipe.io'
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+  const origin = (process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io').replace(/\n/g, '').trim()
+  const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\n/g, '').trim()
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey) {

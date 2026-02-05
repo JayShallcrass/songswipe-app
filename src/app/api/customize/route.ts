@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
     const prompt = buildPrompt(customization)
 
     // Save customization to database
-    const { data: customizationRecord, error: dbError } = await supabase
-      .from('customizations')
+    const { data: customizationRecord, error: dbError } = await (supabase
+      .from('customizations') as any)
       .insert({
         user_id: userId,
         recipient_name: customization.recipientName,
@@ -61,8 +61,8 @@ export async function POST(request: NextRequest) {
     })
 
     // Update customization with session ID
-    await supabase
-      .from('customizations')
+    await (supabase
+      .from('customizations') as any)
       .update({ 
         // Add any additional fields if needed
       })

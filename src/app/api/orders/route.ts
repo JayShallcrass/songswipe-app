@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
         id,
         status,
         created_at,
-        customizations (recipient_name, your_name, occasion, genre, mood, song_length),
-        songs (audio_url)
+        customizations!inner(recipient_name, your_name, occasion, genre, mood, song_length),
+        songs!inner(audio_url)
       `)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })

@@ -3,12 +3,27 @@ import Header from '@/components/Header'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'SongSwipe - Create Your Personalized Song',
-  description: 'AI-powered personalized song gift platform. Create unique songs for Valentine\'s, birthdays, anniversaries and more.',
+  title: {
+    default: 'SongSwipe - Personalised AI Songs | Unique Gift Ideas',
+    template: '%s | SongSwipe',
+  },
+  description: 'Create unique, personalised songs for your loved ones with AI. Perfect for birthdays, Valentine\'s, anniversaries, and every special moment.',
+  keywords: ['personalised song', 'AI music gift', 'birthday song', 'Valentine\'s gift', 'unique gift ideas', 'custom song', 'AI generated music'],
   openGraph: {
-    title: 'SongSwipe - Create Your Song',
-    description: 'AI-powered personalized song gift platform',
+    title: 'SongSwipe - Personalised AI Songs',
+    description: 'Create unique, personalised songs for your loved ones with AI.',
     type: 'website',
+    siteName: 'SongSwipe',
+    locale: 'en_GB',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SongSwipe - Personalised AI Songs',
+    description: 'Create unique, personalised songs for your loved ones with AI.',
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 

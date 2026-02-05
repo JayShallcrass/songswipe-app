@@ -91,7 +91,7 @@ export default function OrderPage({ params }: { params: { id: string } }) {
               }
             </h1>
             <p className="text-gray-600">
-              {order.recipient_name}'s personalized song
+              {order.recipient_name}'s personalised song
             </p>
           </div>
 
@@ -138,7 +138,7 @@ export default function OrderPage({ params }: { params: { id: string } }) {
               <div className="animate-pulse">
                 <div className="text-4xl mb-4">🎵</div>
                 <p className="text-gray-600">
-                  AI is composing your personalized song...
+                  AI is composing your personalised song...
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
                   This usually takes about 60-90 seconds

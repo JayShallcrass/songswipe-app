@@ -5,7 +5,7 @@ import { createServerSupabaseClient } from '@/lib/supabase'
 import { generateSong } from '@/lib/elevenlabs'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2026-01-28.clover' as any, // Use 'as any' to bypass type check for beta versions
 })
 
 export async function POST(request: NextRequest) {

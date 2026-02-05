@@ -1,165 +1,185 @@
-'use client'
-
-import { useEffect, useState } from 'react'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
 
-interface Order {
-  id: string
-  status: string
-  created_at: string
-  recipient_name: string
-  occasion: string
-  song_length: number
-  audio_url?: string
-}
+export const dynamic = 'force-dynamic'
 
-export default function Dashboard() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<unknown>(null)
+export default async function DashboardPage() {
+  const cookieStore = cookies()
+  const supabase = createServerComponentClient({ cookies: () => cookieStore })
 
-  useEffect(() => {
-    // Check auth and fetch orders
-    const checkAuth = async () => {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      
-      const supabase = createClient(supabaseUrl, supabaseAnonKey)
-      
-      const { data: { user: currentUser } } = await supabase.auth.getUser()
-      setUser(currentUser)
+  // Check if user is authenticated
+  const { data: { user } } = await supabase.auth.getUser()
 
-      if (currentUser) {
-        const response = await fetch('/api/orders')
-        if (response.ok) {
-          const data = await response.json()
-          setOrders(data.orders || [])
-        }
-      }
-      setLoading(false)
-    }
-
-    checkAuth()
-  }, [])
-
-  const handleSignOut = async () => {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    
-    const supabase = createClient(supabaseUrl, supabaseAnonKey)
-    await supabase.auth.signOut()
-    window.location.reload()
+  if (!user) {
+    redirect('/auth/login')
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading dashboard...</p>
-        </div>
-      </div>
-    )
-  }
+  // Fetch user's orders
+  const { data: orders } = await supabase
+    .from('orders')
+    .select(`
+      id,
+      status,
+      amount,
+      created_at,
+      customization:customizations(
+        recipient_name,
+        occasion,
+        song_length
+      )
+    `)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
+  // Fetch user's songs
+  const { data: songs } = await supabase
+    .from('songs')
+    .select(`
+      id,
+      audio_url,
+      duration_ms,
+      downloads,
+      created_at,
+      order:orders(
+        id,
+        customization:customizations(
+          recipient_name
+        )
+      )
+    `)
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🎵</span>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              SongSwipe
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            {user ? (
-              <>
-                <span className="text-sm text-gray-600">{(user as { email?: string })?.email}</span>
-                <button 
-                  onClick={handleSignOut}
-                  className="text-sm text-purple-600 hover:text-purple-800"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <Link href="/" className="text-sm text-purple-600">
-                Sign In
-              </Link>
-            )}
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-6 py-12">
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Your Songs</h1>
-          <Link href="/" className="btn-primary">
-            + Create New Song
-          </Link>
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+              My Dashboard
+            </h1>
+            <p className="text-gray-600 mt-1">{user.email}</p>
+          </div>
+          <form action="/auth/signout" method="POST">
+            <button
+              type="submit"
+              className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium"
+            >
+              Sign Out
+            </button>
+          </form>
         </div>
 
-        {/* Orders List */}
-        {orders.length === 0 ? (
-          <div className="card text-center py-16">
-            <span className="text-6xl mb-4 block">🎵</span>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">
-              No songs yet
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Create your first personalized song for someone special!
-            </p>
-            <Link href="/" className="btn-primary">
-              Get Started
-            </Link>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="text-3xl font-bold text-gray-900">
+              {orders?.length || 0}
+            </div>
+            <div className="text-gray-500 text-sm">Total Orders</div>
           </div>
-        ) : (
-          <div className="space-y-4">
-            {orders.map((order) => (
-              <div key={order.id} className="card">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center">
-                      <span className="text-2xl">🎵</span>
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="text-3xl font-bold text-gray-900">
+              {songs?.length || 0}
+            </div>
+            <div className="text-gray-500 text-sm">Songs Purchased</div>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="text-3xl font-bold text-gray-900">
+              £{((orders?.reduce((sum, o) => sum + (o.amount || 799), 0) || 0) / 100).toFixed(2)}
+            </div>
+            <div className="text-gray-500 text-sm">Total Spent</div>
+          </div>
+        </div>
+
+        {/* Orders Section */}
+        <div className="bg-white rounded-xl shadow-sm mb-8">
+          <div className="p-6 border-b border-gray-100">
+            <h2 className="text-xl font-semibold text-gray-900">Your Orders</h2>
+          </div>
+          
+          {orders && orders.length > 0 ? (
+            <div className="divide-y divide-gray-100">
+              {orders.map((order) => (
+                <div key={order.id} className="p-6 flex items-center justify-between">
+                  <div>
+                    <div className="font-medium text-gray-900">
+                      Song for {order.customization?.recipient_name || 'Someone Special'}
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-800">
-                        Song for {order.recipient_name}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {order.occasion} • {order.song_length}s • {new Date(order.created_at).toLocaleDateString()}
-                      </p>
+                    <div className="text-sm text-gray-500 mt-1">
+                      {order.customization?.occasion} • {order.customization?.song_length}s song
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {new Date(order.created_at).toLocaleDateString()}
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      order.status === 'completed' 
-                        ? 'bg-green-100 text-green-700'
-                        : order.status === 'generating'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-gray-100 text-gray-700'
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      order.status === 'completed' ? 'bg-green-100 text-green-700' :
+                      order.status === 'paid' || order.status === 'generating' ? 'bg-blue-100 text-blue-700' :
+                      order.status === 'failed' ? 'bg-red-100 text-red-700' :
+                      'bg-gray-100 text-gray-700'
                     }`}>
                       {order.status}
                     </span>
-                    {order.status === 'completed' && order.audio_url && (
-                      <a
-                        href={order.audio_url}
-                        download={`songswipe-${order.recipient_name}.mp3`}
-                        className="btn-primary py-2 px-4 text-sm"
-                      >
-                        ⬇ Download
-                      </a>
-                    )}
+                    <span className="font-semibold text-gray-900">
+                      £{(order.amount / 100).toFixed(2)}
+                    </span>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          ) : (
+            <div className="p-12 text-center">
+              <div className="text-4xl mb-4">🎵</div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h3>
+              <p className="text-gray-500 mb-6">Create your first personalized song!</p>
+              <Link
+                href="/customize"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md"
+              >
+                Create a Song
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Songs Section */}
+        {songs && songs.length > 0 && (
+          <div className="bg-white rounded-xl shadow-sm">
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="text-xl font-semibold text-gray-900">Your Songs</h2>
+            </div>
+            <div className="divide-y divide-gray-100">
+              {songs.map((song) => (
+                <div key={song.id} className="p-6 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-lg">🎵</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-gray-900">
+                        {song.order?.customization?.recipient_name || 'My Song'}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {Math.round(song.duration_ms / 1000)} seconds • {song.downloads} downloads
+                      </div>
+                    </div>
+                  </div>
+                  <audio
+                    controls
+                    className="h-10"
+                    src={song.audio_url}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
-    </main>
+    </div>
   )
 }

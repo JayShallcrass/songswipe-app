@@ -121,28 +121,6 @@ export default function Home() {
 
   return (
     <main className="min-h-screen pb-20">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🎵</span>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              SongSwipe
-            </span>
-          </div>
-          <div className="text-sm text-gray-500">
-            Step {step} of 3
-          </div>
-        </div>
-        {/* Progress bar */}
-        <div className="h-1 bg-gray-100">
-          <div 
-            className="h-full bg-gradient-to-r from-purple-600 to-pink-600 transition-all duration-300"
-            style={{ width: `${(step / 3) * 100}%` }}
-          />
-        </div>
-      </header>
-
       <div className="max-w-2xl mx-auto px-6 py-12">
         {/* Step 1: Names */}
         {step === 1 && (

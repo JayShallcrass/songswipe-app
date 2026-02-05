@@ -1,15 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
-import { Database } from '@/types/database'
 
 // Client-side Supabase client (anon key is safe to expose)
-export const supabase = createClient<Database>(
+export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
 // Server-side client with service role (for admin operations)
 export const createServerSupabaseClient = () => {
-  return createClient<Database>(
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {

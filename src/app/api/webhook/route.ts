@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { verifyWebhookSignature, stripe } from '@/lib/stripe'
+import Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { generateSong } from '@/lib/elevenlabs'
-import Stripe from 'stripe'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-01-27.acacia',
+})
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,10 +18,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
     }
 
-    // Verify webhook signature
     let event: Stripe.Event
     try {
-      event = verifyWebhookSignature(body, signature)
+      const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
+      event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
     } catch (err) {
       console.error('Webhook signature verification failed:', err)
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
@@ -39,8 +42,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Create order record
-        const { data: order, error: orderError } = await (supabase
-          .from('orders') as any)
+        const { data: order, error: orderError } = await supabase
+          .from('orders')
           .insert({
             user_id: userId,
             customization_id: customizationId,
@@ -55,12 +58,6 @@ export async function POST(request: NextRequest) {
           console.error('Failed to create order:', orderError)
           break
         }
-
-        // Update customization status
-        await (supabase
-          .from('customizations') as any)
-          .update({})
-          .eq('id', customizationId)
 
         // Start song generation (async)
         generateAndStoreSong(customizationId, order.id, userId)
@@ -88,20 +85,19 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Async function to generate and store song
 async function generateAndStoreSong(customizationId: string, orderId: string, userId: string) {
   const supabase = createServerSupabaseClient()
 
   try {
     // Update order status to generating
-    await (supabase
-      .from('orders') as any)
+    await supabase
+      .from('orders')
       .update({ status: 'generating' })
       .eq('id', orderId)
 
     // Get customization
-    const { data: customization, error: customError } = await (supabase
-      .from('customizations') as any)
+    const { data: customization, error: customError } = await supabase
+      .from('customizations')
       .select('*')
       .eq('id', customizationId)
       .single()
@@ -124,8 +120,7 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
 
     // Upload audio to Supabase Storage
     const audioPath = `${userId}/${orderId}/song.mp3`
-    const { error: uploadError } = await supabase
-      .storage
+    const { error: uploadError } = await supabase.storage
       .from('songs')
       .upload(audioPath, audioBuffer, {
         contentType: 'audio/mpeg',
@@ -137,10 +132,9 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
     }
 
     // Get signed URL for download (expires in 15 minutes)
-    const signedUrlData = await supabase
-      .storage
+    const signedUrlData = await supabase.storage
       .from('songs')
-      .createSignedUrl(audioPath, 900) // 15 minutes
+      .createSignedUrl(audioPath, 900)
     
     const signedUrl = signedUrlData.data?.signedUrl
 
@@ -149,30 +143,22 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
     }
 
     // Save song record
-    await (supabase
-      .from('songs') as any)
-      .insert({
-        order_id: orderId,
-        user_id: userId,
-        audio_url: signedUrl,
-        duration_ms: customization.song_length * 1000,
-        downloads: 0,
-      })
+    await supabase.from('songs').insert({
+      order_id: orderId,
+      user_id: userId,
+      audio_url: signedUrl,
+      duration_ms: customization.song_length * 1000,
+      downloads: 0,
+    })
 
     // Update order status to completed
-    await (supabase
-      .from('orders') as any)
-      .update({ status: 'completed' })
-      .eq('id', orderId)
+    await supabase.from('orders').update({ status: 'completed' }).eq('id', orderId)
 
     console.log(`Song generated successfully for order ${orderId}`)
   } catch (error) {
     console.error('Song generation failed:', error)
     
     // Update order status to failed
-    await (supabase
-      .from('orders') as any)
-      .update({ status: 'failed' })
-      .eq('id', orderId)
+    await supabase.from('orders').update({ status: 'failed' }).eq('id', orderId)
   }
 }

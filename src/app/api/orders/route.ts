@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
-      // Return empty orders for anonymous users
       return NextResponse.json({ orders: [] })
     }
 
@@ -28,29 +27,12 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching orders:', error)
-      return NextResponse.json(
-        { error: 'Failed to fetch orders' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 })
     }
 
-    // Format response
-    const formattedOrders = (orders || []).map((order: Record<string, unknown>) => ({
-      id: order.id,
-      status: order.status,
-      created_at: order.created_at,
-      recipient_name: (order.customizations as Record<string, unknown>)?.recipient_name,
-      occasion: (order.customizations as Record<string, unknown>)?.occasion,
-      song_length: (order.customizations as Record<string, unknown>)?.song_length,
-      audio_url: (order.songs as Record<string, unknown>)?.audio_url,
-    }))
-
-    return NextResponse.json({ orders: formattedOrders })
+    return NextResponse.json({ orders: orders || [] })
   } catch (error) {
     console.error('Error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

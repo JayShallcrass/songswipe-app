@@ -9,10 +9,12 @@ export async function GET(
     const supabase = createServerSupabaseClient()
     
     // Get order with customization and song details
-    const { data: order, error } = await (supabase
-      .from('orders') as any)
+    const { data: order, error } = await supabase
+      .from('orders')
       .select(`
-        *,
+        id,
+        status,
+        created_at,
         songs (audio_url, duration_ms, downloads),
         customizations (recipient_name, your_name, occasion, genre, mood, song_length, special_memories)
       `)

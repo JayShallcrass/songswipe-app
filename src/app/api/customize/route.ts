@@ -2,7 +2,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { createCheckoutSession } from '@/lib/stripe'
 import { buildPrompt } from '@/lib/elevenlabs'
-import { customizationSchema } from '@/lib/elevenlabs'
+
+// Zod schema for validation
+const customizationSchema = {
+  safeParse: (body: unknown) => {
+    const z = require('zod')
+    const schema = z.object({
+      recipientName: z.string().min(1).max(100),
+      yourName: z.string().min(1).max(100),
+      occasion: z.enum(['valentines', 'birthday', 'anniversary', 'wedding', 'graduation', 'just-because']),
+      songLength: z.enum(['60', '90', '120']),
+      mood: z.array(z.enum(['romantic', 'happy', 'funny', 'nostalgic', 'epic'])),
+      genre: z.enum(['pop', 'acoustic', 'electronic', 'orchestral', 'jazz']),
+      specialMemories: z.string().max(500).optional(),
+      thingsToAvoid: z.string().max(300).optional(),
+    })
+    return schema.safeParse(body)
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,11 +42,11 @@ export async function POST(request: NextRequest) {
     const userId = user?.id || 'anonymous'
 
     // Create prompt
-    const prompt = buildPrompt(customization)
+    const prompt = `A ${customization.mood.join(', ')} ${customization.genre} song about ${customization.recipientName} for ${customization.occasion}. Written by ${customization.yourName}. Include: ${customization.specialMemories || 'personal touches'}. Avoid: ${customization.thingsToAvoid || 'nothing'}. Duration: ${customization.songLength} seconds.`
 
     // Save customization to database
-    const { data: customizationRecord, error: dbError } = await (supabase
-      .from('customizations') as any)
+    const { data: customizationRecord, error: dbError } = await supabase
+      .from('customizations')
       .insert({
         user_id: userId,
         recipient_name: customization.recipientName,
@@ -59,14 +76,6 @@ export async function POST(request: NextRequest) {
       userId,
       email: user?.email || '',
     })
-
-    // Update customization with session ID
-    await (supabase
-      .from('customizations') as any)
-      .update({ 
-        // Add any additional fields if needed
-      })
-      .eq('id', customizationRecord.id)
 
     return NextResponse.json({
       customizationId: customizationRecord.id,

@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
 
     // Get current user (optional for MVP)
     const { data: { user } } = await supabase.auth.getUser()
-    const userId = user?.id || 'anonymous'
+    // Use guest user for anonymous checkouts
+    const userId = user?.id || '00000000-0000-0000-0000-000000000000'
 
     // Create prompt
     const prompt = `A ${customization.mood.join(', ')} ${customization.genre} song about ${customization.recipientName} for ${customization.occasion}. Written by ${customization.yourName}. Include: ${customization.specialMemories || 'personal touches'}. Avoid: ${customization.thingsToAvoid || 'nothing'}. Duration: ${customization.songLength} seconds.`

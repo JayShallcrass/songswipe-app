@@ -137,10 +137,16 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
     }
 
     // Get signed URL for download (expires in 15 minutes)
-    const { data: { signedUrl } } = await supabase
+    const signedUrlData = await supabase
       .storage
       .from('songs')
       .createSignedUrl(audioPath, 900) // 15 minutes
+    
+    const signedUrl = signedUrlData.data?.signedUrl
+
+    if (!signedUrl) {
+      throw new Error('Failed to generate signed URL')
+    }
 
     // Save song record
     await (supabase

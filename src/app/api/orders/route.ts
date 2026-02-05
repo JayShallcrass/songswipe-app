@@ -5,23 +5,15 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createServerSupabaseClient()
     
-    // Check auth
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {
       return NextResponse.json({ orders: [] })
     }
 
-    // Get user's orders with customization and song details
-    const { data: orders, error } = await supabase
-      .from('orders')
-      .select(`
-        id,
-        status,
-        created_at,
-        customizations!inner(recipient_name, your_name, occasion, genre, mood, song_length),
-        songs!inner(audio_url)
-      `)
+    const { data: orders, error } = await (supabase
+      .from('orders') as any)
+      .select('id,status,created_at,customizations,songs')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 

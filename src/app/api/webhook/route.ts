@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Create order record
-        const { data: order, error: orderError } = await supabase
-          .from('orders')
+        const { data: order, error: orderError } = await (supabase
+          .from('orders') as any)
           .insert({
             user_id: userId,
             customization_id: customizationId,
@@ -57,8 +57,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Update customization status
-        await supabase
-          .from('customizations')
+        await (supabase
+          .from('customizations') as any)
           .update({})
           .eq('id', customizationId)
 
@@ -94,14 +94,14 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
 
   try {
     // Update order status to generating
-    await supabase
-      .from('orders')
+    await (supabase
+      .from('orders') as any)
       .update({ status: 'generating' })
       .eq('id', orderId)
 
     // Get customization
-    const { data: customization, error: customError } = await supabase
-      .from('customizations')
+    const { data: customization, error: customError } = await (supabase
+      .from('customizations') as any)
       .select('*')
       .eq('id', customizationId)
       .single()
@@ -143,8 +143,8 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
       .createSignedUrl(audioPath, 900) // 15 minutes
 
     // Save song record
-    await supabase
-      .from('songs')
+    await (supabase
+      .from('songs') as any)
       .insert({
         order_id: orderId,
         user_id: userId,
@@ -154,8 +154,8 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
       })
 
     // Update order status to completed
-    await supabase
-      .from('orders')
+    await (supabase
+      .from('orders') as any)
       .update({ status: 'completed' })
       .eq('id', orderId)
 
@@ -164,8 +164,8 @@ async function generateAndStoreSong(customizationId: string, orderId: string, us
     console.error('Song generation failed:', error)
     
     // Update order status to failed
-    await supabase
-      .from('orders')
+    await (supabase
+      .from('orders') as any)
       .update({ status: 'failed' })
       .eq('id', orderId)
   }

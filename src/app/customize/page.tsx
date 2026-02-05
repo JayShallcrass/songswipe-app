@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { customizationSchema, type Customization } from '@/lib/elevenlabs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase'
+import { createBrowserClient } from '@supabase/ssr'
 
 const occasions = [
   { value: 'valentines', label: "Valentine's Day", icon: '💕' },
@@ -33,13 +33,22 @@ const genres = [
 
 export default function CustomizePage() {
   const router = useRouter()
-  const supabase = createClient()
+  const [supabase, setSupabase] = useState<ReturnType<typeof createBrowserClient> | null>(null)
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState<Partial<Customization>>({
     mood: [],
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
+
+  // Initialize Supabase client on mount
+  useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (url && key) {
+      setSupabase(createBrowserClient(url, key))
+    }
+  }, [])
 
   const updateField = (field: keyof Customization, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }))

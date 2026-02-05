@@ -1,4 +1,4 @@
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -7,7 +7,17 @@ export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
   const cookieStore = cookies()
-  const supabase = createServerComponentClient({ cookies: () => cookieStore })
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value
+        },
+      },
+    }
+  )
 
   // Check if user is authenticated
   const { data: { user } } = await supabase.auth.getUser()
@@ -16,39 +26,17 @@ export default async function DashboardPage() {
     redirect('/auth/login')
   }
 
-  // Fetch user's orders
+  // Fetch user's orders (simplified)
   const { data: orders } = await supabase
     .from('orders')
-    .select(`
-      id,
-      status,
-      amount,
-      created_at,
-      customization:customizations(
-        recipient_name,
-        occasion,
-        song_length
-      )
-    `)
+    .select('id, status, amount, created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
-  // Fetch user's songs
+  // Fetch user's songs (simplified)
   const { data: songs } = await supabase
     .from('songs')
-    .select(`
-      id,
-      audio_url,
-      duration_ms,
-      downloads,
-      created_at,
-      order:orders(
-        id,
-        customization:customizations(
-          recipient_name
-        )
-      )
-    `)
+    .select('id, audio_url, duration_ms, downloads, created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
 
@@ -107,12 +95,9 @@ export default async function DashboardPage() {
                 <div key={order.id} className="p-6 flex items-center justify-between">
                   <div>
                     <div className="font-medium text-gray-900">
-                      Song for {order.customization?.recipient_name || 'Someone Special'}
+                      Order #{order.id.slice(0, 8)}
                     </div>
                     <div className="text-sm text-gray-500 mt-1">
-                      {order.customization?.occasion} • {order.customization?.song_length}s song
-                    </div>
-                    <div className="text-xs text-gray-400 mt-1">
                       {new Date(order.created_at).toLocaleDateString()}
                     </div>
                   </div>
@@ -162,7 +147,7 @@ export default async function DashboardPage() {
                     </div>
                     <div>
                       <div className="font-medium text-gray-900">
-                        {song.order?.customization?.recipient_name || 'My Song'}
+                        Song #{song.id.slice(0, 8)}
                       </div>
                       <div className="text-sm text-gray-500">
                         {Math.round(song.duration_ms / 1000)} seconds • {song.downloads} downloads

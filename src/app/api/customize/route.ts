@@ -37,10 +37,17 @@ export async function POST(request: NextRequest) {
     const customization = validationResult.data
     const supabase = createServerSupabaseClient()
 
-    // Get current user (optional for MVP)
+    // Require authentication - no anonymous users
     const { data: { user } } = await supabase.auth.getUser()
-    // Use guest user for anonymous checkouts
-    const userId = user?.id || '00000000-0000-0000-0000-000000000000'
+    
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Please sign in to create a song' },
+        { status: 401 }
+      )
+    }
+
+    const userId = user.id
 
     // Create prompt
     const prompt = `A ${customization.mood.join(', ')} ${customization.genre} song about ${customization.recipientName} for ${customization.occasion}. Written by ${customization.yourName}. Include: ${customization.specialMemories || 'personal touches'}. Avoid: ${customization.thingsToAvoid || 'nothing'}. Duration: ${customization.songLength} seconds.`

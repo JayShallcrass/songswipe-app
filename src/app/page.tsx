@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { customizationSchema, type Customization } from '@/lib/elevenlabs'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase'
 
 const occasions = [
   { value: 'valentines', label: "Valentine's Day", icon: '💕' },
@@ -96,6 +97,13 @@ export default function Home() {
 
     setIsLoading(true)
     try {
+      // Check authentication - require user to be signed in
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/auth/login?redirect=/')
+        return
+      }
+
       // Create customization record and redirect to payment
       const response = await fetch('/api/customize', {
         method: 'POST',

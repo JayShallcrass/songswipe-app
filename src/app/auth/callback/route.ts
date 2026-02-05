@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
-  const { searchParams, cookies } = request
+  const searchParams = request.nextUrl.searchParams
   const code = searchParams.get('code')
   const next = searchParams.get('next') || '/'
 

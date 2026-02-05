@@ -6,6 +6,11 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Check if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 })
+    }
+    
     const supabase = createServerSupabaseClient()
     
     const { data: order, error } = await (supabase

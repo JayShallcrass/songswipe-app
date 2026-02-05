@@ -3,6 +3,11 @@ import { createServerSupabaseClient } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
+    // Check if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({ orders: [] })
+    }
+    
     const supabase = createServerSupabaseClient()
     
     const { data: { user } } = await supabase.auth.getUser()

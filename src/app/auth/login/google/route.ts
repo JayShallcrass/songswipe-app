@@ -41,15 +41,18 @@ export async function POST() {
 
   if (error) {
     return NextResponse.redirect(
-      new URL(`/auth/login?error=${encodeURIComponent(error.message)}`, origin)
+      new URL(`/auth/login?error=${encodeURIComponent(error.message)}`, origin),
+      303
     )
   }
 
   if (data.url) {
-    return NextResponse.redirect(data.url)
+    // Must use 303 to convert the POST into a GET when redirecting to Google's OAuth page
+    return NextResponse.redirect(data.url, 303)
   }
 
   return NextResponse.redirect(
-    new URL('/auth/login?error=Failed to initiate Google sign in', origin)
+    new URL('/auth/login?error=Failed to initiate Google sign in', origin),
+    303
   )
 }

@@ -1,10 +1,17 @@
 import Stripe from 'stripe'
 
-// Server-side Stripe client
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover' as any, // Use 'as any' to bypass type check for beta versions
-  typescript: true,
-})
+// Server-side Stripe client (lazy-initialized to avoid build-time errors when env vars aren't set)
+let _stripe: Stripe | null = null
+
+function getStripe(): Stripe {
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: '2026-01-28.clover' as any, // Use 'as any' to bypass type check for beta versions
+      typescript: true,
+    })
+  }
+  return _stripe
+}
 
 // Create checkout session
 export async function createCheckoutSession({
@@ -22,7 +29,7 @@ export async function createCheckoutSession({
   successUrl?: string
   cancelUrl?: string
 }) {
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [
       {
@@ -61,7 +68,7 @@ export function verifyWebhookSignature(
   payload: string | Buffer,
   signature: string
 ) {
-  return stripe.webhooks.constructEvent(
+  return getStripe().webhooks.constructEvent(
     payload,
     signature,
     process.env.STRIPE_WEBHOOK_SECRET!

@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 5 in progress - Song Delivery
+**Current focus:** Phase 6 in progress - Upsells & Monetization
 
 ## Current Position
 
-Phase: 5 of 9 (Song Delivery)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-08 -- Completed 05-02-PLAN.md (Song Delivery UI)
+Phase: 6 of 9 (Upsells & Monetization)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-08 -- Completed 06-01-PLAN.md (Bundle Infrastructure)
 
-Progress: [██████████] 100%
+Progress: [████████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 2.6 min
-- Total execution time: 0.55 hours
+- Total execution time: 0.59 hours
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [██████████] 100%
 | 03 | 3/3 | 13 min | 4.3 min |
 | 04 | 3/3 | 6 min | 2.0 min |
 | 05 | 2/2 | 5 min | 2.5 min |
+| 06 | 1/3 | 2.6 min | 2.6 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (1.4 min), 04-03 (2.9 min), 05-01 (1.8 min), 05-02 (3.2 min)
-- Trend: Phase 5 complete with consistent velocity
+- Last 5 plans: 04-03 (2.9 min), 05-01 (1.8 min), 05-02 (3.2 min), 06-01 (2.6 min)
+- Trend: Maintaining consistent velocity across phases
 
 *Updated after each plan completion*
 
@@ -100,6 +101,12 @@ Recent decisions affecting current work:
 - 05-02: Anchor tag download pattern (programmatic click) avoids popup blockers and respects Content-Disposition
 - 05-02: Loading skeleton matches player dimensions to prevent layout shift during audio load
 - 05-02: react-h5-audio-player with purple-to-pink gradient styling matching app theme
+- 06-01: UPSELL_PRICE = 499 pence (£4.99, 37% discount from base) for post-checkout upsell
+- 06-01: Bundle tiers: 3-pack (£19.99, 17% savings), 5-pack (£29.99, 25% savings), 10-pack (£49.99, 37% savings)
+- 06-01: Bundle purchases create credit records without triggering generation (orderType routing in webhook)
+- 06-01: Upsell purchases generate single variant (variant_number 4) linked to parent order via parent_order_id
+- 06-01: All pricing validated server-side with fixed constants in src/lib/bundles/pricing.ts
+- 06-01: Inline Stripe price_data with dynamic amounts instead of predefined Price IDs for flexibility
 
 ### Pending Todos
 
@@ -112,9 +119,10 @@ None yet.
 - 01-01: Manual Supabase SQL execution required -- migration file must be run in Supabase SQL Editor (free tier doesn't support automated migrations)
 - 01-02: Next.js build requires environment variables (Stripe API key) -- will be resolved during deployment setup
 - 02-01: Migration 002_add_order_type.sql must be run manually before webhook can store order_type (free tier limitation)
+- 06-01: Migration 003_add_bundles.sql must be run manually before upsell/bundle purchases can complete (free tier limitation)
 
 ## Session Continuity
 
-Last session: 2026-02-08T21:58:15Z
-Stopped at: Completed 05-02-PLAN.md (Song Delivery UI) - Phase 5 complete
+Last session: 2026-02-08T22:32:15Z
+Stopped at: Completed 06-01-PLAN.md (Bundle Infrastructure)
 Resume file: None

@@ -128,11 +128,11 @@ Plans:
   2. Recipients experience a branded cinematic gift reveal animation before hearing the song, including the sender's personal message
   3. Share pages generate dynamic OG images for rich social media previews when the link is shared
   4. Social share buttons (WhatsApp, Facebook, Twitter/X, copy link) are available on the share page
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
+- [ ] 07-01-PLAN.md -- Share page server component, dynamic OG image generator, share URL helper, loading skeleton
+- [ ] 07-02-PLAN.md -- Gift reveal animation (Framer Motion), public audio stream, social share buttons (react-share), copy link, song page share integration
 
 ### Phase 8: User Dashboard
 **Goal**: Logged-in users can view their complete song history, replay or re-download any song, review purchases, and see tracked occasion dates

@@ -1,0 +1,143 @@
+import { ImageResponse } from 'next/og'
+import { createServerSupabaseClient } from '@/lib/supabase'
+
+export const alt = 'Personalized song gift from SongSwipe'
+export const size = { width: 1200, height: 630 }
+export const contentType = 'image/png'
+
+interface OGImageProps {
+  params: Promise<{ token: string }>
+}
+
+// Helper to format occasion for display
+function formatOccasion(occasion: string): string {
+  return occasion
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+export default async function Image({ params }: OGImageProps) {
+  const { token } = await params
+  const supabase = createServerSupabaseClient()
+
+  // Fetch minimal data needed for OG image
+  const { data, error } = await supabase
+    .from('song_variants')
+    .select(`
+      orders(
+        customizations(
+          recipient_name,
+          your_name,
+          occasion
+        )
+      )
+    `)
+    .eq('share_token', token)
+    .eq('selected', true)
+    .eq('generation_status', 'complete')
+    .single()
+
+  // Unwrap nested response
+  const order = data?.orders && (Array.isArray(data.orders) ? data.orders[0] : data.orders)
+  const customizationData = order?.customizations
+  const customization = customizationData && (Array.isArray(customizationData) ? customizationData[0] : customizationData)
+
+  // Fallback image if no data found
+  if (error || !data || !customization) {
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#1F1128',
+          }}
+        >
+          <div style={{ fontSize: 96, marginBottom: 40 }}>🎵</div>
+          <div style={{ fontSize: 48, color: 'white', fontWeight: 'bold' }}>
+            A personalized song gift
+          </div>
+          <div style={{ fontSize: 36, color: 'white', opacity: 0.8, marginTop: 40 }}>
+            SongSwipe
+          </div>
+        </div>
+      ),
+      {
+        ...size,
+      }
+    )
+  }
+
+  const formattedOccasion = formatOccasion(customization.occasion)
+
+  // Personalized image
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(135deg, #1F1128 0%, #4C1D95 50%, #BE185D 100%)',
+          position: 'relative',
+        }}
+      >
+        <div style={{ fontSize: 80, marginBottom: 30 }}>🎁</div>
+        <div
+          style={{
+            fontSize: 64,
+            color: 'white',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginBottom: 20,
+          }}
+        >
+          For {customization.recipient_name}
+        </div>
+        <div
+          style={{
+            fontSize: 40,
+            color: 'white',
+            opacity: 0.9,
+            textAlign: 'center',
+            marginBottom: 15,
+          }}
+        >
+          {formattedOccasion} Song
+        </div>
+        <div
+          style={{
+            fontSize: 36,
+            color: 'white',
+            opacity: 0.8,
+            textAlign: 'center',
+          }}
+        >
+          From {customization.your_name}
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 40,
+            fontSize: 32,
+            color: 'white',
+            opacity: 0.7,
+          }}
+        >
+          SongSwipe
+        </div>
+      </div>
+    ),
+    {
+      ...size,
+    }
+  )
+}

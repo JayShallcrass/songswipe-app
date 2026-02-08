@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 2 complete, ready for Phase 3
+**Current focus:** Phase 3 in progress - Swipe Builder
 
 ## Current Position
 
-Phase: 2 of 9 (Base Payment and Pricing)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-08 -- Phase 02 verified and complete
+Phase: 3 of 9 (Swipe Builder)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-08 -- Completed 03-01-PLAN.md (Swipe foundation)
 
-Progress: [███░......] 33%
+Progress: [████░.....] 42%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 2.3 min
-- Total execution time: 0.19 hours
+- Total plans completed: 5
+- Average duration: 2.4 min
+- Total execution time: 0.22 hours
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [███░......] 33%
 |-------|-------|-------|----------|
 | 01 | 2/2 | 5 min | 2.5 min |
 | 02 | 2/2 | 4 min | 2.0 min |
+| 03 | 1/3 | 3 min | 3.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (3 min), 02-01 (2 min), 02-02 (2 min)
+- Last 5 plans: 01-02 (3 min), 02-01 (2 min), 02-02 (2 min), 03-01 (3 min)
 - Trend: Consistent velocity
 
 *Updated after each plan completion*
@@ -60,6 +61,11 @@ Recent decisions affecting current work:
 - 02-02: Pricing page CTA links to /customize (not direct checkout) since customize form already handles checkout after collecting song details
 - 02-02: Success page shows last 8 chars of session_id as reference for support while maintaining security
 - 02-02: Header hidden on /checkout paths for clean post-payment experience
+- 03-01: sessionStorage (not localStorage) for swipe state - clears on tab close for fresh start
+- 03-01: 40% card width or 500px/s velocity triggers swipe (per SWIPE-09 research)
+- 03-01: Voice cards are new data not in existing customize page (warm-male, bright-female, soulful, energetic, gentle)
+- 03-01: Right swipe = select and advance, left swipe = skip and show next card in same stage
+- 03-01: Only top card draggable (isTop prop) to prevent z-index issues
 
 ### Pending Todos
 
@@ -75,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T19:50:23Z
-Stopped at: Completed 02-02-PLAN.md (Pricing and success pages)
+Last session: 2026-02-08T20:32:18Z
+Stopped at: Completed 03-01-PLAN.md (Swipe foundation)
 Resume file: None

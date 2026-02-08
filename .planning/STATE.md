@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 3 in progress - Swipe Builder
+**Current focus:** Phase 4 in progress - Audio Generation Preview
 
 ## Current Position
 
-Phase: 3 of 9 (Swipe Builder)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-08 -- Completed 03-03-PLAN.md (Page integration)
+Phase: 4 of 9 (Audio Generation Preview)
+Plan: 2 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-08 -- Completed 04-02-PLAN.md (React Query Hooks)
 
-Progress: [██████....] 58%
+Progress: [████████..] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 3.0 min
-- Total execution time: 0.37 hours
+- Total plans completed: 8
+- Average duration: 2.6 min
+- Total execution time: 0.40 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [██████....] 58%
 | 01 | 2/2 | 5 min | 2.5 min |
 | 02 | 2/2 | 4 min | 2.0 min |
 | 03 | 3/3 | 13 min | 4.3 min |
+| 04 | 2/3 | 2 min | 1.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (2 min), 03-01 (3 min), 03-02 (8 min), 03-03 (2 min)
-- Trend: Phase 3 complete, efficient execution
+- Last 5 plans: 03-01 (3 min), 03-02 (8 min), 03-03 (2 min), 04-02 (1.4 min)
+- Trend: Phase 4 started, very efficient execution
 
 *Updated after each plan completion*
 
@@ -77,6 +78,9 @@ Recent decisions affecting current work:
 - 03-03: Voice style stored in state but not sent to current API (will be used in Phase 4 Eleven Labs enhancement)
 - 03-03: Keyboard navigation disabled when isSwipeComplete to prevent hijacking text input
 - 03-03: Back button on PersonalizationForm calls undo() to allow re-swiping last stage
+- 04-02: React Query refetchInterval callback conditionally polls based on order status (3s during generation, false when complete/failed)
+- 04-02: Object URLs created from audio blobs must be revoked via cleanup function to prevent memory leaks
+- 04-02: QueryClient created in useState to avoid sharing between SSR requests
 
 ### Pending Todos
 
@@ -92,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T20:47:58Z
-Stopped at: Completed 03-03-PLAN.md (Page integration)
+Last session: 2026-02-08T21:19:43Z
+Stopped at: Completed 04-02-PLAN.md (React Query Hooks)
 Resume file: None

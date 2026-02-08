@@ -82,11 +82,12 @@ Plans:
   3. Preview audio is served via signed URLs with short expiry (5-15 min) and cannot be downloaded via browser devtools
   4. User swipes between the 3 generated variants to listen and pick their favorite
   5. If a generation fails, the system automatically retries via the job queue without user intervention
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- Backend API endpoints: status polling, protected audio preview proxy, variant selection
+- [ ] 04-02-PLAN.md -- React Query setup, app provider, useGenerationStatus and useAudioPreview hooks
+- [ ] 04-03-PLAN.md -- Generation page UI: GenerationProgress, VariantCard, VariantSwiper, /generate/[orderId] page, checkout success redirect
 
 ### Phase 5: Song Delivery
 **Goal**: Users can stream and download their selected song, with a dedicated song page displaying all relevant details
@@ -169,7 +170,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | 1. Foundation & Infrastructure | 2/2 | ✓ Complete | 2026-02-08 |
 | 2. Base Payment & Pricing | 2/2 | ✓ Complete | 2026-02-08 |
 | 3. Swipe Builder | 3/3 | ✓ Complete | 2026-02-08 |
-| 4. Audio Generation & Preview | 0/TBD | Not started | - |
+| 4. Audio Generation & Preview | 0/3 | Planned | - |
 | 5. Song Delivery | 0/TBD | Not started | - |
 | 6. Upsells & Monetization | 0/TBD | Not started | - |
 | 7. Sharing & Gift Reveal | 0/TBD | Not started | - |

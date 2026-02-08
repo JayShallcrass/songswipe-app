@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { generateShareUrl } from '@/lib/share/generateShareUrl'
+import { GiftReveal } from '@/components/share/GiftReveal'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -129,52 +130,21 @@ export default async function SharePage({ params }: PageProps) {
   const formattedOccasion = formatOccasion(data.occasion)
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900">
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <div className="text-center space-y-8">
-          {/* Logo */}
-          <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              SongSwipe
-            </h1>
-          </div>
+    <>
+      {/* Gift Reveal Animation */}
+      <GiftReveal
+        recipientName={data.recipientName}
+        message={personalMessage}
+        shareToken={token}
+        occasion={formattedOccasion}
+      />
 
-          {/* Recipient Name */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              For {data.recipientName}
-            </h2>
-          </div>
-
-          {/* Personal Message */}
-          <p className="text-lg md:text-xl text-white/90">
-            {personalMessage}
-          </p>
-
-          {/* Occasion Info */}
-          <div className="text-white/70">
-            <p className="text-base">
-              {formattedOccasion} • {data.genre}
-            </p>
-          </div>
-
-          {/* Gift Reveal Component Placeholder (Plan 02) */}
-          <div id="gift-reveal-slot" className="py-8">
-            {/* GiftReveal client component will be added in Plan 02 */}
-            <div className="text-white/50 text-sm">
-              [ Gift reveal component goes here - Plan 02 ]
-            </div>
-          </div>
-
-          {/* Share Buttons Placeholder (Plan 02) */}
-          <div id="share-buttons-slot" className="py-4">
-            {/* ShareButtons client component will be added in Plan 02 */}
-            <div className="text-white/50 text-sm">
-              [ Share buttons component goes here - Plan 02 ]
-            </div>
-          </div>
+      {/* Share Buttons Section - Placeholder for Task 2 */}
+      <div id="share-buttons-slot" className="bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900 py-12">
+        <div className="max-w-2xl mx-auto px-4">
+          {/* ShareButtons component will be added in Task 2 */}
         </div>
       </div>
-    </main>
+    </>
   )
 }

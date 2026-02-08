@@ -65,11 +65,12 @@ Plans:
   3. First-time users see visual hints guiding them on how to swipe, and accidental swipes are prevented by requiring 40%+ card width movement
   4. User can undo their last swipe action
   5. Completed swipe selections and text input are submitted as a song creation request
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- Swipe engine foundation: install Framer Motion, TypeScript types, card data arrays, useSwipeState hook, SwipeCard component
+- [ ] 03-02-PLAN.md -- Swipe flow UI: SwipeStack orchestrator, SwipeProgress bar, SwipeHints overlay, useSwipeKeyboard hook
+- [ ] 03-03-PLAN.md -- Page integration: PersonalizationForm component, /customize page rewrite with swipe-to-form-to-checkout flow
 
 ### Phase 4: Audio Generation & Preview
 **Goal**: After submitting their song request, users receive 3 AI-generated song variants and can swipe between protected previews to pick their favorite
@@ -167,7 +168,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 |-------|---------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | ✓ Complete | 2026-02-08 |
 | 2. Base Payment & Pricing | 2/2 | ✓ Complete | 2026-02-08 |
-| 3. Swipe Builder | 0/TBD | Not started | - |
+| 3. Swipe Builder | 0/3 | Planned | - |
 | 4. Audio Generation & Preview | 0/TBD | Not started | - |
 | 5. Song Delivery | 0/TBD | Not started | - |
 | 6. Upsells & Monetization | 0/TBD | Not started | - |

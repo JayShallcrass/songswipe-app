@@ -87,6 +87,7 @@ export interface Database {
           status: 'pending' | 'paid' | 'generating' | 'completed' | 'failed'
           amount: number
           order_type: OrderType
+          parent_order_id: string | null
           occasion_date: string | null
           created_at: string
           updated_at: string
@@ -99,6 +100,7 @@ export interface Database {
           status?: 'pending' | 'paid' | 'generating' | 'completed' | 'failed'
           amount: number
           order_type?: OrderType
+          parent_order_id?: string | null
           occasion_date?: string | null
           created_at?: string
           updated_at?: string
@@ -111,6 +113,7 @@ export interface Database {
           status?: 'pending' | 'paid' | 'generating' | 'completed' | 'failed'
           amount?: number
           order_type?: OrderType
+          parent_order_id?: string | null
           occasion_date?: string | null
           created_at?: string
           updated_at?: string
@@ -219,6 +222,38 @@ export interface Database {
           failed_at?: string
           resolved_at?: string | null
           notes?: string | null
+        }
+      }
+      bundles: {
+        Row: {
+          id: string
+          user_id: string
+          order_id: string
+          bundle_tier: string
+          quantity_purchased: number
+          quantity_remaining: number
+          purchased_at: string
+          expires_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          order_id: string
+          bundle_tier: string
+          quantity_purchased: number
+          quantity_remaining: number
+          purchased_at?: string
+          expires_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          order_id?: string
+          bundle_tier?: string
+          quantity_purchased?: number
+          quantity_remaining?: number
+          purchased_at?: string
+          expires_at?: string | null
         }
       }
     }

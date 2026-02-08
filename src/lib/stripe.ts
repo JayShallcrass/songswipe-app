@@ -12,6 +12,7 @@ export async function createCheckoutSession({
   userId,
   email,
   amount = 799, // £7.99 in pence
+  orderType = 'base',
   successUrl,
   cancelUrl,
 }: {
@@ -19,6 +20,7 @@ export async function createCheckoutSession({
   userId: string
   email: string
   amount?: number
+  orderType?: 'base' | 'upsell' | 'bundle'
   successUrl?: string
   cancelUrl?: string
 }) {
@@ -29,8 +31,8 @@ export async function createCheckoutSession({
         price_data: {
           currency: 'gbp',
           product_data: {
-            name: 'Personalized Song',
-            description: 'Custom AI-generated song for your special someone',
+            name: 'Personalized Song Package',
+            description: 'Get 3 AI-generated song variants and pick your favorite',
           },
           unit_amount: amount,
         },
@@ -38,17 +40,19 @@ export async function createCheckoutSession({
       },
     ],
     mode: 'payment',
-    success_url: successUrl || `${process.env.NEXT_PUBLIC_APP_URL}/order/{ORDER_ID}?success=true`,
-    cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/customize?canceled=true`,
+    success_url: successUrl || `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
     customer_email: email,
     metadata: {
       customizationId,
       userId,
+      orderType,
     },
     payment_intent_data: {
       metadata: {
         customizationId,
         userId,
+        orderType,
       },
     },
   })

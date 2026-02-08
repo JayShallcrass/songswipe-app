@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 4 in progress - Audio Generation Preview
+**Current focus:** Phase 5 in progress - Song Delivery
 
 ## Current Position
 
-Phase: 4 of 9 (Audio Generation Preview)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-08 -- Completed 04-03-PLAN.md (Generation Page UI)
+Phase: 5 of 9 (Song Delivery)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-08 -- Completed 05-01-PLAN.md (Song Delivery API)
 
-Progress: [█████████.] 100%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 2.6 min
-- Total execution time: 0.47 hours
+- Total plans completed: 10
+- Average duration: 2.5 min
+- Total execution time: 0.50 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [█████████.] 100%
 | 02 | 2/2 | 4 min | 2.0 min |
 | 03 | 3/3 | 13 min | 4.3 min |
 | 04 | 3/3 | 6 min | 2.0 min |
+| 05 | 1/2 | 2 min | 1.8 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (2 min), 04-01 (1.5 min), 04-02 (1.4 min), 04-03 (2.9 min)
-- Trend: Phase 4 complete, consistently efficient execution (avg 2.0 min/plan)
+- Last 5 plans: 04-01 (1.5 min), 04-02 (1.4 min), 04-03 (2.9 min), 05-01 (1.8 min)
+- Trend: Maintaining strong velocity, Phase 5 started efficiently
 
 *Updated after each plan completion*
 
@@ -90,6 +91,11 @@ Recent decisions affecting current work:
 - 04-03: Checkout success polls /api/orders?session_id= every 2s for 30s to handle webhook timing delays
 - 04-03: Partial success button allows previewing completed variants before all 3 finish
 - 04-03: AnimatePresence slide transitions use directional x offset (±300px) based on navigation direction
+- 05-01: Song API uses variant ID instead of order+variant pair for simpler routing (/api/songs/[id])
+- 05-01: Signed URL expiry extended to 2 hours (7200s) for delivery endpoints to handle pause/resume scenarios
+- 05-01: Download filename personalized with recipient name (songswipe-{sanitized-name}.mp3)
+- 05-01: Stream endpoint allows 1-hour browser caching (private, max-age=3600) for playback performance
+- 05-01: All delivery endpoints return 404 (not 403) for unauthorized access to prevent enumeration attacks
 
 ### Pending Todos
 
@@ -105,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T21:25:06Z
-Stopped at: Completed 04-03-PLAN.md (Generation Page UI) -- Phase 4 complete
+Last session: 2026-02-08T21:52:21Z
+Stopped at: Completed 05-01-PLAN.md (Song Delivery API)
 Resume file: None

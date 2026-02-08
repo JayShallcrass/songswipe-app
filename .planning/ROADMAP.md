@@ -112,10 +112,12 @@ Plans:
   1. After swiping through 3 variants, user is offered the option to generate a 4th variant at a reduced price
   2. After completing and sharing their song, user is offered a discounted multi-generation bundle for other occasions or recipients
   3. Bundle purchases are tracked and available for the user to redeem on future song creations
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: TBD
+- [ ] 06-01-PLAN.md -- Database migration (bundles table, parent_order_id), pricing constants, Stripe helper + webhook updates for upsell/bundle routing
+- [ ] 06-02-PLAN.md -- +1 variant upsell: Server Action, modal component, generation page integration with 5s delay trigger
+- [ ] 06-03-PLAN.md -- Bundle offer: Server Action, credit redemption with optimistic locking, bundle offer card on song delivery page
 
 ### Phase 7: Sharing & Gift Reveal
 **Goal**: Users can share their song via a unique URL where recipients experience a branded gift reveal without needing an account
@@ -173,7 +175,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | 3. Swipe Builder | 3/3 | ✓ Complete | 2026-02-08 |
 | 4. Audio Generation & Preview | 3/3 | ✓ Complete | 2026-02-08 |
 | 5. Song Delivery | 2/2 | ✓ Complete | 2026-02-08 |
-| 6. Upsells & Monetization | 0/TBD | Not started | - |
+| 6. Upsells & Monetization | 0/3 | Not started | - |
 | 7. Sharing & Gift Reveal | 0/TBD | Not started | - |
 | 8. User Dashboard | 0/TBD | Not started | - |
 | 9. Retention & Marketing | 0/TBD | Not started | - |

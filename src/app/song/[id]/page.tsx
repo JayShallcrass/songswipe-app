@@ -8,6 +8,8 @@ import { useSongData } from '@/lib/hooks/useSongData'
 import { SongPlayer } from '@/components/song/SongPlayer'
 import { SongDetails } from '@/components/song/SongDetails'
 import { BundleOfferCard } from '@/components/upsells/BundleOfferCard'
+import { generateShareUrl } from '@/lib/share/generateShareUrl'
+import { CopyLinkButton } from '@/components/share/CopyLinkButton'
 
 export default function SongPage() {
   const params = useParams()
@@ -85,6 +87,27 @@ export default function SongPage() {
             <ArrowDownTrayIcon className="w-5 h-5" />
             {isDownloading ? 'Downloading...' : 'Download MP3'}
           </button>
+
+          {/* Share Your Song Section */}
+          {song.shareToken && (
+            <div className="space-y-4">
+              <div className="border-t border-purple-500/20"></div>
+              <h3 className="text-xl font-semibold text-white text-center">Share Your Song</h3>
+              <div className="bg-white/5 backdrop-blur rounded-xl p-6 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 bg-white/5 rounded-lg p-3 overflow-hidden">
+                    <p className="text-white/70 text-sm truncate">
+                      {generateShareUrl(song.shareToken)}
+                    </p>
+                  </div>
+                  <CopyLinkButton url={generateShareUrl(song.shareToken)} />
+                </div>
+                <p className="text-sm text-gray-400 text-center">
+                  Send this link to {song.recipientName} for a special gift reveal experience
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Song Details */}
           <SongDetails

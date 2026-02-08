@@ -55,6 +55,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Create order record
+        const parentOrderId = session.metadata?.originalOrderId || null
+
         const { data: order, error: orderError } = await supabase
           .from('orders')
           .insert({
@@ -64,6 +66,7 @@ export async function POST(request: NextRequest) {
             status: 'paid',
             amount: session.amount_total || 799,
             order_type: orderType,
+            parent_order_id: parentOrderId,
           })
           .select()
           .single()
@@ -73,17 +76,69 @@ export async function POST(request: NextRequest) {
           break
         }
 
-        // Trigger Inngest event for async generation
-        await inngest.send({
-          name: 'song/generation.requested',
-          data: {
-            orderId: order.id,
-            userId: userId,
-            customizationId: customizationId,
-          },
-        })
+        // Branch based on order type
+        if (orderType === 'bundle') {
+          // Bundle purchase: create credit record, no generation
+          const bundleTier = session.metadata?.bundleTier
+          const quantity = session.metadata?.quantity
 
-        break
+          if (!bundleTier || !quantity) {
+            console.error('Missing bundle metadata:', { bundleTier, quantity })
+            break
+          }
+
+          const { error: bundleError } = await supabase
+            .from('bundles')
+            .insert({
+              user_id: userId,
+              order_id: order.id,
+              bundle_tier: bundleTier,
+              quantity_purchased: parseInt(quantity),
+              quantity_remaining: parseInt(quantity),
+            })
+
+          if (bundleError) {
+            console.error('Failed to create bundle:', bundleError)
+            break
+          }
+
+          console.log('Bundle purchase completed:', { orderId: order.id, tier: bundleTier, quantity })
+          break
+        } else if (orderType === 'upsell') {
+          // Upsell purchase: generate single variant linked to parent
+          if (!parentOrderId) {
+            console.error('Missing originalOrderId for upsell:', session.id)
+            break
+          }
+
+          await inngest.send({
+            name: 'song/generation.requested',
+            data: {
+              orderId: order.id,
+              userId: userId,
+              customizationId: customizationId,
+              variantCount: 1,
+              originalOrderId: parentOrderId,
+            },
+          })
+
+          console.log('Upsell generation triggered:', { orderId: order.id, parentOrderId })
+          break
+        } else {
+          // Base order: generate 3 variants (existing behavior)
+          await inngest.send({
+            name: 'song/generation.requested',
+            data: {
+              orderId: order.id,
+              userId: userId,
+              customizationId: customizationId,
+              variantCount: 3,
+            },
+          })
+
+          console.log('Base order generation triggered:', { orderId: order.id })
+          break
+        }
       }
 
       case 'payment_intent.payment_failed': {

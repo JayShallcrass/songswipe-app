@@ -1,4 +1,5 @@
 import Stripe from 'stripe'
+import { BASE_PRICE } from './bundles/pricing'
 
 // Server-side Stripe client
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -11,10 +12,11 @@ export async function createCheckoutSession({
   customizationId,
   userId,
   email,
-  amount = 799, // £7.99 in pence
+  amount = BASE_PRICE,
   orderType = 'base',
   successUrl,
   cancelUrl,
+  metadata = {},
 }: {
   customizationId: string
   userId: string
@@ -23,7 +25,30 @@ export async function createCheckoutSession({
   orderType?: 'base' | 'upsell' | 'bundle'
   successUrl?: string
   cancelUrl?: string
+  metadata?: Record<string, string>
 }) {
+  // Dynamic product data based on order type
+  let productName: string
+  let productDescription: string
+
+  switch (orderType) {
+    case 'upsell':
+      productName = 'Additional Song Variant'
+      productDescription = '1 more variant for your order'
+      break
+    case 'bundle':
+      const bundleTier = metadata.bundleTier || 'Bundle'
+      const quantity = metadata.quantity || ''
+      productName = `Song Bundle - ${bundleTier}`
+      productDescription = `${quantity} song credits`
+      break
+    case 'base':
+    default:
+      productName = 'Personalized Song Package'
+      productDescription = '3 AI-generated song variants'
+      break
+  }
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [
@@ -31,8 +56,8 @@ export async function createCheckoutSession({
         price_data: {
           currency: 'gbp',
           product_data: {
-            name: 'Personalized Song Package',
-            description: 'Get 3 AI-generated song variants and pick your favorite',
+            name: productName,
+            description: productDescription,
           },
           unit_amount: amount,
         },
@@ -47,12 +72,14 @@ export async function createCheckoutSession({
       customizationId,
       userId,
       orderType,
+      ...metadata,
     },
     payment_intent_data: {
       metadata: {
         customizationId,
         userId,
         orderType,
+        ...metadata,
       },
     },
   })

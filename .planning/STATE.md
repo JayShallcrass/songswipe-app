@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 1 - Foundation & Infrastructure
+**Current focus:** Phase 2 - Base Payment and Pricing
 
 ## Current Position
 
-Phase: 1 of 9 (Foundation & Infrastructure)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-08 -- Completed 01-02-PLAN.md (Inngest async job queue)
+Phase: 2 of 9 (Base Payment and Pricing)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-08 -- Completed 02-01-PLAN.md (Stripe checkout integration)
 
-Progress: [██........] 22%
+Progress: [███.......] 30%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 2.5 min
-- Total execution time: 0.08 hours
+- Total plans completed: 3
+- Average duration: 2.3 min
+- Total execution time: 0.12 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01 | 2/2 | 5 min | 2.5 min |
+| 02 | 1/3 | 2 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (3 min)
-- Trend: Steady velocity
+- Last 5 plans: 01-01 (2 min), 01-02 (3 min), 02-01 (2 min)
+- Trend: Consistent velocity
 
 *Updated after each plan completion*
 
@@ -53,6 +54,9 @@ Recent decisions affecting current work:
 - 01-02: Partial success pattern - if any variant succeeds, order is 'completed' (better UX than all-or-nothing)
 - 01-02: NonRetriableError for 400s (bad input), RetryAfterError for 429s (rate limits)
 - 01-02: Idempotency via stripe_session_id prevents duplicate orders from webhook retries
+- 02-01: Success URL uses {CHECKOUT_SESSION_ID} placeholder (Stripe replaces automatically) instead of {ORDER_ID} which doesn't exist at checkout time
+- 02-01: Order type stored in both session metadata and payment_intent_data metadata for redundancy
+- 02-01: Server Action pattern for checkout provides type-safe auth verification and ownership checks
 
 ### Pending Todos
 
@@ -64,9 +68,10 @@ None yet.
 - Research flagged: Vercel function timeouts (60s Pro) may not cover full generation times (30s-2min)
 - 01-01: Manual Supabase SQL execution required -- migration file must be run in Supabase SQL Editor (free tier doesn't support automated migrations)
 - 01-02: Next.js build requires environment variables (Stripe API key) -- will be resolved during deployment setup
+- 02-01: Migration 002_add_order_type.sql must be run manually before webhook can store order_type (free tier limitation)
 
 ## Session Continuity
 
-Last session: 2026-02-08T19:03:32Z
-Stopped at: Completed 01-02-PLAN.md (Inngest async job queue)
+Last session: 2026-02-08T19:43:43Z
+Stopped at: Completed 02-01-PLAN.md (Stripe checkout integration)
 Resume file: None

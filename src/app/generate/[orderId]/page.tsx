@@ -1,19 +1,24 @@
 'use client'
 
-import { useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useGenerationStatus } from '@/lib/hooks/useGenerationStatus'
 import { GenerationProgress } from '@/components/generation/GenerationProgress'
 import { VariantSwiper } from '@/components/generation/VariantSwiper'
+import { VariantUpsellModal } from '@/components/upsells/VariantUpsellModal'
 
 export default function GenerationPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
   const orderId = params.orderId as string
 
   const [showSwiper, setShowSwiper] = useState(false)
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
   const [selectError, setSelectError] = useState<string | null>(null)
+  const [hasSwipedAll, setHasSwipedAll] = useState(false)
+  const [showUpsellModal, setShowUpsellModal] = useState(false)
+  const [upsellDismissed, setUpsellDismissed] = useState(false)
 
   const {
     data,
@@ -23,6 +28,30 @@ export default function GenerationPage() {
     completedVariants,
     completedCount,
   } = useGenerationStatus(orderId)
+
+  // Trigger upsell modal after viewing all variants (5-second delay)
+  useEffect(() => {
+    if (hasSwipedAll && !upsellDismissed && !selectedVariantId) {
+      const timer = setTimeout(() => {
+        setShowUpsellModal(true)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [hasSwipedAll, upsellDismissed, selectedVariantId])
+
+  // Handle variant index change
+  const handleVariantIndexChange = (index: number, total: number) => {
+    if (index === total - 1 && !hasSwipedAll) {
+      setHasSwipedAll(true)
+    }
+  }
+
+  // Handle upsell modal close
+  const handleCloseUpsell = () => {
+    setShowUpsellModal(false)
+    setUpsellDismissed(true)
+  }
 
   // Handle variant selection
   const handleSelect = async (variantId: string) => {
@@ -159,11 +188,26 @@ export default function GenerationPage() {
             orderId={orderId}
             variants={completedVariants}
             onSelect={handleSelect}
+            onIndexChange={handleVariantIndexChange}
           />
 
           {selectError && (
             <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
               <p className="text-red-600 text-sm">{selectError}</p>
+            </div>
+          )}
+
+          {/* Upsell Modal */}
+          <VariantUpsellModal
+            orderId={orderId}
+            isOpen={showUpsellModal}
+            onClose={handleCloseUpsell}
+          />
+
+          {/* Upsell success notification */}
+          {searchParams.get('upsell') === 'success' && (
+            <div className="fixed bottom-4 right-4 bg-green-50 border border-green-200 rounded-lg p-4 shadow-lg animate-pulse">
+              <p className="text-green-600 font-medium">4th variant is being generated...</p>
             </div>
           )}
         </div>

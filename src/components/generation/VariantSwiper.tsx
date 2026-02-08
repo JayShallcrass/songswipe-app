@@ -13,9 +13,10 @@ interface VariantSwiperProps {
   orderId: string
   variants: Variant[]
   onSelect: (variantId: string) => void
+  onIndexChange?: (index: number, total: number) => void
 }
 
-export function VariantSwiper({ orderId, variants, onSelect }: VariantSwiperProps) {
+export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: VariantSwiperProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<'left' | 'right'>('right')
 
@@ -32,14 +33,18 @@ export function VariantSwiper({ orderId, variants, onSelect }: VariantSwiperProp
   const goToNext = () => {
     if (currentIndex < variants.length - 1) {
       setDirection('right')
-      setCurrentIndex(currentIndex + 1)
+      const newIndex = currentIndex + 1
+      setCurrentIndex(newIndex)
+      onIndexChange?.(newIndex, variants.length)
     }
   }
 
   const goToPrevious = () => {
     if (currentIndex > 0) {
       setDirection('left')
-      setCurrentIndex(currentIndex - 1)
+      const newIndex = currentIndex - 1
+      setCurrentIndex(newIndex)
+      onIndexChange?.(newIndex, variants.length)
     }
   }
 
@@ -134,6 +139,7 @@ export function VariantSwiper({ orderId, variants, onSelect }: VariantSwiperProp
             onClick={() => {
               setDirection(index > currentIndex ? 'right' : 'left')
               setCurrentIndex(index)
+              onIndexChange?.(index, variants.length)
             }}
             className={`w-3 h-3 rounded-full transition-all ${
               index === currentIndex

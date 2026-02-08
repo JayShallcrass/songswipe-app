@@ -34,11 +34,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Row-level security prevents users from accessing other users' data while allowing public share access via UUID tokens
   4. Failed generation jobs land in a dead-letter queue visible for monitoring
   5. Each song's generation status (pending/generating/complete/failed) is queryable and accurate
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Database schema migration (song_variants, failed_jobs, occasion_date, ENUM, RLS policies, TypeScript types)
+- [ ] 01-02-PLAN.md -- Inngest job queue setup, generate-song function with step functions and DLQ, webhook refactor
 
 ### Phase 2: Base Payment & Pricing
 **Goal**: Users can purchase a song package through a clear pricing page and Stripe Checkout, with the order recorded in the system
@@ -164,7 +164,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/TBD | Not started | - |
+| 1. Foundation & Infrastructure | 0/2 | Not started | - |
 | 2. Base Payment & Pricing | 0/TBD | Not started | - |
 | 3. Swipe Builder | 0/TBD | Not started | - |
 | 4. Audio Generation & Preview | 0/TBD | Not started | - |

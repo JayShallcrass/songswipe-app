@@ -6,11 +6,12 @@ import { usePathname } from 'next/navigation'
 export default function Header() {
   const pathname = usePathname()
 
-  // Don't show header on dashboard, auth pages, or customize
-  if (pathname?.startsWith('/dashboard') || 
-      pathname?.startsWith('/auth') || 
+  // Don't show header on dashboard, auth pages, customize, order, or checkout
+  if (pathname?.startsWith('/dashboard') ||
+      pathname?.startsWith('/auth') ||
       pathname?.startsWith('/customize') ||
-      pathname?.startsWith('/order')) {
+      pathname?.startsWith('/order') ||
+      pathname?.startsWith('/checkout')) {
     return null
   }
 
@@ -25,6 +26,12 @@ export default function Header() {
         </Link>
         
         <nav className="flex items-center gap-3">
+          <Link
+            href="/pricing"
+            className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+          >
+            Pricing
+          </Link>
           <Link
             href="/auth/login"
             className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"

@@ -13,7 +13,7 @@ SongSwipe delivers an AI-powered song gift platform where the swipe mechanic is 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Infrastructure** - Database schema, RLS policies, async job queue, and generation status tracking (completed 2026-02-08)
-- [ ] **Phase 2: Base Payment & Pricing** - Stripe package checkout, pricing page, webhook processing, and order recording
+- [x] **Phase 2: Base Payment & Pricing** - Stripe package checkout, pricing page, webhook processing, and order recording (completed 2026-02-08)
 - [ ] **Phase 3: Swipe Builder** - Tinder-style swipe cards for occasion, mood, genre, voice selection with text personalization
 - [ ] **Phase 4: Audio Generation & Preview** - Eleven Labs integration, 3-variant generation, protected preview playback, variant swiping
 - [ ] **Phase 5: Song Delivery** - Stream and download for selected songs with dedicated song pages
@@ -52,8 +52,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Stripe helper update, checkout Server Action, order_type migration, webhook + types update
-- [ ] 02-02-PLAN.md -- Pricing page UI, checkout success page, header navigation update
+- [x] 02-01-PLAN.md -- Stripe helper update, checkout Server Action, order_type migration, webhook + types update
+- [x] 02-02-PLAN.md -- Pricing page UI, checkout success page, header navigation update
 
 ### Phase 3: Swipe Builder
 **Goal**: Users can build their custom song by swiping through occasion, mood, genre, and voice style cards, then entering personal details -- the core experience that makes SongSwipe feel different
@@ -166,7 +166,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | ✓ Complete | 2026-02-08 |
-| 2. Base Payment & Pricing | 0/2 | Not started | - |
+| 2. Base Payment & Pricing | 2/2 | ✓ Complete | 2026-02-08 |
 | 3. Swipe Builder | 0/TBD | Not started | - |
 | 4. Audio Generation & Preview | 0/TBD | Not started | - |
 | 5. Song Delivery | 0/TBD | Not started | - |

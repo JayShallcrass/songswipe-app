@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 ## Current Position
 
 Phase: 3 of 9 (Swipe Builder)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-08 -- Completed 03-01-PLAN.md (Swipe foundation)
+Last activity: 2026-02-08 -- Completed 03-02-PLAN.md (Swipe flow UI)
 
-Progress: [████░.....] 42%
+Progress: [█████░....] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 2.4 min
-- Total execution time: 0.22 hours
+- Total plans completed: 6
+- Average duration: 3.3 min
+- Total execution time: 0.35 hours
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [████░.....] 42%
 |-------|-------|-------|----------|
 | 01 | 2/2 | 5 min | 2.5 min |
 | 02 | 2/2 | 4 min | 2.0 min |
-| 03 | 1/3 | 3 min | 3.0 min |
+| 03 | 2/3 | 11 min | 5.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (3 min), 02-01 (2 min), 02-02 (2 min), 03-01 (3 min)
-- Trend: Consistent velocity
+- Last 5 plans: 02-01 (2 min), 02-02 (2 min), 03-01 (3 min), 03-02 (8 min)
+- Trend: Increasing complexity in Phase 3
 
 *Updated after each plan completion*
 
@@ -66,6 +66,12 @@ Recent decisions affecting current work:
 - 03-01: Voice cards are new data not in existing customize page (warm-male, bright-female, soulful, energetic, gentle)
 - 03-01: Right swipe = select and advance, left swipe = skip and show next card in same stage
 - 03-01: Only top card draggable (isTop prop) to prevent z-index issues
+- 03-02: AnimatePresence exit animation with x offset (±300px), opacity fade, rotation (±15deg) over 0.3s
+- 03-02: Card depth stacking shows up to 3 cards with progressive scale (1.0, 0.95, 0.90) and translateY (0, 8px, 16px)
+- 03-02: Desktop fallback buttons (Skip/Select) alongside swipe for mouse-only users
+- 03-02: Keyboard shortcuts - ArrowLeft (skip), ArrowRight/Enter (select), Escape (undo)
+- 03-02: Form element detection prevents keyboard hijacking during text input
+- 03-02: SwipeHints uses 'songswipe_hints_seen' localStorage key for one-time tutorial dismissal
 
 ### Pending Todos
 
@@ -81,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T20:32:18Z
-Stopped at: Completed 03-01-PLAN.md (Swipe foundation)
+Last session: 2026-02-08T20:53:32Z
+Stopped at: Completed 03-02-PLAN.md (Swipe flow UI)
 Resume file: None

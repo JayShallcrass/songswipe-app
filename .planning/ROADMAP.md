@@ -12,7 +12,7 @@ SongSwipe delivers an AI-powered song gift platform where the swipe mechanic is 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Infrastructure** - Database schema, RLS policies, async job queue, and generation status tracking
+- [x] **Phase 1: Foundation & Infrastructure** - Database schema, RLS policies, async job queue, and generation status tracking (completed 2026-02-08)
 - [ ] **Phase 2: Base Payment & Pricing** - Stripe package checkout, pricing page, webhook processing, and order recording
 - [ ] **Phase 3: Swipe Builder** - Tinder-style swipe cards for occasion, mood, genre, voice selection with text personalization
 - [ ] **Phase 4: Audio Generation & Preview** - Eleven Labs integration, 3-variant generation, protected preview playback, variant swiping
@@ -37,8 +37,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Database schema migration (song_variants, failed_jobs, occasion_date, ENUM, RLS policies, TypeScript types)
-- [ ] 01-02-PLAN.md -- Inngest job queue setup, generate-song function with step functions and DLQ, webhook refactor
+- [x] 01-01-PLAN.md -- Database schema migration (song_variants, failed_jobs, occasion_date, ENUM, RLS policies, TypeScript types)
+- [x] 01-02-PLAN.md -- Inngest job queue setup, generate-song function with step functions and DLQ, webhook refactor
 
 ### Phase 2: Base Payment & Pricing
 **Goal**: Users can purchase a song package through a clear pricing page and Stripe Checkout, with the order recorded in the system
@@ -164,7 +164,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/2 | Not started | - |
+| 1. Foundation & Infrastructure | 2/2 | ✓ Complete | 2026-02-08 |
 | 2. Base Payment & Pricing | 0/TBD | Not started | - |
 | 3. Swipe Builder | 0/TBD | Not started | - |
 | 4. Audio Generation & Preview | 0/TBD | Not started | - |

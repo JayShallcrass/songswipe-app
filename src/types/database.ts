@@ -9,6 +9,8 @@ export type Json =
 
 export type GenerationStatus = 'pending' | 'generating' | 'complete' | 'failed'
 
+export type OrderType = 'base' | 'upsell' | 'bundle'
+
 export interface Database {
   public: {
     Tables: {
@@ -84,6 +86,7 @@ export interface Database {
           stripe_session_id: string | null
           status: 'pending' | 'paid' | 'generating' | 'completed' | 'failed'
           amount: number
+          order_type: OrderType
           occasion_date: string | null
           created_at: string
           updated_at: string
@@ -95,6 +98,7 @@ export interface Database {
           stripe_session_id?: string | null
           status?: 'pending' | 'paid' | 'generating' | 'completed' | 'failed'
           amount: number
+          order_type?: OrderType
           occasion_date?: string | null
           created_at?: string
           updated_at?: string
@@ -106,6 +110,7 @@ export interface Database {
           stripe_session_id?: string | null
           status?: 'pending' | 'paid' | 'generating' | 'completed' | 'failed'
           amount?: number
+          order_type?: OrderType
           occasion_date?: string | null
           created_at?: string
           updated_at?: string

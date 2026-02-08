@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
 
         const customizationId = session.metadata?.customizationId
         const userId = session.metadata?.userId
+        const orderType = session.metadata?.orderType || 'base'
 
         if (!customizationId || !userId) {
           console.error('Missing metadata in session:', session.id)
@@ -62,6 +63,7 @@ export async function POST(request: NextRequest) {
             stripe_session_id: session.id,
             status: 'paid',
             amount: session.amount_total || 799,
+            order_type: orderType,
           })
           .select()
           .single()

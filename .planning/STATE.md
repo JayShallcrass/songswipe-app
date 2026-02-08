@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 ## Current Position
 
 Phase: 2 of 9 (Base Payment and Pricing)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-08 -- Completed 02-01-PLAN.md (Stripe checkout integration)
+Last activity: 2026-02-08 -- Completed 02-02-PLAN.md (Pricing and success pages)
 
-Progress: [███.......] 30%
+Progress: [███░......] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 2.3 min
-- Total execution time: 0.12 hours
+- Total execution time: 0.19 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01 | 2/2 | 5 min | 2.5 min |
-| 02 | 1/3 | 2 min | 2.0 min |
+| 02 | 2/3 | 4 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (3 min), 02-01 (2 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (3 min), 02-01 (2 min), 02-02 (2 min)
 - Trend: Consistent velocity
 
 *Updated after each plan completion*
@@ -57,6 +57,9 @@ Recent decisions affecting current work:
 - 02-01: Success URL uses {CHECKOUT_SESSION_ID} placeholder (Stripe replaces automatically) instead of {ORDER_ID} which doesn't exist at checkout time
 - 02-01: Order type stored in both session metadata and payment_intent_data metadata for redundancy
 - 02-01: Server Action pattern for checkout provides type-safe auth verification and ownership checks
+- 02-02: Pricing page CTA links to /customize (not direct checkout) since customize form already handles checkout after collecting song details
+- 02-02: Success page shows last 8 chars of session_id as reference for support while maintaining security
+- 02-02: Header hidden on /checkout paths for clean post-payment experience
 
 ### Pending Todos
 
@@ -72,6 +75,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T19:43:43Z
-Stopped at: Completed 02-01-PLAN.md (Stripe checkout integration)
+Last session: 2026-02-08T19:50:23Z
+Stopped at: Completed 02-02-PLAN.md (Pricing and success pages)
 Resume file: None

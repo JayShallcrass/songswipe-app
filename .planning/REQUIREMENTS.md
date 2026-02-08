@@ -118,13 +118,58 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| _(populated by roadmap)_ | | |
+| INFRA-01 | Phase 1: Foundation & Infrastructure | Pending |
+| INFRA-02 | Phase 1: Foundation & Infrastructure | Pending |
+| INFRA-03 | Phase 1: Foundation & Infrastructure | Pending |
+| INFRA-04 | Phase 1: Foundation & Infrastructure | Pending |
+| INFRA-05 | Phase 1: Foundation & Infrastructure | Pending |
+| PAY-01 | Phase 2: Base Payment & Pricing | Pending |
+| PAY-02 | Phase 2: Base Payment & Pricing | Pending |
+| PAY-03 | Phase 2: Base Payment & Pricing | Pending |
+| PAY-04 | Phase 6: Upsells & Monetization | Pending |
+| PAY-05 | Phase 6: Upsells & Monetization | Pending |
+| PAY-06 | Phase 6: Upsells & Monetization | Pending |
+| PAY-07 | Phase 2: Base Payment & Pricing | Pending |
+| SWIPE-01 | Phase 3: Swipe Builder | Pending |
+| SWIPE-02 | Phase 3: Swipe Builder | Pending |
+| SWIPE-03 | Phase 3: Swipe Builder | Pending |
+| SWIPE-04 | Phase 3: Swipe Builder | Pending |
+| SWIPE-05 | Phase 3: Swipe Builder | Pending |
+| SWIPE-06 | Phase 3: Swipe Builder | Pending |
+| SWIPE-07 | Phase 3: Swipe Builder | Pending |
+| SWIPE-08 | Phase 3: Swipe Builder | Pending |
+| SWIPE-09 | Phase 3: Swipe Builder | Pending |
+| GEN-01 | Phase 4: Audio Generation & Preview | Pending |
+| GEN-02 | Phase 4: Audio Generation & Preview | Pending |
+| GEN-03 | Phase 4: Audio Generation & Preview | Pending |
+| GEN-04 | Phase 4: Audio Generation & Preview | Pending |
+| GEN-05 | Phase 4: Audio Generation & Preview | Pending |
+| GEN-06 | Phase 4: Audio Generation & Preview | Pending |
+| SONG-01 | Phase 5: Song Delivery | Pending |
+| SONG-02 | Phase 5: Song Delivery | Pending |
+| SONG-03 | Phase 5: Song Delivery | Pending |
+| SONG-04 | Phase 5: Song Delivery | Pending |
+| SHARE-01 | Phase 7: Sharing & Gift Reveal | Pending |
+| SHARE-02 | Phase 7: Sharing & Gift Reveal | Pending |
+| SHARE-03 | Phase 7: Sharing & Gift Reveal | Pending |
+| SHARE-04 | Phase 7: Sharing & Gift Reveal | Pending |
+| SHARE-05 | Phase 7: Sharing & Gift Reveal | Pending |
+| SHARE-06 | Phase 7: Sharing & Gift Reveal | Pending |
+| DASH-01 | Phase 8: User Dashboard | Pending |
+| DASH-02 | Phase 8: User Dashboard | Pending |
+| DASH-03 | Phase 8: User Dashboard | Pending |
+| DASH-04 | Phase 8: User Dashboard | Pending |
+| DASH-05 | Phase 8: User Dashboard | Pending |
+| RETAIN-01 | Phase 9: Retention & Marketing | Pending |
+| RETAIN-02 | Phase 9: Retention & Marketing | Pending |
+| RETAIN-03 | Phase 9: Retention & Marketing | Pending |
+| RETAIN-04 | Phase 9: Retention & Marketing | Pending |
 
 **Coverage:**
-- v1 requirements: 45 total
-- Mapped to phases: 0
-- Unmapped: 45
+- v1 requirements: 46 total
+- Mapped to phases: 46
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-08*
-*Last updated: 2026-02-08 after initial definition*
+*Last updated: 2026-02-08 after roadmap creation (traceability populated)*

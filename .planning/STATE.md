@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 ## Current Position
 
 Phase: 6 of 9 (Upsells & Monetization)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-08 -- Completed 06-01-PLAN.md (Bundle Infrastructure)
+Last activity: 2026-02-08 -- Completed 06-02-PLAN.md (Upsell UI)
 
-Progress: [████████████░░] 80%
+Progress: [█████████████░] 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: 2.6 min
-- Total execution time: 0.59 hours
+- Total execution time: 0.63 hours
 
 **By Phase:**
 
@@ -32,10 +32,10 @@ Progress: [████████████░░] 80%
 | 03 | 3/3 | 13 min | 4.3 min |
 | 04 | 3/3 | 6 min | 2.0 min |
 | 05 | 2/2 | 5 min | 2.5 min |
-| 06 | 1/3 | 2.6 min | 2.6 min |
+| 06 | 2/3 | 5.1 min | 2.6 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (2.9 min), 05-01 (1.8 min), 05-02 (3.2 min), 06-01 (2.6 min)
+- Last 5 plans: 05-01 (1.8 min), 05-02 (3.2 min), 06-01 (2.6 min), 06-02 (2.5 min)
 - Trend: Maintaining consistent velocity across phases
 
 *Updated after each plan completion*
@@ -107,6 +107,10 @@ Recent decisions affecting current work:
 - 06-01: Upsell purchases generate single variant (variant_number 4) linked to parent order via parent_order_id
 - 06-01: All pricing validated server-side with fixed constants in src/lib/bundles/pricing.ts
 - 06-01: Inline Stripe price_data with dynamic amounts instead of predefined Price IDs for flexibility
+- 06-02: Upsell modal appears 5 seconds after user views all 3 variants (hasSwipedAll trigger)
+- 06-02: upsellDismissed state prevents modal from re-appearing in same session
+- 06-02: Server Action validates order ownership and prevents duplicate upsells (max 4 variants)
+- 06-02: onIndexChange callback pattern for child components to notify parent of state changes
 
 ### Pending Todos
 
@@ -123,6 +127,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T22:32:15Z
-Stopped at: Completed 06-01-PLAN.md (Bundle Infrastructure)
+Last session: 2026-02-08T22:38:11Z
+Stopped at: Completed 06-02-PLAN.md (Upsell UI)
 Resume file: None

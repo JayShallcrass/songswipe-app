@@ -143,10 +143,11 @@ Plans:
   2. User can replay any song and re-download it with a freshly generated signed URL
   3. User can view their order/purchase history with dates, amounts, and order types (base/upsell/bundle)
   4. User can see their tracked occasion dates and upcoming reminders
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 08-01: TBD
+- [ ] 08-01-PLAN.md -- Dashboard API endpoints (songs, orders, occasions) + React Query hooks + date-fns
+- [ ] 08-02-PLAN.md -- Dashboard UI components (SongCard, OrderRow, OccasionCard, EmptyState, Pagination) + page rewrite with tabs
 
 ### Phase 9: Retention & Marketing
 **Goal**: The system captures occasion dates and sends annual "continue the story" email reminders to drive repeat song creation, with user opt-out controls
@@ -177,5 +178,5 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | 5. Song Delivery | 2/2 | ✓ Complete | 2026-02-08 |
 | 6. Upsells & Monetization | 3/3 | ✓ Complete | 2026-02-08 |
 | 7. Sharing & Gift Reveal | 2/2 | ✓ Complete | 2026-02-08 |
-| 8. User Dashboard | 0/TBD | Not started | - |
+| 8. User Dashboard | 0/2 | Not started | - |
 | 9. Retention & Marketing | 0/TBD | Not started | - |

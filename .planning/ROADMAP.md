@@ -49,10 +49,11 @@ Plans:
   2. User can complete a Stripe Checkout purchase for the base song package
   3. After successful payment, an order record is automatically created via webhook processing
   4. All purchases are recorded with date, amount, and order type for later display
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 02-01-PLAN.md -- Stripe helper update, checkout Server Action, order_type migration, webhook + types update
+- [ ] 02-02-PLAN.md -- Pricing page UI, checkout success page, header navigation update
 
 ### Phase 3: Swipe Builder
 **Goal**: Users can build their custom song by swiping through occasion, mood, genre, and voice style cards, then entering personal details -- the core experience that makes SongSwipe feel different
@@ -165,7 +166,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | Phase | Plans Complete | Status | Completed |
 |-------|---------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | ✓ Complete | 2026-02-08 |
-| 2. Base Payment & Pricing | 0/TBD | Not started | - |
+| 2. Base Payment & Pricing | 0/2 | Not started | - |
 | 3. Swipe Builder | 0/TBD | Not started | - |
 | 4. Audio Generation & Preview | 0/TBD | Not started | - |
 | 5. Song Delivery | 0/TBD | Not started | - |

@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 ## Current Position
 
 Phase: 6 of 9 (Upsells & Monetization)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-08 -- Completed 06-02-PLAN.md (Upsell UI)
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-08 -- Completed 06-03-PLAN.md (Bundle Redemption & Offer)
 
-Progress: [█████████████░] 87%
+Progress: [██████████████] 93%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 2.6 min
-- Total execution time: 0.63 hours
+- Total plans completed: 14
+- Average duration: 2.7 min
+- Total execution time: 0.68 hours
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: [█████████████░] 87%
 | 03 | 3/3 | 13 min | 4.3 min |
 | 04 | 3/3 | 6 min | 2.0 min |
 | 05 | 2/2 | 5 min | 2.5 min |
-| 06 | 2/3 | 5.1 min | 2.6 min |
+| 06 | 3/3 | 8.2 min | 2.7 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (1.8 min), 05-02 (3.2 min), 06-01 (2.6 min), 06-02 (2.5 min)
-- Trend: Maintaining consistent velocity across phases
+- Last 5 plans: 05-02 (3.2 min), 06-01 (2.6 min), 06-02 (2.5 min), 06-03 (3.1 min)
+- Trend: Maintaining consistent velocity, Phase 6 complete
 
 *Updated after each plan completion*
 
@@ -111,6 +111,11 @@ Recent decisions affecting current work:
 - 06-02: upsellDismissed state prevents modal from re-appearing in same session
 - 06-02: Server Action validates order ownership and prevents duplicate upsells (max 4 variants)
 - 06-02: onIndexChange callback pattern for child components to notify parent of state changes
+- 06-03: Bundle credits auto-redeem in base checkout flow, bypassing Stripe for instant free checkout
+- 06-03: Optimistic locking (.eq on quantity_remaining) prevents race conditions during concurrent redemptions
+- 06-03: Default bundle selection is 5-pack (popular tier) for higher AOV
+- 06-03: Bundle offer is dismissable and non-blocking on song delivery page
+- 06-03: Bundle balance aggregates across all active bundles for total remaining count
 
 ### Pending Todos
 
@@ -127,6 +132,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T22:38:11Z
-Stopped at: Completed 06-02-PLAN.md (Upsell UI)
+Last session: 2026-02-08T22:38:54Z
+Stopped at: Completed 06-03-PLAN.md (Bundle Redemption & Offer)
 Resume file: None

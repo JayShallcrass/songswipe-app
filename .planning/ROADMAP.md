@@ -15,8 +15,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Infrastructure** - Database schema, RLS policies, async job queue, and generation status tracking (completed 2026-02-08)
 - [x] **Phase 2: Base Payment & Pricing** - Stripe package checkout, pricing page, webhook processing, and order recording (completed 2026-02-08)
 - [x] **Phase 3: Swipe Builder** - Tinder-style swipe cards for occasion, mood, genre, voice selection with text personalization (completed 2026-02-08)
-- [ ] **Phase 4: Audio Generation & Preview** - Eleven Labs integration, 3-variant generation, protected preview playback, variant swiping
-- [ ] **Phase 5: Song Delivery** - Stream and download for selected songs with dedicated song pages
+- [x] **Phase 4: Audio Generation & Preview** - Eleven Labs integration, 3-variant generation, protected preview playback, variant swiping (completed 2026-02-08)
+- [x] **Phase 5: Song Delivery** - Stream and download for selected songs with dedicated song pages (completed 2026-02-08)
 - [ ] **Phase 6: Upsells & Monetization** - +1 variant upsell after swiping 3, post-completion bundle offers, bundle tracking
 - [ ] **Phase 7: Sharing & Gift Reveal** - Shareable URLs, branded reveal animation, OG images, social share buttons
 - [ ] **Phase 8: User Dashboard** - Song library, replay, re-download, order history, occasion date tracking
@@ -101,8 +101,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Backend API endpoints: song metadata, audio streaming proxy, MP3 download
-- [ ] 05-02-PLAN.md -- Frontend: react-h5-audio-player, useSongData hook, SongPlayer/SongDetails components, /song/[id] page
+- [x] 05-01-PLAN.md -- Backend API endpoints: song metadata, audio streaming proxy, MP3 download
+- [x] 05-02-PLAN.md -- Frontend: react-h5-audio-player, useSongData hook, SongPlayer/SongDetails components, /song/[id] page
 
 ### Phase 6: Upsells & Monetization
 **Goal**: After the core purchase-create-deliver flow works, users are offered natural upsell opportunities that extend their experience without feeling forced
@@ -172,7 +172,7 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | 2. Base Payment & Pricing | 2/2 | ✓ Complete | 2026-02-08 |
 | 3. Swipe Builder | 3/3 | ✓ Complete | 2026-02-08 |
 | 4. Audio Generation & Preview | 3/3 | ✓ Complete | 2026-02-08 |
-| 5. Song Delivery | 0/2 | Planned | - |
+| 5. Song Delivery | 2/2 | ✓ Complete | 2026-02-08 |
 | 6. Upsells & Monetization | 0/TBD | Not started | - |
 | 7. Sharing & Gift Reveal | 0/TBD | Not started | - |
 | 8. User Dashboard | 0/TBD | Not started | - |

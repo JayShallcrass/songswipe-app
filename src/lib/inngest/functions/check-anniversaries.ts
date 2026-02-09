@@ -27,9 +27,8 @@ export const checkAnniversaries = inngest.createFunction(
           id,
           user_id,
           occasion_date,
-          occasion_type,
           created_at,
-          customizations(recipient_name)
+          customizations(recipient_name, occasion)
         `)
         .not('occasion_date', 'is', null)
         .in('status', ['completed', 'paid'])
@@ -58,11 +57,14 @@ export const checkAnniversaries = inngest.createFunction(
           continue
         }
 
-        // Extract recipient name from customizations
+        // Extract recipient name and occasion from customizations
         const customizations = order.customizations as any
         const recipientName = Array.isArray(customizations)
           ? customizations[0]?.recipient_name || 'someone special'
           : customizations?.recipient_name || 'someone special'
+        const occasionType = Array.isArray(customizations)
+          ? customizations[0]?.occasion || 'special occasion'
+          : customizations?.occasion || 'special occasion'
 
         // Check user engagement - only include if last order within 18 months
         const { data: recentOrders } = await supabase
@@ -108,7 +110,7 @@ export const checkAnniversaries = inngest.createFunction(
           orderId: order.id,
           userId: order.user_id,
           occasionDate: order.occasion_date,
-          occasionType: order.occasion_type || 'special occasion',
+          occasionType: occasionType,
           recipientName,
           userEmail: userData.user.email,
         })

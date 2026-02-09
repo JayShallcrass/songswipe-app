@@ -34,6 +34,13 @@ export async function createCheckout(customizationId: string) {
     const redemption = await redeemBundleCredit(user.id)
 
     if (redemption.redeemed) {
+      // Fetch occasion_date from customization for retention tracking
+      const { data: customizationWithDate } = await supabase
+        .from('customizations')
+        .select('occasion_date')
+        .eq('id', customizationId)
+        .single()
+
       // Create order directly (bypass Stripe checkout)
       const { data: order, error: orderError } = await supabase
         .from('orders')
@@ -44,6 +51,7 @@ export async function createCheckout(customizationId: string) {
           amount: 0, // Free via bundle credit
           order_type: 'base',
           payment_method: 'bundle_credit',
+          occasion_date: customizationWithDate?.occasion_date || null,
         })
         .select()
         .single()

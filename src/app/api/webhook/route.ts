@@ -55,6 +55,13 @@ export async function POST(request: NextRequest) {
           break
         }
 
+        // Fetch occasion_date from customization for retention tracking
+        const { data: customizationData } = await supabase
+          .from('customizations')
+          .select('occasion_date')
+          .eq('id', customizationId)
+          .single()
+
         // Create order record
         const parentOrderId = session.metadata?.originalOrderId || null
 
@@ -68,6 +75,7 @@ export async function POST(request: NextRequest) {
             amount: session.amount_total || 799,
             order_type: orderType,
             parent_order_id: parentOrderId,
+            occasion_date: customizationData?.occasion_date || null,
           })
           .select()
           .single()

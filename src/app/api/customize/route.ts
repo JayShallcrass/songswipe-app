@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (dbError) {
-      console.error('Database error:', dbError)
+      console.error('Database error:', JSON.stringify({ code: dbError.code, message: dbError.message, details: dbError.details, hint: dbError.hint }))
       return NextResponse.json(
         { error: 'Failed to save customization' },
         { status: 500 }

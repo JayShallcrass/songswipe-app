@@ -63,15 +63,15 @@ export default function DashboardPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <div className="min-w-0">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
               My Dashboard
             </h1>
-            <p className="text-gray-600 mt-1">{userEmail}</p>
+            <p className="text-gray-600 mt-1 text-sm sm:text-base truncate">{userEmail}</p>
           </div>
           <button
             onClick={handleSignOut}
-            className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium"
+            className="px-3 sm:px-4 py-2 text-gray-600 hover:text-gray-900 font-medium text-sm sm:text-base whitespace-nowrap"
           >
             Sign Out
           </button>
@@ -100,7 +100,7 @@ export default function DashboardPage() {
           <div className="flex border-b border-gray-200">
             <button
               onClick={() => setActiveTab('songs')}
-              className={`flex-1 px-6 py-4 font-medium transition-all relative ${
+              className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-all relative ${
                 activeTab === 'songs'
                   ? 'text-purple-600'
                   : 'text-gray-600 hover:text-gray-900'
@@ -113,7 +113,7 @@ export default function DashboardPage() {
             </button>
             <button
               onClick={() => setActiveTab('orders')}
-              className={`flex-1 px-6 py-4 font-medium transition-all relative ${
+              className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-all relative ${
                 activeTab === 'orders'
                   ? 'text-purple-600'
                   : 'text-gray-600 hover:text-gray-900'
@@ -126,7 +126,7 @@ export default function DashboardPage() {
             </button>
             <button
               onClick={() => setActiveTab('occasions')}
-              className={`flex-1 px-6 py-4 font-medium transition-all relative ${
+              className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-all relative ${
                 activeTab === 'occasions'
                   ? 'text-purple-600'
                   : 'text-gray-600 hover:text-gray-900'
@@ -140,7 +140,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Tab Content */}
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             {/* My Songs Tab */}
             {activeTab === 'songs' && (
               <div>

@@ -101,7 +101,9 @@ body {
 
 .swipe-container {
   position: relative;
-  width: 320px;
-  height: 480px;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3 / 4;
   perspective: 1000px;
+  margin: 0 auto;
 }

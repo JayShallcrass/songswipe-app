@@ -70,21 +70,21 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
       </div>
 
       {/* Card container with navigation */}
-      <div className="relative">
-        {/* Left arrow button */}
+      <div className="relative px-0 md:px-16">
+        {/* Left arrow button - inside card area on mobile, outside on desktop */}
         <button
           onClick={goToPrevious}
           disabled={currentIndex === 0}
-          className="absolute left-[-60px] top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
+          className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 md:bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
           aria-label="Previous variant"
         >
-          <svg className="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
         {/* Animated card */}
-        <div className="relative min-h-[500px]">
+        <div className="relative min-h-[380px] sm:min-h-[440px] md:min-h-[500px]">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentVariant.id}
@@ -118,21 +118,21 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
           </AnimatePresence>
         </div>
 
-        {/* Right arrow button */}
+        {/* Right arrow button - inside card area on mobile, outside on desktop */}
         <button
           onClick={goToNext}
           disabled={currentIndex === variants.length - 1}
-          className="absolute right-[-60px] top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
+          className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 md:bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
           aria-label="Next variant"
         >
-          <svg className="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
 
       {/* Dot indicators */}
-      <div className="flex justify-center gap-2 mt-6">
+      <div className="flex justify-center gap-2 mt-4 sm:mt-6">
         {variants.map((variant, index) => (
           <button
             key={variant.id}
@@ -151,8 +151,8 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
         ))}
       </div>
 
-      {/* Keyboard hint */}
-      <div className="text-center mt-4 text-sm text-gray-500">
+      {/* Keyboard hint - hidden on touch devices */}
+      <div className="hidden md:block text-center mt-4 text-sm text-gray-500">
         Use arrow keys to navigate between variants
       </div>
     </div>

@@ -14,17 +14,17 @@ export function VariantCard({ orderId, variantId, variantNumber, isActive, onSel
   const { audioUrl, loading, error, audioRef } = useAudioPreview(orderId, isActive ? variantId : null)
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center min-h-[500px]">
+    <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 flex flex-col items-center justify-center min-h-[380px] sm:min-h-[440px] md:min-h-[500px]">
       {/* Variant number label */}
-      <div className="mb-6 text-center">
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      <div className="mb-4 sm:mb-6 text-center">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
           Variant {variantNumber}
         </h2>
-        <p className="text-gray-600 text-sm mt-2">Swipe to compare, or tap Select</p>
+        <p className="text-gray-600 text-xs sm:text-sm mt-1 sm:mt-2">Swipe to compare, or tap Select</p>
       </div>
 
       {/* Audio player section */}
-      <div className="w-full max-w-md mb-8">
+      <div className="w-full max-w-md mb-4 sm:mb-8">
         {loading && (
           <div className="flex items-center justify-center h-20">
             <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>

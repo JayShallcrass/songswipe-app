@@ -124,7 +124,7 @@ export default function CustomizePage() {
     <div className="min-h-screen bg-gray-50">
       {/* App Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl">🎵</span>
             <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -151,7 +151,7 @@ export default function CustomizePage() {
       </header>
 
       {/* Main content */}
-      <div className="max-w-2xl mx-auto px-6 py-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         <AnimatePresence mode="wait">
           {!isSwipeComplete ? (
             <motion.div

@@ -71,13 +71,13 @@ export function PersonalizationForm({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-white rounded-2xl shadow-sm p-8"
+      className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 md:p-8"
     >
-      <h1 className="text-3xl font-bold mb-2 text-gray-800">Tell us about them</h1>
-      <p className="text-gray-600 mb-8">Add personal details to make your song special</p>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-gray-800">Tell us about them</h1>
+      <p className="text-gray-600 mb-4 sm:mb-8 text-sm sm:text-base">Add personal details to make your song special</p>
 
       {/* Song summary section */}
-      <div className="bg-purple-50 rounded-xl p-4 mb-8">
+      <div className="bg-purple-50 rounded-xl p-3 sm:p-4 mb-4 sm:mb-8">
         <h3 className="font-semibold text-purple-800 mb-2">Your Song Summary</h3>
         <div className="text-sm text-purple-700 space-y-1">
           {selections.occasion && (
@@ -104,7 +104,7 @@ export function PersonalizationForm({
       </div>
 
       {/* Form fields */}
-      <div className="space-y-6 mb-8">
+      <div className="space-y-4 sm:space-y-6 mb-4 sm:mb-8">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Recipient's Name *
@@ -182,18 +182,18 @@ export function PersonalizationForm({
       </div>
 
       {/* Action buttons */}
-      <div className="flex gap-4">
+      <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
         <button
           onClick={onBack}
           disabled={isLoading}
-          className="flex-1 py-4 text-gray-600 hover:text-gray-800 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 py-3 sm:py-4 text-gray-600 hover:text-gray-800 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Back to Selections
         </button>
         <button
           onClick={handleSubmit}
           disabled={isLoading}
-          className="flex-1 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Processing...' : 'Continue to Payment'}
         </button>

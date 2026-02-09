@@ -42,20 +42,20 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
       whileDrag={isTop ? { scale: 1.02, cursor: 'grabbing' } : undefined}
       className="absolute inset-0 w-full h-full"
     >
-      <div className={`relative w-full h-full bg-gradient-to-br ${card.gradient} rounded-2xl shadow-xl p-8 flex flex-col items-center justify-center`}>
+      <div className={`relative w-full h-full bg-gradient-to-br ${card.gradient} rounded-2xl shadow-xl p-4 sm:p-8 flex flex-col items-center justify-center`}>
         {/* Icon */}
-        <div className="text-6xl mb-6">{card.icon}</div>
+        <div className="text-4xl sm:text-6xl mb-4 sm:mb-6">{card.icon}</div>
 
         {/* Title */}
-        <h2 className="text-2xl font-bold text-white mb-3 text-center">{card.title}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 text-center">{card.title}</h2>
 
         {/* Description */}
-        <p className="text-white/80 text-center text-sm">{card.description}</p>
+        <p className="text-white/80 text-center text-xs sm:text-sm px-2">{card.description}</p>
 
         {/* Left indicator (SKIP) */}
         <motion.div
           style={{ opacity: leftOpacity }}
-          className="absolute left-8 top-1/2 -translate-y-1/2 bg-red-500/90 text-white font-bold text-xl px-6 py-3 rounded-xl rotate-[-20deg] shadow-lg pointer-events-none"
+          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 bg-red-500/90 text-white font-bold text-base sm:text-xl px-4 sm:px-6 py-2 sm:py-3 rounded-xl rotate-[-20deg] shadow-lg pointer-events-none"
         >
           SKIP
         </motion.div>
@@ -63,7 +63,7 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
         {/* Right indicator (SELECT) */}
         <motion.div
           style={{ opacity: rightOpacity }}
-          className="absolute right-8 top-1/2 -translate-y-1/2 bg-green-500/90 text-white font-bold text-xl px-6 py-3 rounded-xl rotate-[20deg] shadow-lg pointer-events-none"
+          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 bg-green-500/90 text-white font-bold text-base sm:text-xl px-4 sm:px-6 py-2 sm:py-3 rounded-xl rotate-[20deg] shadow-lg pointer-events-none"
         >
           SELECT
         </motion.div>

@@ -37,13 +37,13 @@ export default function PricingPage({
         </div>
 
         {/* Pricing card */}
-        <div className="max-w-md mx-auto bg-white border-2 border-purple-200 rounded-2xl shadow-xl p-8 mb-8">
+        <div className="max-w-md mx-auto bg-white border-2 border-purple-200 rounded-2xl shadow-xl p-5 sm:p-8 mb-8">
           <div className="text-center mb-6">
             <p className="text-sm font-semibold text-purple-600 uppercase mb-2">
               Song Package
             </p>
             <div className="flex items-baseline justify-center gap-2 mb-2">
-              <span className="text-6xl font-bold text-gray-900">£7.99</span>
+              <span className="text-5xl sm:text-6xl font-bold text-gray-900">£7.99</span>
               <span className="text-gray-500 text-lg">one-time</span>
             </div>
           </div>

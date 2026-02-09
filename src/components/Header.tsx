@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 export default function Header() {
   const pathname = usePathname()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Don't show header on dashboard, auth pages, customize, order, or checkout
   if (pathname?.startsWith('/dashboard') ||
@@ -16,7 +18,7 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-10 border-b border-gray-100">
+    <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">🎵</span>
@@ -24,8 +26,9 @@ export default function Header() {
             SongSwipe
           </span>
         </Link>
-        
-        <nav className="flex items-center gap-3">
+
+        {/* Desktop nav */}
+        <nav className="hidden sm:flex items-center gap-3">
           <Link
             href="/pricing"
             className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
@@ -45,7 +48,53 @@ export default function Header() {
             Create a Song
           </Link>
         </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="sm:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? (
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* Mobile dropdown menu */}
+      {isMenuOpen && (
+        <div className="sm:hidden border-t border-gray-100 bg-white/95 backdrop-blur-md">
+          <nav className="flex flex-col px-4 py-3 space-y-1">
+            <Link
+              href="/pricing"
+              onClick={() => setIsMenuOpen(false)}
+              className="px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium transition-colors rounded-lg"
+            >
+              Pricing
+            </Link>
+            <Link
+              href="/auth/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium transition-colors rounded-lg"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/auth/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="mx-4 mt-2 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-medium text-center hover:from-purple-700 hover:to-pink-700 transition-all shadow-md"
+            >
+              Create a Song
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

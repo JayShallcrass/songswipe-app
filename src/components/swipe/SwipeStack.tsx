@@ -46,13 +46,13 @@ export function SwipeStack({
   return (
     <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
       {/* Stage header */}
-      <div className="mb-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">{stageTitle}</h1>
-        <p className="text-gray-600">{stageSubtitle}</p>
+      <div className="mb-4 sm:mb-8 text-center px-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">{stageTitle}</h1>
+        <p className="text-sm sm:text-base text-gray-600">{stageSubtitle}</p>
       </div>
 
       {/* Card stack container */}
-      <div className="relative w-full max-w-sm aspect-[3/4] mx-auto mb-6">
+      <div className="relative w-full max-w-[280px] sm:max-w-sm aspect-[3/4] mx-auto mb-4 sm:mb-6">
         {!hasMoreCards ? (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-xl p-8">
             <div className="text-center">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useGenerationStatus } from '@/lib/hooks/useGenerationStatus'
@@ -19,6 +19,9 @@ export default function GenerationPage() {
   const [hasSwipedAll, setHasSwipedAll] = useState(false)
   const [showUpsellModal, setShowUpsellModal] = useState(false)
   const [upsellDismissed, setUpsellDismissed] = useState(false)
+  const [generationError, setGenerationError] = useState<string | null>(null)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const generationStarted = useRef(false)
 
   const {
     data,
@@ -28,6 +31,57 @@ export default function GenerationPage() {
     completedVariants,
     completedCount,
   } = useGenerationStatus(orderId)
+
+  // Trigger generation of the next variant
+  const triggerGeneration = useCallback(async () => {
+    if (isGenerating) return
+    setIsGenerating(true)
+    setGenerationError(null)
+
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      })
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}))
+        throw new Error(errData.error || `Generation failed (${response.status})`)
+      }
+
+      const result = await response.json()
+
+      // If there are more pending variants, trigger the next one
+      if (result.status === 'generated' && result.remaining > 0) {
+        setIsGenerating(false)
+        // Small delay before kicking off next variant
+        setTimeout(() => triggerGeneration(), 1000)
+        return
+      }
+
+      // All done or no more pending
+      setIsGenerating(false)
+    } catch (err) {
+      console.error('Generation error:', err)
+      setGenerationError(err instanceof Error ? err.message : 'Generation failed')
+      setIsGenerating(false)
+    }
+  }, [orderId, isGenerating])
+
+  // Auto-start generation when page loads and order has pending variants
+  useEffect(() => {
+    if (
+      !generationStarted.current &&
+      data &&
+      !isLoading &&
+      (data.order_status === 'paid' || data.order_status === 'generating') &&
+      data.variants.some(v => v.generation_status === 'pending')
+    ) {
+      generationStarted.current = true
+      triggerGeneration()
+    }
+  }, [data, isLoading, triggerGeneration])
 
   // Trigger upsell modal after viewing all variants (5-second delay)
   useEffect(() => {
@@ -77,7 +131,7 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-red-50 via-white to-purple-50 flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-5xl mb-4">❌</div>
+          <div className="text-5xl mb-4">&#10060;</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Invalid Order</h1>
           <p className="text-gray-600 mb-6">No order ID was provided.</p>
           <Link
@@ -111,7 +165,7 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-red-50 via-white to-purple-50 flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-5xl mb-4">❌</div>
+          <div className="text-5xl mb-4">&#10060;</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Order Not Found</h1>
           <p className="text-gray-600 mb-6">{error.message}</p>
           <Link
@@ -130,22 +184,34 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-red-50 via-white to-purple-50 flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-5xl mb-4">😞</div>
+          <div className="text-5xl mb-4">&#128542;</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Generation Failed</h1>
           <p className="text-gray-600 mb-6">
-            Unfortunately, all song variants failed to generate. Please contact support with your order reference.
+            Unfortunately, all song variants failed to generate. Please try again or contact support.
           </p>
           <div className="bg-gray-100 rounded-lg px-4 py-2 mb-6">
             <p className="text-sm text-gray-500">
               Order ID: <span className="font-mono font-semibold text-gray-700">{orderId.slice(-8)}</span>
             </p>
           </div>
-          <Link
-            href="/dashboard"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
-          >
-            Go to Dashboard
-          </Link>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => {
+                generationStarted.current = false
+                setGenerationError(null)
+                triggerGeneration()
+              }}
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
+            >
+              Retry Generation
+            </button>
+            <Link
+              href="/dashboard"
+              className="inline-block px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+            >
+              Go to Dashboard
+            </Link>
+          </div>
         </div>
       </div>
     )
@@ -156,7 +222,7 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-purple-50 flex items-center justify-center px-4">
         <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-6xl mb-6">✅</div>
+          <div className="text-6xl mb-6">&#9989;</div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Your song has been selected!</h1>
           <p className="text-lg text-gray-600 mb-8">
             Your chosen variant is ready. You can listen to it and download it from your dashboard.
@@ -223,6 +289,22 @@ export default function GenerationPage() {
           orderId={orderId}
           onAllComplete={() => setShowSwiper(true)}
         />
+
+        {/* Generation error with retry */}
+        {generationError && (
+          <div className="mt-6 bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+            <p className="text-red-600 text-sm mb-3">{generationError}</p>
+            <button
+              onClick={() => {
+                setGenerationError(null)
+                triggerGeneration()
+              }}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        )}
 
         {/* Preview ready variants button (partial success) */}
         {completedCount > 0 && !isComplete && (

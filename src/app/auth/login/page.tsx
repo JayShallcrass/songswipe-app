@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,8 +10,9 @@ export default async function LoginPage({
 }: {
   searchParams: { error?: string; message?: string }
 }) {
-  const error = searchParams?.error
-  const message = searchParams?.message
+  const plainParams = { ...searchParams }
+  const error = plainParams?.error
+  const message = plainParams?.message
   
   const cookieStore = cookies()
   const supabase = createServerClient(
@@ -31,7 +32,7 @@ export default async function LoginPage({
   
   // If logged in, redirect to dashboard
   if (user) {
-    return NextResponse.redirect(new URL('/dashboard', process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'))
+    redirect('/dashboard')
   }
 
   return (

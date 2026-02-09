@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
-import { inngest } from '@/lib/inngest/client'
 import crypto from 'crypto'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -133,47 +132,33 @@ export async function POST(request: NextRequest) {
 
           console.log('Bundle purchase completed:', { orderId: order.id, tier: bundleTier, quantity })
           break
-        } else if (orderType === 'upsell') {
-          // Upsell purchase: generate single variant linked to parent
-          if (!parentOrderId) {
-            console.error('Missing originalOrderId for upsell:', session.id)
-            break
-          }
-
-          try {
-            await inngest.send({
-              name: 'song/generation.requested',
-              data: {
-                orderId: order.id,
-                userId: userId,
-                customizationId: customizationId,
-                variantCount: 1,
-                originalOrderId: parentOrderId,
-              },
-            })
-            console.log('Upsell generation triggered:', { orderId: order.id, parentOrderId })
-          } catch (inngestError) {
-            console.error('Inngest not configured, skipping song generation:', inngestError)
-          }
-          break
-        } else {
-          // Base order: generate 3 variants (existing behavior)
-          try {
-            await inngest.send({
-              name: 'song/generation.requested',
-              data: {
-                orderId: order.id,
-                userId: userId,
-                customizationId: customizationId,
-                variantCount: 3,
-              },
-            })
-            console.log('Base order generation triggered:', { orderId: order.id })
-          } catch (inngestError) {
-            console.error('Inngest not configured, skipping song generation:', inngestError)
-          }
-          break
         }
+
+        // Base or upsell order: create variant records (generation triggered by client)
+        const variantCount = orderType === 'upsell' ? 1 : 3
+
+        const variantRecords = Array.from({ length: variantCount }, (_, i) => ({
+          order_id: order.id,
+          user_id: userId,
+          variant_number: i + 1,
+          storage_path: `${order.id}/variant-${i + 1}.mp3`,
+          generation_status: 'pending' as const,
+        }))
+
+        const { error: variantError } = await supabase
+          .from('song_variants')
+          .insert(variantRecords)
+
+        if (variantError && variantError.code !== '23505') {
+          console.error('Failed to create variant records:', variantError)
+        }
+
+        console.log('Order created with pending variants:', {
+          orderId: order.id,
+          type: orderType,
+          variantCount,
+        })
+        break
       }
 
       case 'payment_intent.payment_failed': {

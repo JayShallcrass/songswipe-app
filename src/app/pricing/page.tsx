@@ -11,7 +11,8 @@ export default function PricingPage({
 }: {
   searchParams: { canceled?: string }
 }) {
-  const wasCanceled = searchParams.canceled === 'true'
+  const plainParams = { ...searchParams }
+  const wasCanceled = plainParams.canceled === 'true'
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-pink-50">

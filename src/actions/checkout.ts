@@ -3,7 +3,6 @@
 import { createCheckoutSession } from '@/lib/stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { getUserBundleBalance, redeemBundleCredit } from '@/lib/bundles/redemption'
-import { inngest } from '@/lib/inngest/client'
 
 export async function createCheckout(customizationId: string) {
   const supabase = createServerSupabaseClient()
@@ -60,16 +59,22 @@ export async function createCheckout(customizationId: string) {
         throw new Error('Failed to create order from bundle credit')
       }
 
-      // Trigger Inngest generation
-      await inngest.send({
-        name: 'song/generation.requested',
-        data: {
-          orderId: order.id,
-          userId: user.id,
-          customizationId: customizationId,
-          variantCount: 3,
-        },
-      })
+      // Create variant records (generation triggered by client on generate page)
+      const variantRecords = [1, 2, 3].map((variantNumber) => ({
+        order_id: order.id,
+        user_id: user.id,
+        variant_number: variantNumber,
+        storage_path: `${order.id}/variant-${variantNumber}.mp3`,
+        generation_status: 'pending' as const,
+      }))
+
+      const { error: variantError } = await supabase
+        .from('song_variants')
+        .insert(variantRecords)
+
+      if (variantError && variantError.code !== '23505') {
+        console.error('Failed to create variant records:', variantError)
+      }
 
       // Redirect to generation page
       return { url: `${process.env.NEXT_PUBLIC_APP_URL}/generate/${order.id}` }

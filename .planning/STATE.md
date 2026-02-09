@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 ## Current Position
 
 Phase: 9 of 9 (Retention Marketing)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-09 -- Completed 09-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-09 -- Completed 09-04-PLAN.md
 
-Progress: [███████████████████░] 95%
+Progress: [████████████████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
-- Average duration: 2.6 min
-- Total execution time: 0.99 hours
+- Total plans completed: 21
+- Average duration: 2.7 min
+- Total execution time: 1.05 hours
 
 **By Phase:**
 
@@ -35,11 +35,11 @@ Progress: [███████████████████░] 95%
 | 06 | 3/3 | 8.2 min | 2.7 min |
 | 07 | 2/2 | 5.1 min | 2.6 min |
 | 08 | 2/2 | 6.2 min | 3.1 min |
-| 09 | 2/3 | 6.3 min | 3.2 min |
+| 09 | 3/3 | 9.8 min | 3.3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-02 (2.7 min), 09-01 (2.0 min), 09-03 (1.3 min), 09-02 (4.3 min)
-- Trend: Consistent velocity, Phase 9 in progress
+- Last 5 plans: 09-01 (2.0 min), 09-03 (1.3 min), 09-02 (4.3 min), 09-04 (3.5 min)
+- Trend: Phase 9 complete, all roadmap phases finished
 
 *Updated after each plan completion*
 
@@ -154,6 +154,9 @@ Recent decisions affecting current work:
 - 09-03: Service role client for unsubscribe (no auth required) to comply with CAN-SPAM requirements
 - 09-03: Idempotent per-occasion unsubscribe checks array before appending to prevent duplicate updates
 - 09-03: RFC 8058 one-click POST handler always does global unsubscribe (per standard)
+- 09-04: Optional date picker for occasion_date with "We'll send you a reminder next year" subtitle
+- 09-04: Both Stripe webhook and bundle credit paths fetch occasion_date from customization and write to order
+- 09-04: Anniversary query joins customizations(recipient_name, occasion) instead of querying non-existent occasion_type
 
 ### Pending Todos
 
@@ -168,9 +171,10 @@ None yet.
 - 02-01: Migration 002_add_order_type.sql must be run manually before webhook can store order_type (free tier limitation)
 - 06-01: Migration 003_add_bundles.sql must be run manually before upsell/bundle purchases can complete (free tier limitation)
 - 09-01: Migration 004_add_email_preferences.sql must be run manually before email preferences can be created (free tier limitation)
+- 09-04: Migration 005_add_customization_occasion_date.sql must be run manually before occasion dates can be stored (free tier limitation)
 
 ## Session Continuity
 
-Last session: 2026-02-09T01:09:18Z
-Stopped at: Completed 09-02-PLAN.md (Anniversary Reminder Engine)
+Last session: 2026-02-09T01:51:05Z
+Stopped at: Completed 09-04-PLAN.md (Gap Closure - Occasion Date Capture)
 Resume file: None

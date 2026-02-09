@@ -72,10 +72,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Retention & Marketing
 
-- [ ] **RETAIN-01**: System stores occasion date and recipient info for each song creation
-- [ ] **RETAIN-02**: System sends email reminder before the anniversary of each tracked occasion
-- [ ] **RETAIN-03**: Reminder email includes "continue the story" CTA to create a new song version
-- [ ] **RETAIN-04**: User can opt out of reminder emails per occasion or globally
+- [x] **RETAIN-01**: System stores occasion date and recipient info for each song creation
+- [x] **RETAIN-02**: System sends email reminder before the anniversary of each tracked occasion
+- [x] **RETAIN-03**: Reminder email includes "continue the story" CTA to create a new song version
+- [x] **RETAIN-04**: User can opt out of reminder emails per occasion or globally
 
 ## v2 Requirements
 
@@ -160,10 +160,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-03 | Phase 8: User Dashboard | Pending |
 | DASH-04 | Phase 8: User Dashboard | Pending |
 | DASH-05 | Phase 8: User Dashboard | Pending |
-| RETAIN-01 | Phase 9: Retention & Marketing | Pending |
-| RETAIN-02 | Phase 9: Retention & Marketing | Pending |
-| RETAIN-03 | Phase 9: Retention & Marketing | Pending |
-| RETAIN-04 | Phase 9: Retention & Marketing | Pending |
+| RETAIN-01 | Phase 9: Retention & Marketing | Complete |
+| RETAIN-02 | Phase 9: Retention & Marketing | Complete |
+| RETAIN-03 | Phase 9: Retention & Marketing | Complete |
+| RETAIN-04 | Phase 9: Retention & Marketing | Complete |
 
 **Coverage:**
 - v1 requirements: 46 total

@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Upsells & Monetization** - +1 variant upsell after swiping 3, post-completion bundle offers, bundle tracking (completed 2026-02-08)
 - [x] **Phase 7: Sharing & Gift Reveal** - Shareable URLs, branded reveal animation, OG images, social share buttons (completed 2026-02-08)
 - [x] **Phase 8: User Dashboard** - Song library, replay, re-download, order history, occasion date tracking (completed 2026-02-09)
-- [ ] **Phase 9: Retention & Marketing** - Occasion date storage, annual email reminders, opt-out controls
+- [x] **Phase 9: Retention & Marketing** - Occasion date storage, annual email reminders, opt-out controls (completed 2026-02-09)
 
 ## Phase Details
 
@@ -164,7 +164,7 @@ Plans:
 - [x] 09-01-PLAN.md -- Email preferences migration, TypeScript types, webhook update to create preference records on first order
 - [x] 09-02-PLAN.md -- Inngest cron (check-anniversaries) + email sender function + React Email template + route registration
 - [x] 09-03-PLAN.md -- Unsubscribe API route (GET web unsubscribe + POST RFC 8058 one-click) with styled confirmation pages
-- [ ] 09-04-PLAN.md -- Gap closure: Wire occasion_date capture through form, API, webhook, and checkout; fix anniversary query
+- [x] 09-04-PLAN.md -- Gap closure: Wire occasion_date capture through form, API, webhook, and checkout; fix anniversary query
 
 ## Progress
 
@@ -182,4 +182,4 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | 6. Upsells & Monetization | 3/3 | ✓ Complete | 2026-02-08 |
 | 7. Sharing & Gift Reveal | 2/2 | ✓ Complete | 2026-02-08 |
 | 8. User Dashboard | 2/2 | ✓ Complete | 2026-02-09 |
-| 9. Retention & Marketing | 3/4 | Gap closure | - |
+| 9. Retention & Marketing | 4/4 | ✓ Complete | 2026-02-09 |

@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { inngest } from '@/lib/inngest/client'
+import crypto from 'crypto'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2026-01-28.clover' as any, // Use 'as any' to bypass type check for beta versions
@@ -74,6 +75,26 @@ export async function POST(request: NextRequest) {
         if (orderError) {
           console.error('Failed to create order:', orderError)
           break
+        }
+
+        // Create email preferences record for user (if not exists)
+        const { error: prefError } = await supabase
+          .from('email_preferences')
+          .upsert(
+            {
+              user_id: userId,
+              unsubscribe_token: crypto.randomUUID(),
+              global_unsubscribe: false,
+              occasion_unsubscribes: [],
+            },
+            { onConflict: 'user_id' }
+          )
+
+        if (prefError) {
+          console.error('Failed to create email preferences:', prefError)
+          // Non-blocking - continue with order processing
+        } else {
+          console.log('Email preferences created for user:', userId)
         }
 
         // Branch based on order type

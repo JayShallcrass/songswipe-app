@@ -65,6 +65,7 @@ export async function createCheckoutSession({
       },
     ],
     mode: 'payment',
+    allow_promotion_codes: true,
     success_url: successUrl || `${process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'}/pricing?canceled=true`,
     customer_email: email,

@@ -158,12 +158,13 @@ Plans:
   2. System sends an email reminder before the anniversary of each tracked occasion
   3. Reminder email includes a "continue the story" call-to-action linking to a new song creation flow for that recipient/occasion
   4. User can opt out of reminder emails per individual occasion or globally
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 09-01-PLAN.md -- Email preferences migration, TypeScript types, webhook update to create preference records on first order
-- [ ] 09-02-PLAN.md -- Inngest cron (check-anniversaries) + email sender function + React Email template + route registration
-- [ ] 09-03-PLAN.md -- Unsubscribe API route (GET web unsubscribe + POST RFC 8058 one-click) with styled confirmation pages
+- [x] 09-01-PLAN.md -- Email preferences migration, TypeScript types, webhook update to create preference records on first order
+- [x] 09-02-PLAN.md -- Inngest cron (check-anniversaries) + email sender function + React Email template + route registration
+- [x] 09-03-PLAN.md -- Unsubscribe API route (GET web unsubscribe + POST RFC 8058 one-click) with styled confirmation pages
+- [ ] 09-04-PLAN.md -- Gap closure: Wire occasion_date capture through form, API, webhook, and checkout; fix anniversary query
 
 ## Progress
 
@@ -181,4 +182,4 @@ Note: Phases 2 and 3 both depend only on Phase 1 and could execute in parallel. 
 | 6. Upsells & Monetization | 3/3 | ✓ Complete | 2026-02-08 |
 | 7. Sharing & Gift Reveal | 2/2 | ✓ Complete | 2026-02-08 |
 | 8. User Dashboard | 2/2 | ✓ Complete | 2026-02-09 |
-| 9. Retention & Marketing | 0/3 | Not started | - |
+| 9. Retention & Marketing | 3/4 | Gap closure | - |

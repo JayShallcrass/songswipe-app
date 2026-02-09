@@ -1,24 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
-import { cookies } from 'next/headers'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    // Create Supabase client for auth verification
-    const supabase = createServerSupabaseClient()
+    // Get authenticated user from session cookies
+    const user = await getAuthUser()
 
-    // Get authenticated user from the request
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-
-    if (authError || !user) {
+    if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       )
     }
+
+    const supabase = createServerSupabaseClient()
 
     // Query order with variants, ensuring user owns it
     const { data: order, error } = await supabase

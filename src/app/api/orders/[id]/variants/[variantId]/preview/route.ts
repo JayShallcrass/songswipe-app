@@ -1,22 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string; variantId: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient()
-
     // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const user = await getAuthUser()
 
-    if (authError || !user) {
+    if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       )
     }
+
+    const supabase = createServerSupabaseClient()
 
     // Verify user owns this variant and get storage path
     const { data: variant, error: variantError } = await supabase

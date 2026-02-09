@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -8,17 +8,17 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createServerSupabaseClient()
-
     // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const user = await getAuthUser()
 
-    if (authError || !user) {
+    if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       )
     }
+
+    const supabase = createServerSupabaseClient()
 
     // Validate UUID format
     if (!UUID_REGEX.test(params.id)) {

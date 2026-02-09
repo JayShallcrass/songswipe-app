@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 
 export async function GET() {
   try {
-    const supabase = createServerSupabaseClient()
+    // Get authenticated user from session cookies
+    const user = await getAuthUser()
 
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-
-    if (authError || !user) {
+    if (!user) {
       return NextResponse.json(
         { error: 'Authentication required' },
         { status: 401 }
       )
     }
+
+    const supabase = createServerSupabaseClient()
 
     // Query orders with occasion dates (no pagination - typically small dataset)
     const { data: orders, error } = await supabase

@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 
 const getSupabaseUrl = () => process.env.NEXT_PUBLIC_SUPABASE_URL
 const getSupabaseAnonKey = () => process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -40,6 +42,24 @@ export const createServerSupabaseClient = () => {
       persistSession: false,
     },
   })
+}
+
+// Get authenticated user from session cookies (for API routes)
+export async function getAuthUser() {
+  const url = getSupabaseUrl()
+  const key = getSupabaseAnonKey()
+  if (!url || !key) return null
+
+  const cookieStore = cookies()
+  const supabase = createServerClient(url, key, {
+    cookies: {
+      get(name: string) {
+        return cookieStore.get(name)?.value
+      },
+    },
+  })
+  const { data: { user } } = await supabase.auth.getUser()
+  return user
 }
 
 // Export createClient for client-side use

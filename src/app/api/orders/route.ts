@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,13 +8,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ orders: [] })
     }
 
-    const supabase = createServerSupabaseClient()
-
-    const { data: { user } } = await supabase.auth.getUser()
+    const user = await getAuthUser()
 
     if (!user) {
       return NextResponse.json({ orders: [] })
     }
+
+    const supabase = createServerSupabaseClient()
 
     // Check for session_id query param for order lookup after checkout
     const searchParams = request.nextUrl.searchParams

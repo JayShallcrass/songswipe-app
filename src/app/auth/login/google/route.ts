@@ -29,23 +29,16 @@ export async function POST() {
     },
   })
 
-  const redirectTo = `${origin}/auth/callback`
-  console.log('[google-oauth] origin:', origin, 'redirectTo:', redirectTo, 'supabaseUrl:', supabaseUrl)
-
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo,
+      redirectTo: `${origin}/auth/callback`,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
       },
     },
   })
-
-  if (data?.url) {
-    console.log('[google-oauth] generated URL:', data.url)
-  }
 
   if (error) {
     return NextResponse.redirect(

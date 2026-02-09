@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { createCheckoutSession } from '@/lib/stripe'
 import { buildPrompt } from '@/lib/elevenlabs'
 
@@ -36,11 +36,10 @@ export async function POST(request: NextRequest) {
     }
 
     const customization = validationResult.data
-    const supabase = createServerSupabaseClient()
 
-    // Require authentication - no anonymous users
-    const { data: { user } } = await supabase.auth.getUser()
-    
+    // Require authentication - read user from session cookies
+    const user = await getAuthUser()
+
     if (!user) {
       return NextResponse.json(
         { error: 'Please sign in to create a song' },
@@ -49,6 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = user.id
+    const supabase = createServerSupabaseClient()
 
     // Create prompt
     const prompt = `A ${customization.mood.join(', ')} ${customization.genre} song about ${customization.recipientName} for ${customization.occasion}. Written by ${customization.yourName}. Include: ${customization.specialMemories || 'personal touches'}. Avoid: ${customization.thingsToAvoid || 'nothing'}. Duration: ${customization.songLength} seconds.`

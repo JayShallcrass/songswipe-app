@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 8 complete - User Dashboard
+**Current focus:** Phase 9 in progress - Retention Marketing
 
 ## Current Position
 
-Phase: 8 of 9 (User Dashboard)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-09 -- Completed 08-02-PLAN.md
+Phase: 9 of 9 (Retention Marketing)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-09 -- Completed 09-01-PLAN.md
 
-Progress: [██████████████████] 100%
+Progress: [███████████████████░] 95%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
-- Average duration: 2.7 min
-- Total execution time: 0.88 hours
+- Total plans completed: 19
+- Average duration: 2.6 min
+- Total execution time: 0.92 hours
 
 **By Phase:**
 
@@ -35,10 +35,11 @@ Progress: [██████████████████] 100%
 | 06 | 3/3 | 8.2 min | 2.7 min |
 | 07 | 2/2 | 5.1 min | 2.6 min |
 | 08 | 2/2 | 6.2 min | 3.1 min |
+| 09 | 1/3 | 2 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (1.6 min), 07-02 (3.5 min), 08-01 (3.5 min), 08-02 (2.7 min)
-- Trend: Consistent velocity, Phase 8 complete
+- Last 5 plans: 07-02 (3.5 min), 08-01 (3.5 min), 08-02 (2.7 min), 09-01 (2.0 min)
+- Trend: Consistent velocity, Phase 9 in progress
 
 *Updated after each plan completion*
 
@@ -138,6 +139,11 @@ Recent decisions affecting current work:
 - 08-02: Tab state management with separate songPage and orderPage states preserves pagination position when switching tabs
 - 08-02: Dashboard uses client-side auth check with useEffect and redirect (component is 'use client' for React Query hooks)
 - 08-02: Empty state CTAs: songs link to /customize, orders link to /pricing, occasions have no CTA (passive tracking)
+- 09-01: Email preferences use upsert with onConflict: 'user_id' for idempotency (first order creates, subsequent are no-ops)
+- 09-01: Email preference creation is non-blocking (logs error but doesn't break order flow)
+- 09-01: unsubscribe_token uses crypto.randomUUID() for secure random tokens
+- 09-01: occasion_unsubscribes stores array of order UUIDs for granular opt-out
+- 09-01: Preference creation happens after order creation, before order type branching (applies to all order types)
 
 ### Pending Todos
 
@@ -151,9 +157,10 @@ None yet.
 - 01-02: Next.js build requires environment variables (Stripe API key) -- will be resolved during deployment setup
 - 02-01: Migration 002_add_order_type.sql must be run manually before webhook can store order_type (free tier limitation)
 - 06-01: Migration 003_add_bundles.sql must be run manually before upsell/bundle purchases can complete (free tier limitation)
+- 09-01: Migration 004_add_email_preferences.sql must be run manually before email preferences can be created (free tier limitation)
 
 ## Session Continuity
 
-Last session: 2026-02-09T00:19:07Z
-Stopped at: Completed 08-02-PLAN.md (Dashboard UI)
+Last session: 2026-02-09T01:01:44Z
+Stopped at: Completed 09-01-PLAN.md (Email Preferences Infrastructure)
 Resume file: None

@@ -31,7 +31,7 @@ export default async function LoginPage({
   
   // If logged in, redirect to dashboard
   if (user) {
-    return NextResponse.redirect(new URL('/dashboard', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'))
+    return NextResponse.redirect(new URL('/dashboard', process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'))
   }
 
   return (

@@ -256,6 +256,35 @@ export interface Database {
           expires_at?: string | null
         }
       }
+      email_preferences: {
+        Row: {
+          id: string
+          user_id: string
+          global_unsubscribe: boolean
+          occasion_unsubscribes: string[]
+          unsubscribe_token: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          global_unsubscribe?: boolean
+          occasion_unsubscribes?: string[]
+          unsubscribe_token: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          global_unsubscribe?: boolean
+          occasion_unsubscribes?: string[]
+          unsubscribe_token?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
   }
 }

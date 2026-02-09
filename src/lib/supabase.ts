@@ -45,6 +45,7 @@ export const createServerSupabaseClient = () => {
 }
 
 // Get authenticated user from session cookies (for API routes)
+// Also ensures the user exists in public.users (trigger can fail due to RLS)
 export async function getAuthUser() {
   const url = getSupabaseUrl()
   const key = getSupabaseAnonKey()
@@ -59,6 +60,15 @@ export async function getAuthUser() {
     },
   })
   const { data: { user } } = await supabase.auth.getUser()
+
+  if (user) {
+    // Ensure public.users row exists (auth trigger can silently fail)
+    const serviceClient = createServerSupabaseClient()
+    await serviceClient
+      .from('users')
+      .upsert({ id: user.id, email: user.email ?? '' }, { onConflict: 'id' })
+  }
+
   return user
 }
 

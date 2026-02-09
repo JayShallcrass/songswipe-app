@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 ## Current Position
 
 Phase: 9 of 9 (Retention Marketing)
-Plan: 1 of 3 in current phase
+Plan: 3 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-09 -- Completed 09-01-PLAN.md
+Last activity: 2026-02-09 -- Completed 09-03-PLAN.md
 
 Progress: [███████████████████░] 95%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
-- Average duration: 2.6 min
-- Total execution time: 0.92 hours
+- Total plans completed: 20
+- Average duration: 2.5 min
+- Total execution time: 0.94 hours
 
 **By Phase:**
 
@@ -35,10 +35,10 @@ Progress: [███████████████████░] 95%
 | 06 | 3/3 | 8.2 min | 2.7 min |
 | 07 | 2/2 | 5.1 min | 2.6 min |
 | 08 | 2/2 | 6.2 min | 3.1 min |
-| 09 | 1/3 | 2 min | 2.0 min |
+| 09 | 2/3 | 3.3 min | 1.7 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-02 (3.5 min), 08-01 (3.5 min), 08-02 (2.7 min), 09-01 (2.0 min)
+- Last 5 plans: 08-01 (3.5 min), 08-02 (2.7 min), 09-01 (2.0 min), 09-03 (1.3 min)
 - Trend: Consistent velocity, Phase 9 in progress
 
 *Updated after each plan completion*
@@ -144,6 +144,10 @@ Recent decisions affecting current work:
 - 09-01: unsubscribe_token uses crypto.randomUUID() for secure random tokens
 - 09-01: occasion_unsubscribes stores array of order UUIDs for granular opt-out
 - 09-01: Preference creation happens after order creation, before order type branching (applies to all order types)
+- 09-03: Unsubscribe route uses self-contained HTML pages instead of redirects for better email client compatibility
+- 09-03: Service role client for unsubscribe (no auth required) to comply with CAN-SPAM requirements
+- 09-03: Idempotent per-occasion unsubscribe checks array before appending to prevent duplicate updates
+- 09-03: RFC 8058 one-click POST handler always does global unsubscribe (per standard)
 
 ### Pending Todos
 
@@ -161,6 +165,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-09T01:01:44Z
-Stopped at: Completed 09-01-PLAN.md (Email Preferences Infrastructure)
+Last session: 2026-02-09T01:02:58Z
+Stopped at: Completed 09-03-PLAN.md (Unsubscribe API Route)
 Resume file: None

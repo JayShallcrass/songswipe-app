@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-08)
 
 ## Current Position
 
-Phase: 7 of 9 (Sharing & Gift Reveal)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-08 -- Completed Phase 7 (Sharing & Gift Reveal)
+Phase: 8 of 9 (User Dashboard)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-09 -- Completed 08-01-PLAN.md
 
-Progress: [██████████████████] 100%
+Progress: [█████████████████░] 94%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
+- Total plans completed: 17
 - Average duration: 2.7 min
-- Total execution time: 0.77 hours
+- Total execution time: 0.83 hours
 
 **By Phase:**
 
@@ -34,10 +34,11 @@ Progress: [██████████████████] 100%
 | 05 | 2/2 | 5 min | 2.5 min |
 | 06 | 3/3 | 8.2 min | 2.7 min |
 | 07 | 2/2 | 5.1 min | 2.6 min |
+| 08 | 1/2 | 3.5 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-02 (2.5 min), 06-03 (3.1 min), 07-01 (1.6 min), 07-02 (3.5 min)
-- Trend: Consistent velocity, Phase 7 complete
+- Last 5 plans: 06-03 (3.1 min), 07-01 (1.6 min), 07-02 (3.5 min), 08-01 (3.5 min)
+- Trend: Consistent velocity, Phase 8 in progress
 
 *Updated after each plan completion*
 
@@ -129,6 +130,10 @@ Recent decisions affecting current work:
 - 07-02: CopyLinkButton tries Clipboard API first, falls back to execCommand for older browsers
 - 07-02: Social share text personalized with recipient name and occasion for compelling shares
 - 07-02: Share audio stream uses public cache (not private) since share links are inherently public
+- 08-01: Server-side pagination with offset/limit via .range() prevents loading all songs at once, uses count: 'estimated' for performance
+- 08-01: Occasion date filtering done client-side in React Query select (API returns all, select filters to upcoming 90 days)
+- 08-01: Download mutation uses blob URL cleanup in onSuccess to prevent memory leaks
+- 08-01: Stale times: 60s for songs/orders, 300s for occasions, refetchOnWindowFocus: false (dashboard data rarely changes)
 
 ### Pending Todos
 
@@ -145,6 +150,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-08T23:30:00Z
-Stopped at: Completed Phase 7 (Sharing & Gift Reveal) - verified, all must-haves passed
+Last session: 2026-02-09T00:15:00Z
+Stopped at: Completed 08-01-PLAN.md (Dashboard Data Layer)
 Resume file: None

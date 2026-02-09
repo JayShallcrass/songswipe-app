@@ -9,7 +9,8 @@ export async function POST() {
 
   if (!supabaseUrl || !supabaseKey) {
     return NextResponse.redirect(
-      new URL('/auth/login?error=Configuration error', origin)
+      new URL('/auth/login?error=Configuration error', origin),
+      { status: 303 }
     )
   }
 
@@ -41,15 +42,17 @@ export async function POST() {
 
   if (error) {
     return NextResponse.redirect(
-      new URL(`/auth/login?error=${encodeURIComponent(error.message)}`, origin)
+      new URL(`/auth/login?error=${encodeURIComponent(error.message)}`, origin),
+      { status: 303 }
     )
   }
 
   if (data.url) {
-    return NextResponse.redirect(data.url)
+    return NextResponse.redirect(data.url, { status: 303 })
   }
 
   return NextResponse.redirect(
-    new URL('/auth/login?error=Failed to initiate Google sign in', origin)
+    new URL('/auth/login?error=Failed to initiate Google sign in', origin),
+    { status: 303 }
   )
 }

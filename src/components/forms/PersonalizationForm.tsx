@@ -8,6 +8,7 @@ export interface PersonalizationData {
   yourName: string
   specialMemories: string
   thingsToAvoid: string
+  occasionDate: string
 }
 
 interface PersonalizationFormProps {
@@ -27,6 +28,7 @@ export function PersonalizationForm({
   const [yourName, setYourName] = useState('')
   const [specialMemories, setSpecialMemories] = useState('')
   const [thingsToAvoid, setThingsToAvoid] = useState('')
+  const [occasionDate, setOccasionDate] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const validate = (): boolean => {
@@ -52,6 +54,7 @@ export function PersonalizationForm({
       yourName,
       specialMemories,
       thingsToAvoid,
+      occasionDate,
     })
   }
 
@@ -159,6 +162,20 @@ export function PersonalizationForm({
             placeholder="Anything you'd like us to avoid mentioning?"
             value={thingsToAvoid}
             onChange={(e) => setThingsToAvoid(e.target.value)}
+            disabled={isLoading}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Occasion Date (Optional)
+          </label>
+          <p className="text-sm text-gray-500 mb-2">We'll send you a reminder next year</p>
+          <input
+            type="date"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            value={occasionDate}
+            onChange={(e) => setOccasionDate(e.target.value)}
             disabled={isLoading}
           />
         </div>

@@ -82,6 +82,7 @@ export default function CustomizePage() {
         genre: state.selections.genre,
         specialMemories: data.specialMemories || undefined,
         thingsToAvoid: data.thingsToAvoid || undefined,
+        occasionDate: data.occasionDate || undefined,
       }
 
       // Submit to API

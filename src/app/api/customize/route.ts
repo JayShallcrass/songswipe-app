@@ -16,6 +16,7 @@ const customizationSchema = {
       genre: z.enum(['pop', 'acoustic', 'electronic', 'orchestral', 'jazz']),
       specialMemories: z.string().max(500).optional(),
       thingsToAvoid: z.string().max(300).optional(),
+      occasionDate: z.string().optional(),
     })
     return schema.safeParse(body)
   }
@@ -65,6 +66,7 @@ export async function POST(request: NextRequest) {
         genre: customization.genre,
         special_memories: customization.specialMemories || null,
         things_to_avoid: customization.thingsToAvoid || null,
+        occasion_date: customization.occasionDate || null,
         prompt,
       })
       .select()

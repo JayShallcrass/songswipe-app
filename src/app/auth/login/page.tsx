@@ -1,11 +1,6 @@
 import Link from 'next/link'
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
-
-export default async function LoginPage({
+export default function LoginPage({
   searchParams,
 }: {
   searchParams: { error?: string; message?: string }
@@ -13,27 +8,6 @@ export default async function LoginPage({
   const plainParams = { ...searchParams }
   const error = plainParams?.error
   const message = plainParams?.message
-  
-  const cookieStore = cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
-        },
-      },
-    }
-  )
-
-  // Check if user is already logged in
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  // If logged in, redirect to dashboard
-  if (user) {
-    redirect('/dashboard')
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-100 py-12 px-4">

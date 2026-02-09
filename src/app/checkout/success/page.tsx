@@ -1,37 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
 
   const [orderId, setOrderId] = useState<string | null>(null)
   const [polling, setPolling] = useState(true)
   const [pollAttempts, setPollAttempts] = useState(0)
-
-  // If no session_id, show error
-  if (!sessionId) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 via-white to-purple-50 flex items-center justify-center px-4">
-        <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-5xl mb-4">❌</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Invalid Checkout Session</h1>
-          <p className="text-gray-600 mb-6">
-            We couldn&apos;t find your checkout session. Please try again or contact support.
-          </p>
-          <Link
-            href="/pricing"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
-          >
-            Back to Pricing
-          </Link>
-        </div>
-      </div>
-    )
-  }
 
   // Poll for order by session_id (webhook may not have fired yet)
   useEffect(() => {
@@ -65,6 +44,27 @@ export default function CheckoutSuccessPage() {
 
     return () => clearInterval(interval)
   }, [sessionId, orderId, pollAttempts])
+
+  // If no session_id, show error
+  if (!sessionId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-red-50 via-white to-purple-50 flex items-center justify-center px-4">
+        <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
+          <div className="text-5xl mb-4">&#x274C;</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Invalid Checkout Session</h1>
+          <p className="text-gray-600 mb-6">
+            We couldn&apos;t find your checkout session. Please try again or contact support.
+          </p>
+          <Link
+            href="/pricing"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
+          >
+            Back to Pricing
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   // Show last 8 characters of session_id as reference
   const sessionReference = sessionId.slice(-8)
@@ -148,5 +148,19 @@ export default function CheckoutSuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-purple-50 flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <CheckoutSuccessContent />
+    </Suspense>
   )
 }

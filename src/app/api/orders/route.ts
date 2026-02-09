@@ -22,9 +22,9 @@ export async function GET(request: NextRequest) {
 
     if (sessionId) {
       // Look up order by stripe_session_id
-      const { data: order, error } = await (supabase
-        .from('orders') as any)
-        .select('id,status,created_at,customizations,songs')
+      const { data: order, error } = await supabase
+        .from('orders')
+        .select('id, status, created_at, customization_id')
         .eq('user_id', user.id)
         .eq('stripe_session_id', sessionId)
         .single()
@@ -38,9 +38,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Default: fetch all user orders
-    const { data: orders, error } = await (supabase
-      .from('orders') as any)
-      .select('id,status,created_at,customizations,songs')
+    const { data: orders, error } = await supabase
+      .from('orders')
+      .select('id, status, created_at, customization_id')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 

@@ -140,32 +140,38 @@ export async function POST(request: NextRequest) {
             break
           }
 
-          await inngest.send({
-            name: 'song/generation.requested',
-            data: {
-              orderId: order.id,
-              userId: userId,
-              customizationId: customizationId,
-              variantCount: 1,
-              originalOrderId: parentOrderId,
-            },
-          })
-
-          console.log('Upsell generation triggered:', { orderId: order.id, parentOrderId })
+          try {
+            await inngest.send({
+              name: 'song/generation.requested',
+              data: {
+                orderId: order.id,
+                userId: userId,
+                customizationId: customizationId,
+                variantCount: 1,
+                originalOrderId: parentOrderId,
+              },
+            })
+            console.log('Upsell generation triggered:', { orderId: order.id, parentOrderId })
+          } catch (inngestError) {
+            console.error('Inngest not configured, skipping song generation:', inngestError)
+          }
           break
         } else {
           // Base order: generate 3 variants (existing behavior)
-          await inngest.send({
-            name: 'song/generation.requested',
-            data: {
-              orderId: order.id,
-              userId: userId,
-              customizationId: customizationId,
-              variantCount: 3,
-            },
-          })
-
-          console.log('Base order generation triggered:', { orderId: order.id })
+          try {
+            await inngest.send({
+              name: 'song/generation.requested',
+              data: {
+                orderId: order.id,
+                userId: userId,
+                customizationId: customizationId,
+                variantCount: 3,
+              },
+            })
+            console.log('Base order generation triggered:', { orderId: order.id })
+          } catch (inngestError) {
+            console.error('Inngest not configured, skipping song generation:', inngestError)
+          }
           break
         }
       }

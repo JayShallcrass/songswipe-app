@@ -27,7 +27,7 @@ export function SwipeProgress({ currentStage, selections }: SwipeProgressProps) 
   const progressPercentage = (Object.keys(selections).length / STAGE_ORDER.length) * 100
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-8">
+    <div className="w-full max-w-2xl mx-auto px-4 py-4">
       {/* Stage dots with connecting lines */}
       <div className="relative flex items-center justify-between mb-4">
         {STAGE_ORDER.map((stage, index) => {

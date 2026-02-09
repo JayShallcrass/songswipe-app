@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import { useDownloadSong } from '@/lib/hooks/useDownloadSong'
@@ -161,13 +162,21 @@ export default function SongCard({ song }: SongCardProps) {
           )}
         </div>
 
-        {/* Play/Collapse button */}
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all shadow-sm text-sm flex-shrink-0"
-        >
-          {isExpanded ? 'Collapse' : 'Play'}
-        </button>
+        {/* Action buttons */}
+        <div className="flex flex-col gap-2 flex-shrink-0">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all shadow-sm text-sm"
+          >
+            {isExpanded ? 'Collapse' : 'Play'}
+          </button>
+          <Link
+            href={`/song/${song.id}`}
+            className="px-4 py-2 border border-purple-300 text-purple-600 rounded-lg font-medium hover:bg-purple-50 transition-all text-sm text-center"
+          >
+            Share
+          </Link>
+        </div>
       </div>
     </div>
   )

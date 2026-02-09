@@ -7,7 +7,7 @@ import { useSwipeState } from '@/lib/swipe-state'
 import { useSwipeKeyboard } from '@/lib/swipe-keyboard'
 import { SwipeStack } from '@/components/swipe/SwipeStack'
 import { SwipeProgress } from '@/components/swipe/SwipeProgress'
-import { PersonalizationForm, PersonalizationData } from '@/components/forms/PersonalizationForm'
+import { PersonalizationForm, PersonalizationData, clearPersonalizationCache } from '@/components/forms/PersonalizationForm'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 
@@ -97,6 +97,9 @@ export default function CustomizePage() {
       }
 
       const { checkoutUrl } = await response.json()
+      // Clear swipe state and personalization cache before redirecting
+      reset()
+      clearPersonalizationCache()
       window.location.href = checkoutUrl
     } catch (error) {
       console.error('Error:', error)

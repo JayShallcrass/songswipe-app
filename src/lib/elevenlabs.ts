@@ -79,12 +79,42 @@ export async function generateSong(customization: Customization) {
   return Buffer.from(audioBuffer)
 }
 
-// Occasion-specific follow-up questions
+// Occasion-specific follow-up questions (used as suggestion chips in PersonalizationForm)
 export const occasionQuestions: Record<string, string[]> = {
-  valentines: ['How did you two meet?', 'What\'s your favorite shared memory?'],
-  birthday: ['What year were they born?', 'Any funny quirks to include?'],
-  anniversary: ['How many years together?', 'What\'s your defining moment?'],
-  wedding: ['What was your first date like?', 'Any vows or themes to include?'],
-  graduation: ['What are they graduating in?', 'What\'s next for them?'],
-  'just-because': ['Why are you sending this?', 'What do they mean to you?'],
+  valentines: [
+    'How did you two meet?',
+    'What\'s your favourite shared memory?',
+    'What do you love most about them?',
+    'Any pet names or inside jokes?',
+  ],
+  birthday: [
+    'What\'s their funniest moment?',
+    'What\'s their biggest achievement?',
+    'Any running jokes between you?',
+    'What makes them one of a kind?',
+  ],
+  anniversary: [
+    'How many years together?',
+    'What\'s your defining moment as a couple?',
+    'What\'s your favourite trip together?',
+    'What\'s a tradition you share?',
+  ],
+  wedding: [
+    'How did you propose / get proposed to?',
+    'What was your first date like?',
+    'Any vows or themes to weave in?',
+    'What song reminds you of them?',
+  ],
+  graduation: [
+    'What are they graduating in?',
+    'What\'s their proudest moment?',
+    'What\'s next for them?',
+    'Any mentor or friend to mention?',
+  ],
+  'just-because': [
+    'Why are you sending this?',
+    'What do they mean to you?',
+    'What\'s a memory that always makes you smile?',
+    'What would you want them to know?',
+  ],
 }

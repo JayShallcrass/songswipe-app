@@ -43,6 +43,15 @@ export default function DashboardPage() {
   const { data: orderData, isLoading: isLoadingOrders } = useOrderHistory(orderPage)
   const { data: occasions, isLoading: isLoadingOccasions } = useOccasions()
 
+  // Redirect first-time users (no songs AND no orders) straight to creation flow
+  useEffect(() => {
+    if (!isLoadingSongs && !isLoadingOrders && songData && orderData) {
+      if (songData.total === 0 && orderData.total === 0) {
+        router.push('/customize')
+      }
+    }
+  }, [isLoadingSongs, isLoadingOrders, songData, orderData, router])
+
   // Calculate stats
   const totalSongs = songData?.total || 0
   const totalOrders = orderData?.total || 0

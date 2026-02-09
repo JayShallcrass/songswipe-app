@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-08)
 
 **Core value:** The swipe mechanic must feel fun and natural -- swiping through song options should be the core experience that makes SongSwipe different from competitors.
-**Current focus:** Phase 7 complete - Sharing & Gift Reveal
+**Current focus:** Phase 8 complete - User Dashboard
 
 ## Current Position
 

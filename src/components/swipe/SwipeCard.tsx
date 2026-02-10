@@ -16,7 +16,8 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
   const rightOpacity = useTransform(x, [0, 100, 200], [0, 0.8, 0.3])
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const cardWidth = (_event.currentTarget as HTMLElement).offsetWidth
+    const target = _event.currentTarget as HTMLElement | null
+    const cardWidth = target?.offsetWidth ?? 300
     const threshold = cardWidth * 0.4
 
     const shouldSwipe = Math.abs(info.offset.x) > threshold || Math.abs(info.velocity.x) > 500
@@ -42,31 +43,34 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
       whileDrag={isTop ? { scale: 1.02, cursor: 'grabbing' } : undefined}
       className="absolute inset-0 w-full h-full"
     >
-      <div className={`relative w-full h-full bg-gradient-to-br ${card.gradient} rounded-2xl shadow-xl p-4 sm:p-8 flex flex-col items-center justify-center`}>
-        {/* Icon */}
-        <div className="text-4xl sm:text-6xl mb-4 sm:mb-6">{card.icon}</div>
+      {/* Solid white background behind gradient to prevent any transparency bleed */}
+      <div className="w-full h-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className={`relative w-full h-full bg-gradient-to-br ${card.gradient} p-4 sm:p-8 flex flex-col items-center justify-center`}>
+          {/* Icon */}
+          <div className="text-4xl sm:text-6xl mb-3 sm:mb-6">{card.icon}</div>
 
-        {/* Title */}
-        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 text-center">{card.title}</h2>
+          {/* Title */}
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-1.5 sm:mb-3 text-center">{card.title}</h2>
 
-        {/* Description */}
-        <p className="text-white/80 text-center text-xs sm:text-sm px-2">{card.description}</p>
+          {/* Description */}
+          <p className="text-white/90 text-center text-xs sm:text-sm px-2">{card.description}</p>
 
-        {/* Left indicator (SKIP) */}
-        <motion.div
-          style={{ opacity: leftOpacity }}
-          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 bg-red-500/90 text-white font-bold text-base sm:text-xl px-4 sm:px-6 py-2 sm:py-3 rounded-xl rotate-[-20deg] shadow-lg pointer-events-none"
-        >
-          SKIP
-        </motion.div>
+          {/* Left indicator (SKIP) */}
+          <motion.div
+            style={{ opacity: leftOpacity }}
+            className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 bg-red-500/90 text-white font-bold text-sm sm:text-xl px-3 sm:px-6 py-1.5 sm:py-3 rounded-xl rotate-[-20deg] shadow-lg pointer-events-none"
+          >
+            SKIP
+          </motion.div>
 
-        {/* Right indicator (SELECT) */}
-        <motion.div
-          style={{ opacity: rightOpacity }}
-          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 bg-green-500/90 text-white font-bold text-base sm:text-xl px-4 sm:px-6 py-2 sm:py-3 rounded-xl rotate-[20deg] shadow-lg pointer-events-none"
-        >
-          SELECT
-        </motion.div>
+          {/* Right indicator (SELECT) */}
+          <motion.div
+            style={{ opacity: rightOpacity }}
+            className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 bg-green-500/90 text-white font-bold text-sm sm:text-xl px-3 sm:px-6 py-1.5 sm:py-3 rounded-xl rotate-[20deg] shadow-lg pointer-events-none"
+          >
+            SELECT
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   )

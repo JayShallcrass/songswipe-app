@@ -6,53 +6,61 @@ import { STAGE_ORDER } from '@/lib/swipe-data'
 interface SwipeProgressProps {
   currentStage: SwipeStage
   selections: Partial<Record<SwipeStage, string>>
+  isPersonalising?: boolean
 }
 
-const STAGE_LABELS: Record<SwipeStage, string> = {
+// Visual steps include the personalisation form as a final step
+const VISUAL_STEPS = [...STAGE_ORDER, 'personalise'] as const
+type VisualStep = (typeof VISUAL_STEPS)[number]
+
+const STEP_LABELS: Record<VisualStep, string> = {
   occasion: 'Occasion',
   mood: 'Mood',
   genre: 'Genre',
   voice: 'Voice',
+  personalise: 'Details',
 }
 
-export function SwipeProgress({ currentStage, selections }: SwipeProgressProps) {
-  const currentIndex = STAGE_ORDER.indexOf(currentStage)
+export function SwipeProgress({ currentStage, selections, isPersonalising }: SwipeProgressProps) {
+  const allSwipesComplete = STAGE_ORDER.every(stage => selections[stage] !== undefined)
 
-  const getStageStatus = (stage: SwipeStage): 'completed' | 'current' | 'upcoming' => {
-    if (selections[stage]) return 'completed'
-    if (stage === currentStage) return 'current'
+  const getStepStatus = (step: VisualStep): 'completed' | 'current' | 'upcoming' => {
+    if (step === 'personalise') {
+      if (isPersonalising) return 'current'
+      if (allSwipesComplete) return 'current'
+      return 'upcoming'
+    }
+    if (selections[step]) return 'completed'
+    if (step === currentStage) return 'current'
     return 'upcoming'
   }
 
-  const progressPercentage = (Object.keys(selections).length / STAGE_ORDER.length) * 100
-
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-4">
-      {/* Stage dots with connecting lines */}
-      <div className="relative flex items-center justify-between mb-4">
-        {STAGE_ORDER.map((stage, index) => {
-          const status = getStageStatus(stage)
-          const isLast = index === STAGE_ORDER.length - 1
+    <div className="w-full max-w-md mx-auto px-4 py-2">
+      <div className="flex items-center justify-between">
+        {VISUAL_STEPS.map((step, index) => {
+          const status = getStepStatus(step)
+          const isLast = index === VISUAL_STEPS.length - 1
 
           return (
-            <div key={stage} className="flex-1 flex items-center">
-              {/* Stage dot */}
+            <div key={step} className="flex-1 flex items-center">
+              {/* Step dot */}
               <div className="relative flex flex-col items-center flex-shrink-0">
                 <div
                   className={`
-                    w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300
+                    w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-300
                     ${
                       status === 'completed'
-                        ? 'bg-purple-600 shadow-lg'
+                        ? 'bg-purple-600'
                         : status === 'current'
-                        ? 'bg-white border-4 border-purple-600 animate-pulse shadow-lg'
-                        : 'bg-gray-300'
+                        ? 'bg-white border-[3px] border-purple-600 shadow-sm'
+                        : 'bg-gray-200'
                     }
                   `}
                 >
                   {status === 'completed' && (
                     <svg
-                      className="w-4 h-4 text-white"
+                      className="w-3 h-3 text-white"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -67,28 +75,28 @@ export function SwipeProgress({ currentStage, selections }: SwipeProgressProps) 
                   )}
                 </div>
 
-                {/* Stage label */}
+                {/* Step label */}
                 <span
                   className={`
-                    mt-2 text-xs font-medium transition-colors
+                    mt-1 text-[10px] sm:text-xs font-medium transition-colors leading-tight
                     ${status === 'completed' || status === 'current' ? 'text-purple-600' : 'text-gray-400'}
                   `}
                 >
-                  {STAGE_LABELS[stage]}
+                  {STEP_LABELS[step]}
                 </span>
               </div>
 
               {/* Connecting line */}
               {!isLast && (
-                <div className="flex-1 h-1 mx-2 relative">
-                  <div className="absolute inset-0 bg-gray-300 rounded-full" />
+                <div className="flex-1 h-0.5 mx-1.5 sm:mx-2 relative">
+                  <div className="absolute inset-0 bg-gray-200 rounded-full" />
                   <div
                     className={`
                       absolute inset-0 rounded-full transition-all duration-500
                       ${
-                        STAGE_ORDER.indexOf(stage) < currentIndex
-                          ? 'bg-gradient-to-r from-purple-600 to-pink-600'
-                          : 'bg-gray-300'
+                        status === 'completed'
+                          ? 'bg-purple-600'
+                          : 'bg-transparent'
                       }
                     `}
                   />
@@ -97,19 +105,6 @@ export function SwipeProgress({ currentStage, selections }: SwipeProgressProps) 
             </div>
           )
         })}
-      </div>
-
-      {/* Overall progress bar */}
-      <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-        <div
-          className="absolute inset-y-0 left-0 bg-gradient-to-r from-purple-600 to-pink-600 transition-all duration-500 ease-out"
-          style={{ width: `${progressPercentage}%` }}
-        />
-      </div>
-
-      {/* Progress text */}
-      <div className="mt-2 text-center text-sm text-gray-500">
-        {Object.keys(selections).length} of {STAGE_ORDER.length} stages complete
       </div>
     </div>
   )

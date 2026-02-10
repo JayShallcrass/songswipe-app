@@ -128,22 +128,22 @@ export default function CustomisePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`bg-gray-50 ${!isSwipeComplete ? 'h-[100dvh] overflow-hidden flex flex-col' : 'min-h-screen'}`}>
       {/* App Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">🎵</span>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      <header className="bg-white shadow-sm flex-shrink-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 py-2 sm:py-3 flex justify-between items-center">
+          <Link href="/" className="flex items-center gap-1.5">
+            <span className="text-xl">🎵</span>
+            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               SongSwipe
             </span>
           </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium text-sm">
               My Songs
             </Link>
             <form action="/auth/signout" method="POST">
-              <button type="submit" className="text-gray-500 hover:text-gray-700 text-sm">
+              <button type="submit" className="text-gray-500 hover:text-gray-700 text-xs sm:text-sm">
                 Sign Out
               </button>
             </form>
@@ -154,73 +154,73 @@ export default function CustomisePage() {
         <SwipeProgress
           currentStage={state.currentStage}
           selections={state.selections}
+          isPersonalising={isSwipeComplete}
         />
       </header>
 
       {/* Main content */}
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
-        <AnimatePresence mode="wait">
-          {!isSwipeComplete ? (
-            <motion.div
-              key="swipe-interface"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {currentStageConfig && (
-                <SwipeStack
-                  cards={currentStageConfig.cards}
-                  currentCardIndex={state.currentCardIndex}
-                  stage={currentStageConfig.stage}
-                  stageTitle={currentStageConfig.title}
-                  stageSubtitle={currentStageConfig.subtitle}
-                  onSwipe={handleSwipe}
-                  onUndo={undo}
-                  canUndo={canUndo}
-                  showHints={showHints}
-                  onHintsDismiss={handleHintsDismiss}
-                />
-              )}
-
-              {/* Start Over link */}
-              <div className="mt-8 text-center">
-                <button
-                  onClick={handleStartOver}
-                  className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
-                >
-                  Start Over
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="personalisation-form"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <PersonalisationForm
-                onSubmit={handleFormSubmit}
-                onBack={handleBack}
-                isLoading={isLoading}
-                selections={state.selections}
+      <AnimatePresence mode="wait">
+        {!isSwipeComplete ? (
+          <motion.div
+            key="swipe-interface"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex-1 flex flex-col items-center justify-center px-4 py-2 overflow-hidden"
+            style={{ touchAction: 'none' }}
+          >
+            {currentStageConfig && (
+              <SwipeStack
+                cards={currentStageConfig.cards}
+                currentCardIndex={state.currentCardIndex}
+                stage={currentStageConfig.stage}
+                stageTitle={currentStageConfig.title}
+                stageSubtitle={currentStageConfig.subtitle}
+                onSwipe={handleSwipe}
+                onUndo={undo}
+                canUndo={canUndo}
+                showHints={showHints}
+                onHintsDismiss={handleHintsDismiss}
               />
+            )}
 
-              {/* Start Over link */}
-              <div className="mt-8 text-center">
-                <button
-                  onClick={handleStartOver}
-                  className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
-                >
-                  Start Over
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+            {/* Start Over link */}
+            <button
+              onClick={handleStartOver}
+              className="mt-2 text-gray-400 hover:text-gray-600 text-xs font-medium transition-colors"
+            >
+              Start Over
+            </button>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="personalisation-form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-2xl mx-auto px-4 sm:px-6 py-4 sm:py-8"
+          >
+            <PersonalisationForm
+              onSubmit={handleFormSubmit}
+              onBack={handleBack}
+              isLoading={isLoading}
+              selections={state.selections}
+            />
+
+            {/* Start Over link */}
+            <div className="mt-8 text-center">
+              <button
+                onClick={handleStartOver}
+                className="text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
+              >
+                Start Over
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

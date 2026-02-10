@@ -77,9 +77,13 @@ export default function CustomisePage() {
         recipientName: data.recipientName,
         yourName: data.yourName,
         occasion: state.selections.occasion,
-        songLength: '90', // Default to 90s
+        songLength: data.songLength || '90',
         mood: [state.selections.mood], // Wrap in array to match existing schema
         genre: state.selections.genre,
+        voice: state.selections.voice,
+        language: data.language || 'en-GB',
+        tempo: data.tempo || 'mid-tempo',
+        relationship: data.relationship || undefined,
         specialMemories: data.specialMemories || undefined,
         thingsToAvoid: data.thingsToAvoid || undefined,
         occasionDate: data.occasionDate || undefined,

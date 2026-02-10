@@ -10,6 +10,10 @@ export interface PersonalisationData {
   specialMemories: string
   thingsToAvoid: string
   occasionDate: string
+  songLength: string
+  language: string
+  tempo: string
+  relationship: string
 }
 
 interface PersonalisationFormProps {
@@ -58,6 +62,10 @@ export function PersonalisationForm({
   const [specialMemories, setSpecialMemories] = useState('')
   const [thingsToAvoid, setThingsToAvoid] = useState('')
   const [occasionDate, setOccasionDate] = useState('')
+  const [songLength, setSongLength] = useState('90')
+  const [language, setLanguage] = useState('en-GB')
+  const [tempo, setTempo] = useState('mid-tempo')
+  const [relationship, setRelationship] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   // Hydrate from localStorage on mount
@@ -68,12 +76,16 @@ export function PersonalisationForm({
     if (cached.specialMemories) setSpecialMemories(cached.specialMemories)
     if (cached.thingsToAvoid) setThingsToAvoid(cached.thingsToAvoid)
     if (cached.occasionDate) setOccasionDate(cached.occasionDate)
+    if (cached.songLength) setSongLength(cached.songLength)
+    if (cached.language) setLanguage(cached.language)
+    if (cached.tempo) setTempo(cached.tempo)
+    if (cached.relationship) setRelationship(cached.relationship)
   }, [])
 
   // Save to localStorage on every field change
   useEffect(() => {
-    saveCache({ recipientName, yourName, specialMemories, thingsToAvoid, occasionDate })
-  }, [recipientName, yourName, specialMemories, thingsToAvoid, occasionDate])
+    saveCache({ recipientName, yourName, specialMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship })
+  }, [recipientName, yourName, specialMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
 
   // Get suggestion chips for the selected occasion
   const occasion = selections.occasion || ''
@@ -110,6 +122,10 @@ export function PersonalisationForm({
       specialMemories,
       thingsToAvoid,
       occasionDate,
+      songLength,
+      language,
+      tempo,
+      relationship,
     })
   }
 
@@ -191,6 +207,120 @@ export function PersonalisationForm({
           {errors.yourName && (
             <p className="text-red-500 text-sm mt-1">{errors.yourName}</p>
           )}
+        </div>
+
+        {/* Relationship */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Your relationship to {recipientName || 'them'}
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { id: 'partner', label: 'Partner' },
+              { id: 'friend', label: 'Friend' },
+              { id: 'family', label: 'Family' },
+              { id: 'colleague', label: 'Colleague' },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setRelationship(opt.id)}
+                disabled={isLoading}
+                className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all border ${
+                  relationship === opt.id
+                    ? 'bg-purple-100 border-purple-400 text-purple-700'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                } disabled:opacity-50`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Song Length */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Song length
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: '60', label: '1 min', desc: 'Short & sweet' },
+              { id: '90', label: '1.5 min', desc: 'Just right' },
+              { id: '120', label: '2 min', desc: 'Full song' },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setSongLength(opt.id)}
+                disabled={isLoading}
+                className={`py-3 px-3 rounded-lg text-center transition-all border ${
+                  songLength === opt.id
+                    ? 'bg-purple-100 border-purple-400 text-purple-700'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                } disabled:opacity-50`}
+              >
+                <div className="font-semibold text-sm">{opt.label}</div>
+                <div className="text-xs text-gray-500 mt-0.5">{opt.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Language */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Language & accent
+          </label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            disabled={isLoading}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white"
+          >
+            <option value="en-GB">English (British)</option>
+            <option value="en-US">English (American)</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+          </select>
+          <p className="text-xs text-gray-400 mt-1">
+            This influences the vocal accent and any generated lyrics
+          </p>
+        </div>
+
+        {/* Tempo */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Tempo
+          </label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { id: 'slow', label: 'Slow & Gentle', bpm: '~70 BPM' },
+              { id: 'mid-tempo', label: 'Mid-Tempo', bpm: '~100 BPM' },
+              { id: 'upbeat', label: 'Upbeat', bpm: '~120 BPM' },
+              { id: 'high-energy', label: 'High Energy', bpm: '~140 BPM' },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setTempo(opt.id)}
+                disabled={isLoading}
+                className={`py-2.5 px-3 rounded-lg text-center transition-all border ${
+                  tempo === opt.id
+                    ? 'bg-purple-100 border-purple-400 text-purple-700'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                } disabled:opacity-50`}
+              >
+                <div className="font-medium text-sm">{opt.label}</div>
+                <div className="text-xs text-gray-400">{opt.bpm}</div>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>

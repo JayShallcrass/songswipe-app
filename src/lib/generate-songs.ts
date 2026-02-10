@@ -1,5 +1,4 @@
 import { createServerSupabaseClient } from '@/lib/supabase'
-import { generateSong } from '@/lib/elevenlabs'
 
 interface GenerateResult {
   status: 'generated' | 'all_complete' | 'all_failed' | 'no_pending'
@@ -71,17 +70,29 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
     .eq('id', pendingVariant.id)
 
   try {
-    // Generate via ElevenLabs
-    const audioBuffer = await generateSong({
-      recipientName: customisation.recipient_name,
-      yourName: customisation.your_name,
-      occasion: customisation.occasion,
-      songLength: customisation.song_length.toString(),
-      mood: customisation.mood,
-      genre: customisation.genre,
-      specialMemories: customisation.special_memories || undefined,
-      thingsToAvoid: customisation.things_to_avoid || undefined,
+    // Generate via ElevenLabs using the saved prompt
+    const musicLengthMs = (customisation.song_length || 90) * 1000
+
+    const elResponse = await fetch('https://api.elevenlabs.io/v1/music', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'xi-api-key': process.env.ELEVEN_LABS_API_KEY!,
+      },
+      body: JSON.stringify({
+        prompt: customisation.prompt,
+        music_length_ms: musicLengthMs,
+        model_id: 'music_v1',
+        force_instrumental: false,
+      }),
     })
+
+    if (!elResponse.ok) {
+      const errText = await elResponse.text()
+      throw new Error(`ElevenLabs API error: ${errText}`)
+    }
+
+    const audioBuffer = Buffer.from(await elResponse.arrayBuffer())
 
     // Upload to Supabase Storage
     const storagePath = `${order.user_id}/${orderId}/variant-${pendingVariant.variant_number}.mp3`

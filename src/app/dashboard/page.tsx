@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useQueryClient } from '@tanstack/react-query'
 import { useSongHistory } from '@/lib/hooks/useSongHistory'
 import { useOrderHistory } from '@/lib/hooks/useOrderHistory'
 import { useOccasions } from '@/lib/hooks/useOccasions'
@@ -17,6 +18,7 @@ type TabType = 'songs' | 'orders' | 'occasions'
 
 export default function DashboardPage() {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [activeTab, setActiveTab] = useState<TabType>('songs')
   const [songPage, setSongPage] = useState(1)
   const [orderPage, setOrderPage] = useState(1)
@@ -67,20 +69,9 @@ export default function DashboardPage() {
     router.push('/auth/login')
   }
 
-  // Delete all user data (dev/testing)
-  const handleDeleteAll = async () => {
-    if (!window.confirm('This will permanently delete all your songs, orders, and customisations. Are you sure?')) {
-      return
-    }
-
-    try {
-      const response = await fetch('/api/account/reset', { method: 'DELETE' })
-      if (!response.ok) throw new Error('Failed to reset account')
-      window.location.reload()
-    } catch (error) {
-      console.error('Reset error:', error)
-      alert('Failed to reset account. Please try again.')
-    }
+  // Invalidate song list after deletion
+  const handleSongDeleted = () => {
+    queryClient.invalidateQueries({ queryKey: ['songs', 'history'] })
   }
 
   return (
@@ -190,7 +181,7 @@ export default function DashboardPage() {
                   <>
                     <div className="space-y-4">
                       {songData.songs.map((song) => (
-                        <SongCard key={song.id} song={song} />
+                        <SongCard key={song.id} song={song} onDelete={handleSongDeleted} />
                       ))}
                     </div>
                     <Pagination
@@ -305,15 +296,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Reset account (testing) */}
-        <div className="mt-8 text-center">
-          <button
-            onClick={handleDeleteAll}
-            className="text-red-400 hover:text-red-600 text-sm font-medium transition-colors"
-          >
-            Delete All Data
-          </button>
-        </div>
       </div>
     </div>
   )

@@ -306,17 +306,6 @@ export default function GenerationPage() {
           </div>
         )}
 
-        {/* Preview ready variants button (partial success) */}
-        {completedCount > 0 && !isComplete && (
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setShowSwiper(true)}
-              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
-            >
-              Preview Ready Variants ({completedCount})
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )

@@ -1,11 +1,22 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useGenerationStatus } from '@/lib/hooks/useGenerationStatus'
+import { musicFacts } from '@/lib/music-facts'
 
 interface GenerationProgressProps {
   orderId: string
   onAllComplete?: () => void
+}
+
+// Shuffle array using Fisher-Yates and return a copy
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
 }
 
 export function GenerationProgress({ orderId, onAllComplete }: GenerationProgressProps) {
@@ -17,6 +28,26 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
     completedCount,
     totalVariants,
   } = useGenerationStatus(orderId)
+
+  // Shuffled facts so each session gets a unique order
+  const [shuffledFacts] = useState(() => shuffleArray(musicFacts))
+  const [factIndex, setFactIndex] = useState(0)
+  const [fadeIn, setFadeIn] = useState(true)
+
+  // Cycle through facts every 8 seconds with fade transition
+  const rotateFact = useCallback(() => {
+    setFadeIn(false)
+    setTimeout(() => {
+      setFactIndex((prev) => (prev + 1) % shuffledFacts.length)
+      setFadeIn(true)
+    }, 400)
+  }, [shuffledFacts.length])
+
+  useEffect(() => {
+    if (isComplete) return
+    const interval = setInterval(rotateFact, 8000)
+    return () => clearInterval(interval)
+  }, [isComplete, rotateFact])
 
   // Call onAllComplete when generation finishes
   useEffect(() => {
@@ -79,6 +110,19 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
           />
         </div>
       </div>
+
+      {/* Music fact / joke */}
+      {!isComplete && (
+        <div className="mb-8 text-center min-h-[4rem] flex items-center justify-center px-4">
+          <p
+            className={`text-sm text-gray-500 italic transition-opacity duration-400 ${
+              fadeIn ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {shuffledFacts[factIndex]}
+          </p>
+        </div>
+      )}
 
       {/* Per-variant status list */}
       <div className="space-y-4 mb-6">

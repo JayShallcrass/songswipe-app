@@ -17,13 +17,19 @@ interface SongCardProps {
     createdAt: string
     senderName?: string
   }
+  onDelete?: () => void
 }
 
-export default function SongCard({ song }: SongCardProps) {
+export default function SongCard({ song, onDelete }: SongCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [isLoadingAudio, setIsLoadingAudio] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteInput, setDeleteInput] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
   const downloadMutation = useDownloadSong()
+
+  const CONFIRM_WORD = 'DELETE'
 
   // Format occasion: remove hyphens, capitalize first letter of each word
   const formatOccasion = (occ: string) => {
@@ -69,6 +75,24 @@ export default function SongCard({ song }: SongCardProps) {
 
   const handleDownload = () => {
     downloadMutation.mutate(song.id)
+  }
+
+  const handleDelete = async () => {
+    if (deleteInput !== CONFIRM_WORD) return
+
+    setIsDeleting(true)
+    try {
+      const response = await fetch(`/api/songs/${song.id}`, { method: 'DELETE' })
+      if (!response.ok) throw new Error('Failed to delete song')
+      setShowDeleteConfirm(false)
+      setDeleteInput('')
+      onDelete?.()
+    } catch (err) {
+      console.error('Delete error:', err)
+      alert('Failed to delete song. Please try again.')
+    } finally {
+      setIsDeleting(false)
+    }
   }
 
   return (
@@ -160,6 +184,38 @@ export default function SongCard({ song }: SongCardProps) {
               </button>
             </div>
           )}
+
+          {/* Delete confirmation */}
+          {showDeleteConfirm && (
+            <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-sm text-red-700 font-medium mb-2">
+                This will permanently delete this song. Type <span className="font-bold">{CONFIRM_WORD}</span> to confirm.
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={deleteInput}
+                  onChange={(e) => setDeleteInput(e.target.value)}
+                  placeholder={`Type ${CONFIRM_WORD}`}
+                  className="flex-1 px-3 py-2 border border-red-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+                  autoFocus
+                />
+                <button
+                  onClick={handleDelete}
+                  disabled={deleteInput !== CONFIRM_WORD || isDeleting}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  {isDeleting ? 'Deleting...' : 'Confirm'}
+                </button>
+                <button
+                  onClick={() => { setShowDeleteConfirm(false); setDeleteInput('') }}
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 text-sm font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action buttons */}
@@ -176,6 +232,12 @@ export default function SongCard({ song }: SongCardProps) {
           >
             Share
           </Link>
+          <button
+            onClick={() => setShowDeleteConfirm(!showDeleteConfirm)}
+            className="px-4 py-2 border border-red-200 text-red-400 rounded-lg font-medium hover:text-red-600 hover:border-red-300 hover:bg-red-50 transition-all text-sm"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>

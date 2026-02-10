@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useCallback } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { VariantCard } from './VariantCard'
 
 interface Variant {
@@ -18,7 +18,8 @@ interface VariantSwiperProps {
 
 export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: VariantSwiperProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [direction, setDirection] = useState<'left' | 'right'>('right')
+  const [exitDirection, setExitDirection] = useState<'left' | 'right' | null>(null)
+  const [exitingId, setExitingId] = useState<string | null>(null)
 
   if (variants.length === 0) {
     return (
@@ -28,133 +29,113 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
     )
   }
 
-  const currentVariant = variants[currentIndex]
+  const handleSwipe = useCallback((direction: 'left' | 'right') => {
+    const currentVariant = variants[currentIndex]
 
-  const goToNext = () => {
-    if (currentIndex < variants.length - 1) {
-      setDirection('right')
-      const newIndex = currentIndex + 1
-      setCurrentIndex(newIndex)
-      onIndexChange?.(newIndex, variants.length)
+    if (direction === 'right') {
+      // SELECT - trigger exit animation then select
+      setExitDirection('right')
+      setExitingId(currentVariant.id)
+      setTimeout(() => {
+        onSelect(currentVariant.id)
+      }, 300)
+      return
     }
-  }
 
-  const goToPrevious = () => {
-    if (currentIndex > 0) {
-      setDirection('left')
-      const newIndex = currentIndex - 1
-      setCurrentIndex(newIndex)
-      onIndexChange?.(newIndex, variants.length)
-    }
-  }
+    // NEXT - cycle to next variant
+    setExitDirection('left')
+    setExitingId(currentVariant.id)
+    setTimeout(() => {
+      const nextIndex = (currentIndex + 1) % variants.length
+      setCurrentIndex(nextIndex)
+      setExitingId(null)
+      setExitDirection(null)
+      onIndexChange?.(nextIndex, variants.length)
+    }, 250)
+  }, [currentIndex, variants, onSelect, onIndexChange])
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowLeft') {
-      goToPrevious()
-    } else if (e.key === 'ArrowRight') {
-      goToNext()
-    }
+  // Build visible card stack (up to 3 cards, current on top)
+  const visibleCards: { variant: Variant; stackIndex: number }[] = []
+  for (let i = Math.min(2, variants.length - 1); i >= 0; i--) {
+    const idx = (currentIndex + i) % variants.length
+    visibleCards.push({ variant: variants[idx], stackIndex: i })
   }
 
   return (
-    <div
-      className="max-w-2xl mx-auto"
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-    >
-      {/* Variant count indicator */}
-      <div className="text-center mb-6">
-        <p className="text-lg text-gray-600 font-medium">
-          Variant {currentIndex + 1} of {variants.length}
-        </p>
-      </div>
+    <div className="max-w-md mx-auto">
+      {/* Card stack */}
+      <div
+        className="relative w-full aspect-[4/5] sm:aspect-[3/4]"
+        style={{ touchAction: 'none' }}
+      >
+        <AnimatePresence>
+          {visibleCards.map(({ variant, stackIndex }) => {
+            const isExiting = variant.id === exitingId
 
-      {/* Card container with navigation */}
-      <div className="relative px-0 md:px-16">
-        {/* Left arrow button - inside card area on mobile, outside on desktop */}
-        <button
-          onClick={goToPrevious}
-          disabled={currentIndex === 0}
-          className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 md:bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
-          aria-label="Previous variant"
-        >
-          <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+            if (isExiting) {
+              return (
+                <motion.div
+                  key={variant.id}
+                  className="absolute inset-0 w-full h-full"
+                  initial={{ x: 0, opacity: 1 }}
+                  animate={{
+                    x: exitDirection === 'right' ? 400 : -400,
+                    opacity: 0,
+                    rotate: exitDirection === 'right' ? 15 : -15,
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeIn' }}
+                  style={{ zIndex: 30 }}
+                />
+              )
+            }
 
-        {/* Animated card */}
-        <div className="relative min-h-[380px] sm:min-h-[440px] md:min-h-[500px]">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={currentVariant.id}
-              custom={direction}
-              initial={{
-                x: direction === 'right' ? 300 : -300,
-                opacity: 0,
-              }}
-              animate={{
-                x: 0,
-                opacity: 1,
-              }}
-              exit={{
-                x: direction === 'right' ? -300 : 300,
-                opacity: 0,
-              }}
-              transition={{
-                duration: 0.3,
-                ease: 'easeInOut',
-              }}
-              className="absolute inset-0 w-full"
-            >
-              <VariantCard
-                orderId={orderId}
-                variantId={currentVariant.id}
-                variantNumber={currentVariant.variant_number}
-                isActive={true}
-                onSelect={() => onSelect(currentVariant.id)}
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Right arrow button - inside card area on mobile, outside on desktop */}
-        <button
-          onClick={goToNext}
-          disabled={currentIndex === variants.length - 1}
-          className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 md:bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all z-10"
-          aria-label="Next variant"
-        >
-          <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+            return (
+              <motion.div
+                key={variant.id}
+                className="absolute inset-0 w-full h-full"
+                style={{
+                  zIndex: 10 - stackIndex,
+                }}
+                initial={false}
+                animate={{
+                  scale: 1 - stackIndex * 0.04,
+                  y: stackIndex * 8,
+                  opacity: stackIndex === 0 ? 1 : 0.7 - stackIndex * 0.2,
+                }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
+                <VariantCard
+                  orderId={orderId}
+                  variantId={variant.id}
+                  variantNumber={variant.variant_number}
+                  isActive={stackIndex === 0}
+                  isTop={stackIndex === 0 && !exitingId}
+                  onSwipe={handleSwipe}
+                />
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
       </div>
 
       {/* Dot indicators */}
-      <div className="flex justify-center gap-2 mt-4 sm:mt-6">
+      <div className="flex justify-center gap-2 mt-5">
         {variants.map((variant, index) => (
-          <button
+          <div
             key={variant.id}
-            onClick={() => {
-              setDirection(index > currentIndex ? 'right' : 'left')
-              setCurrentIndex(index)
-              onIndexChange?.(index, variants.length)
-            }}
-            className={`w-3 h-3 rounded-full transition-all ${
+            className={`h-2 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? 'bg-gradient-to-r from-purple-500 to-pink-500 w-8'
-                : 'bg-gray-300 hover:bg-gray-400'
+                ? 'w-6 bg-gradient-to-r from-purple-500 to-pink-500'
+                : 'w-2 bg-gray-300'
             }`}
-            aria-label={`Go to variant ${index + 1}`}
           />
         ))}
       </div>
 
-      {/* Keyboard hint - hidden on touch devices */}
-      <div className="hidden md:block text-center mt-4 text-sm text-gray-500">
-        Use arrow keys to navigate between variants
-      </div>
+      {/* Swipe hint text */}
+      <p className="text-center text-sm text-gray-500 mt-3">
+        Swipe right to select, left to skip
+      </p>
     </div>
   )
 }

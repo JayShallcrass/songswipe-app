@@ -1,7 +1,8 @@
 'use client'
 
-import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion'
+import { motion, useMotionValue, useTransform, useAnimate, PanInfo } from 'framer-motion'
 import { SwipeCardData } from '@/types/swipe'
+import { useEffect, useRef, useCallback } from 'react'
 
 interface SwipeCardProps {
   card: SwipeCardData
@@ -14,6 +15,58 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
   const rotate = useTransform(x, [-200, 0, 200], [-15, 0, 15])
   const leftOpacity = useTransform(x, [-200, -100, 0], [0.3, 0.8, 0])
   const rightOpacity = useTransform(x, [0, 100, 200], [0, 0.8, 0.3])
+  const [scope, animate] = useAnimate()
+  const hasInteracted = useRef(false)
+  const nudgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const nudgeInterval = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const clearTimers = useCallback(() => {
+    if (nudgeTimer.current) clearTimeout(nudgeTimer.current)
+    if (nudgeInterval.current) clearInterval(nudgeInterval.current)
+  }, [])
+
+  // Nudge animation: wiggle left then right to show SKIP/SELECT pills
+  const playNudge = useCallback(async () => {
+    if (hasInteracted.current || !scope.current) return
+    try {
+      // Wiggle left to flash SKIP
+      await animate(scope.current, { x: -60 }, { duration: 0.3, ease: 'easeOut' })
+      await animate(scope.current, { x: 0 }, { duration: 0.2, ease: 'easeIn' })
+      // Small pause
+      await new Promise(r => setTimeout(r, 200))
+      if (hasInteracted.current) return
+      // Wiggle right to flash SELECT
+      await animate(scope.current, { x: 60 }, { duration: 0.3, ease: 'easeOut' })
+      await animate(scope.current, { x: 0 }, { duration: 0.2, ease: 'easeIn' })
+    } catch {
+      // Animation interrupted, that's fine
+    }
+  }, [animate, scope])
+
+  // Start idle nudge timer when this card becomes the top card
+  useEffect(() => {
+    if (!isTop) return
+    hasInteracted.current = false
+    clearTimers()
+
+    // First nudge after 1.5s
+    nudgeTimer.current = setTimeout(() => {
+      playNudge()
+      // Repeat every 5s
+      nudgeInterval.current = setInterval(playNudge, 5000)
+    }, 1500)
+
+    return clearTimers
+  }, [isTop, card.id, playNudge, clearTimers])
+
+  const markInteracted = () => {
+    hasInteracted.current = true
+    clearTimers()
+  }
+
+  const handleDragStart = () => {
+    markInteracted()
+  }
 
   const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const target = _event.currentTarget as HTMLElement | null
@@ -30,9 +83,11 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
 
   return (
     <motion.div
+      ref={scope}
       drag={isTop ? 'x' : false}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.7}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       style={{
         x,

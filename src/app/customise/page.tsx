@@ -15,7 +15,6 @@ export default function CustomisePage() {
   const router = useRouter()
   const [supabase, setSupabase] = useState<ReturnType<typeof createBrowserClient> | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [showHints, setShowHints] = useState(true)
 
   // Initialize Supabase client on mount
   useEffect(() => {
@@ -114,18 +113,11 @@ export default function CustomisePage() {
   }
 
   const handleBack = () => {
-    // Go back to last swipe stage
     undo()
   }
 
   const handleStartOver = () => {
-    // Clear all swipe state and sessionStorage
     reset()
-    setShowHints(true)
-  }
-
-  const handleHintsDismiss = () => {
-    setShowHints(false)
   }
 
   return (
@@ -181,8 +173,6 @@ export default function CustomisePage() {
                 onSwipe={handleSwipe}
                 onUndo={undo}
                 canUndo={canUndo}
-                showHints={showHints}
-                onHintsDismiss={handleHintsDismiss}
                 didLoop={didLoop}
               />
             )}

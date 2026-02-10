@@ -1,7 +1,6 @@
 'use client'
 
 import { SwipeCard } from '@/components/swipe/SwipeCard'
-import { SwipeHints } from '@/components/swipe/SwipeHints'
 import { SwipeCardData, SwipeStage } from '@/types/swipe'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -14,8 +13,6 @@ interface SwipeStackProps {
   onSwipe: (cardId: string, direction: 'left' | 'right') => void
   onUndo: () => void
   canUndo: boolean
-  showHints: boolean
-  onHintsDismiss: () => void
   didLoop?: boolean
 }
 
@@ -28,8 +25,6 @@ export function SwipeStack({
   onSwipe,
   onUndo,
   canUndo,
-  showHints,
-  onHintsDismiss,
   didLoop,
 }: SwipeStackProps) {
   // Build visible cards with wrapping support
@@ -91,9 +86,6 @@ export function SwipeStack({
             )
           })}
         </AnimatePresence>
-
-        {/* Hints overlay */}
-        {showHints && <SwipeHints onDismiss={onHintsDismiss} />}
       </div>
 
       {/* Loop indicator */}

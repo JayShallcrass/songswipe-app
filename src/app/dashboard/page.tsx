@@ -67,6 +67,22 @@ export default function DashboardPage() {
     router.push('/auth/login')
   }
 
+  // Delete all user data (dev/testing)
+  const handleDeleteAll = async () => {
+    if (!window.confirm('This will permanently delete all your songs, orders, and customisations. Are you sure?')) {
+      return
+    }
+
+    try {
+      const response = await fetch('/api/account/reset', { method: 'DELETE' })
+      if (!response.ok) throw new Error('Failed to reset account')
+      window.location.reload()
+    } catch (error) {
+      console.error('Reset error:', error)
+      alert('Failed to reset account. Please try again.')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
@@ -78,12 +94,20 @@ export default function DashboardPage() {
             </h1>
             <p className="text-gray-600 mt-1 text-sm sm:text-base truncate">{userEmail}</p>
           </div>
-          <button
-            onClick={handleSignOut}
-            className="px-3 sm:px-4 py-2 text-gray-600 hover:text-gray-900 font-medium text-sm sm:text-base whitespace-nowrap"
-          >
-            Sign Out
-          </button>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/customise"
+              className="px-3 sm:px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold text-sm sm:text-base whitespace-nowrap hover:from-pink-600 hover:to-purple-700 transition-all shadow-sm"
+            >
+              Create a Song
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="px-3 sm:px-4 py-2 text-gray-600 hover:text-gray-900 font-medium text-sm sm:text-base whitespace-nowrap"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
 
         {/* Quick Stats */}
@@ -279,6 +303,16 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Reset account (testing) */}
+        <div className="mt-8 text-center">
+          <button
+            onClick={handleDeleteAll}
+            className="text-red-400 hover:text-red-600 text-sm font-medium transition-colors"
+          >
+            Delete All Data
+          </button>
         </div>
       </div>
     </div>

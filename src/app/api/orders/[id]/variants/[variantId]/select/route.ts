@@ -63,9 +63,34 @@ export async function POST(
       )
     }
 
+    // Fetch share data for the post-selection experience
+    const { data: shareData } = await supabase
+      .from('song_variants')
+      .select(`
+        share_token,
+        orders(
+          occasion_date,
+          customizations(
+            recipient_name,
+            your_name,
+            occasion
+          )
+        )
+      `)
+      .eq('id', params.variantId)
+      .single()
+
+    const order = Array.isArray(shareData?.orders) ? shareData.orders[0] : shareData?.orders
+    const customisation = Array.isArray(order?.customizations) ? order.customizations[0] : order?.customizations
+
     return NextResponse.json({
       success: true,
       selected_variant_id: params.variantId,
+      share_token: shareData?.share_token || null,
+      recipient_name: customisation?.recipient_name || null,
+      sender_name: customisation?.your_name || null,
+      occasion: customisation?.occasion || null,
+      occasion_date: order?.occasion_date || null,
     })
   } catch (error) {
     console.error('Error in variant selection:', error)

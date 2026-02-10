@@ -7,6 +7,7 @@ import { useGenerationStatus } from '@/lib/hooks/useGenerationStatus'
 import { GenerationProgress } from '@/components/generation/GenerationProgress'
 import { VariantSwiper } from '@/components/generation/VariantSwiper'
 import { VariantUpsellModal } from '@/components/upsells/VariantUpsellModal'
+import { PostSelectionShare } from '@/components/generation/PostSelectionShare'
 
 export default function GenerationPage() {
   const params = useParams()
@@ -21,6 +22,14 @@ export default function GenerationPage() {
   const [upsellDismissed, setUpsellDismissed] = useState(false)
   const [generationError, setGenerationError] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [shareData, setShareData] = useState<{
+    variantId: string
+    shareToken: string | null
+    recipientName: string
+    senderName: string
+    occasion: string
+    occasionDate: string | null
+  } | null>(null)
   const generationStarted = useRef(false)
 
   const {
@@ -119,6 +128,16 @@ export default function GenerationPage() {
         throw new Error('Failed to select variant')
       }
 
+      const result = await response.json()
+
+      setShareData({
+        variantId,
+        shareToken: result.share_token,
+        recipientName: result.recipient_name || 'them',
+        senderName: result.sender_name || 'Someone',
+        occasion: result.occasion || 'just-because',
+        occasionDate: result.occasion_date,
+      })
       setSelectedVariantId(variantId)
     } catch (err) {
       setSelectError(err instanceof Error ? err.message : 'Failed to select variant')
@@ -217,25 +236,9 @@ export default function GenerationPage() {
     )
   }
 
-  // Phase C: Variant selected - show confirmation
-  if (selectedVariantId) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-purple-50 flex items-center justify-center px-4">
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
-          <div className="text-6xl mb-6">&#9989;</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Your song has been selected!</h1>
-          <p className="text-lg text-gray-600 mb-8">
-            Your chosen variant is ready. You can listen to it and download it from your dashboard.
-          </p>
-          <Link
-            href="/dashboard"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-lg rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
-          >
-            Go to Dashboard
-          </Link>
-        </div>
-      </div>
-    )
+  // Phase C: Variant selected - show share experience
+  if (selectedVariantId && shareData) {
+    return <PostSelectionShare data={shareData} />
   }
 
   // Phase B: Show swiper for completed variants

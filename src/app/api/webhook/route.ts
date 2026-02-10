@@ -155,6 +155,19 @@ export async function POST(request: NextRequest) {
           type: orderType,
           variantCount,
         })
+
+        // Trigger generation immediately (fire-and-forget)
+        const generationSecret = process.env.GENERATION_SECRET
+        if (generationSecret) {
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'
+          fetch(`${appUrl}/api/generate/start`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: order.id, secret: generationSecret }),
+          }).catch(err => {
+            console.error('Failed to trigger generation from webhook:', err)
+          })
+        }
         break
       }
 

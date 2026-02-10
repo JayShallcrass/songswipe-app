@@ -78,14 +78,19 @@ export default function GenerationPage() {
     }
   }, [orderId, isGenerating])
 
-  // Auto-start generation when page loads and order has pending variants
+  // Auto-start generation as fallback if webhook trigger didn't fire.
+  // Only trigger if variants are still 'pending' (not already 'generating').
+  // The webhook fires generation immediately on payment, so normally
+  // variants will already be 'generating' or 'complete' by the time
+  // the user reaches this page.
   useEffect(() => {
     if (
       !generationStarted.current &&
       data &&
       !isLoading &&
       (data.order_status === 'paid' || data.order_status === 'generating') &&
-      data.variants.some(v => v.generation_status === 'pending')
+      data.variants.some(v => v.generation_status === 'pending') &&
+      !data.variants.some(v => v.generation_status === 'generating')
     ) {
       generationStarted.current = true
       triggerGeneration()

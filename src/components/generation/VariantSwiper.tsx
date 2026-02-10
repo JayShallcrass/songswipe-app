@@ -62,7 +62,7 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
   }
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-[260px] sm:max-w-sm mx-auto">
       {/* Card stack */}
       <div
         className="relative w-full aspect-[4/5] sm:aspect-[3/4]"

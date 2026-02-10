@@ -8,6 +8,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useSongHistory } from '@/lib/hooks/useSongHistory'
 import { useOrderHistory } from '@/lib/hooks/useOrderHistory'
 import { useOccasions } from '@/lib/hooks/useOccasions'
+import { useDashboardStats } from '@/lib/hooks/useDashboardStats'
 import SongCard from '@/components/dashboard/SongCard'
 import OrderRow from '@/components/dashboard/OrderRow'
 import OccasionCard from '@/components/dashboard/OccasionCard'
@@ -44,6 +45,7 @@ export default function DashboardPage() {
   const { data: songData, isLoading: isLoadingSongs } = useSongHistory(songPage)
   const { data: orderData, isLoading: isLoadingOrders } = useOrderHistory(orderPage)
   const { data: occasions, isLoading: isLoadingOccasions } = useOccasions()
+  const { data: stats } = useDashboardStats()
 
   // Redirect first-time users (no songs AND no orders) straight to creation flow
   useEffect(() => {
@@ -53,11 +55,6 @@ export default function DashboardPage() {
       }
     }
   }, [isLoadingSongs, isLoadingOrders, songData, orderData, router])
-
-  // Calculate stats
-  const totalSongs = songData?.total || 0
-  const totalOrders = orderData?.total || 0
-  const totalSpent = orderData?.orders.reduce((sum, order) => sum + order.amount, 0) || 0
 
   // Sign out handler
   const handleSignOut = async () => {
@@ -102,20 +99,21 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="text-3xl font-bold text-gray-900">{totalSongs}</div>
-            <div className="text-gray-500 text-sm">Total Songs</div>
+        <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
+            <div className="text-2xl mb-1">🎵</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats?.totalSongs ?? 0}</div>
+            <div className="text-gray-500 text-xs sm:text-sm">Songs Created</div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="text-3xl font-bold text-gray-900">{totalOrders}</div>
-            <div className="text-gray-500 text-sm">Total Orders</div>
+          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
+            <div className="text-2xl mb-1">🎤</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats?.peopleSerenaded ?? 0}</div>
+            <div className="text-gray-500 text-xs sm:text-sm">People Serenaded</div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <div className="text-3xl font-bold text-gray-900">
-              £{(totalSpent / 100).toFixed(2)}
-            </div>
-            <div className="text-gray-500 text-sm">Total Spent</div>
+          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
+            <div className="text-2xl mb-1">📅</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats?.upcomingOccasions ?? 0}</div>
+            <div className="text-gray-500 text-xs sm:text-sm">Upcoming Occasions</div>
           </div>
         </div>
 

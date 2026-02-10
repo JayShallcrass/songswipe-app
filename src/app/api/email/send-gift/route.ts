@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { getAuthUser } from '@/lib/supabase'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY)
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -103,6 +103,7 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`
 
+    const resend = getResend()
     const emailOptions: Parameters<typeof resend.emails.send>[0] = {
       from: 'SongSwipe <gifts@songswipe.io>',
       to: recipientEmail,

@@ -1,10 +1,24 @@
 import Stripe from 'stripe'
 import { BASE_PRICE } from './bundles/pricing'
 
-// Server-side Stripe client
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover' as any, // Use 'as any' to bypass type check for beta versions
-  typescript: true,
+// Server-side Stripe client (lazy-initialized to avoid build-time errors)
+let _stripe: Stripe | null = null
+
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: '2026-01-28.clover' as any,
+      typescript: true,
+    })
+  }
+  return _stripe
+}
+
+// Backwards-compatible export
+export const stripe = new Proxy({} as Stripe, {
+  get(_, prop) {
+    return (getStripe() as any)[prop]
+  },
 })
 
 // Create checkout session

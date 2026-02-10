@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import Stripe from 'stripe'
+import { getStripe } from '@/lib/stripe'
+import type Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import crypto from 'crypto'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover' as any, // Use 'as any' to bypass type check for beta versions
-})
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,7 +18,7 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event
     try {
       const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
-      event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
+      event = getStripe().webhooks.constructEvent(body, signature, endpointSecret)
     } catch (err) {
       console.error('Webhook signature verification failed:', err)
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })

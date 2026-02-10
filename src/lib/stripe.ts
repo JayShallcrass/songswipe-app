@@ -9,7 +9,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 // Create checkout session
 export async function createCheckoutSession({
-  customizationId,
+  customisationId,
   userId,
   email,
   amount = BASE_PRICE,
@@ -18,7 +18,7 @@ export async function createCheckoutSession({
   cancelUrl,
   metadata = {},
 }: {
-  customizationId: string
+  customisationId: string
   userId: string
   email: string
   amount?: number
@@ -44,7 +44,7 @@ export async function createCheckoutSession({
       break
     case 'base':
     default:
-      productName = 'Personalized Song Package'
+      productName = 'Personalised Song Package'
       productDescription = '3 AI-generated song variants'
       break
   }
@@ -70,14 +70,14 @@ export async function createCheckoutSession({
     cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'}/pricing?canceled=true`,
     customer_email: email,
     metadata: {
-      customizationId,
+      customizationId: customisationId,
       userId,
       orderType,
       ...metadata,
     },
     payment_intent_data: {
       metadata: {
-        customizationId,
+        customizationId: customisationId,
         userId,
         orderType,
         ...metadata,

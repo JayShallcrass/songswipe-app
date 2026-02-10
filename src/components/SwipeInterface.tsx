@@ -156,7 +156,7 @@ export function SwipeInterface({ onComplete }: SwipeInterfaceProps) {
             Preview Your Options
           </h2>
           <p className="text-gray-600">
-            Listen to previews and swipe to pick your favorite version
+            Listen to previews and swipe to pick your favourite version
           </p>
         </div>
       )}

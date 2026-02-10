@@ -21,7 +21,7 @@ export async function createBundleCheckout({ bundleTierId }: { bundleTierId: str
 
   // Create Stripe checkout session with bundle order type
   const session = await createCheckoutSession({
-    customizationId: 'bundle-purchase', // Bundles are not tied to a specific customization
+    customisationId: 'bundle-purchase', // Bundles are not tied to a specific customisation
     userId: user.id,
     email: user.email!,
     amount: tier.price,

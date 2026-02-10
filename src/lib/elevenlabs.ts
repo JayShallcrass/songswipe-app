@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-// Form schema for song customization
-export const customizationSchema = z.object({
+// Form schema for song customisation
+export const customisationSchema = z.object({
   recipientName: z.string().min(1, 'Recipient name is required').max(100),
   yourName: z.string().min(1, 'Your name is required').max(100),
   occasion: z.enum([
@@ -21,11 +21,11 @@ export const customizationSchema = z.object({
   thingsToAvoid: z.string().max(300).optional(),
 })
 
-export type Customization = z.infer<typeof customizationSchema>
+export type Customisation = z.infer<typeof customisationSchema>
 
-// Build Eleven Labs prompt from customization
-export function buildPrompt(customization: Customization): string {
-  const { recipientName, yourName, occasion, songLength, mood, genre, specialMemories, thingsToAvoid } = customization
+// Build Eleven Labs prompt from customisation
+export function buildPrompt(customisation: Customisation): string {
+  const { recipientName, yourName, occasion, songLength, mood, genre, specialMemories, thingsToAvoid } = customisation
 
   const occasionMap: Record<string, string> = {
     valentines: "Valentine's Day",
@@ -37,7 +37,7 @@ export function buildPrompt(customization: Customization): string {
   }
 
   const prompt = `A ${mood.join(' and ')} ${genre} song about ${recipientName} for ${occasionMap[occasion]}.
-  
+
 Written by ${yourName} as a gift for ${recipientName}.
 
 ${specialMemories ? `Include references to: ${specialMemories}` : ''}
@@ -52,9 +52,9 @@ Make it personal, heartfelt, and appropriate for the occasion. Include the recip
 }
 
 // Generate song via Eleven Labs API
-export async function generateSong(customization: Customization) {
-  const prompt = buildPrompt(customization)
-  
+export async function generateSong(customisation: Customisation) {
+  const prompt = buildPrompt(customisation)
+
   // Eleven Labs Music API endpoint
   const response = await fetch('https://api.elevenlabs.io/v1/music/compose', {
     method: 'POST',
@@ -64,7 +64,7 @@ export async function generateSong(customization: Customization) {
     },
     body: JSON.stringify({
       prompt,
-      music_length_ms: parseInt(customization.songLength) * 1000,
+      music_length_ms: parseInt(customisation.songLength) * 1000,
       force_instrumental: false,
     }),
   })
@@ -79,7 +79,7 @@ export async function generateSong(customization: Customization) {
   return Buffer.from(audioBuffer)
 }
 
-// Occasion-specific follow-up questions (used as suggestion chips in PersonalizationForm)
+// Occasion-specific follow-up questions (used as suggestion chips in PersonalisationForm)
 export const occasionQuestions: Record<string, string[]> = {
   valentines: [
     'How did you two meet?',

@@ -64,9 +64,9 @@ export async function GET(
 
     // Extract recipient name for filename
     const order = Array.isArray(variant.orders) ? variant.orders[0] : variant.orders
-    const customizationData = order?.customizations
-    const customization = Array.isArray(customizationData) ? customizationData[0] : customizationData
-    const recipientName = customization?.recipient_name || 'your-song'
+    const customisationData = order?.customizations
+    const customisation = Array.isArray(customisationData) ? customisationData[0] : customisationData
+    const recipientName = customisation?.recipient_name || 'your-song'
 
     // Sanitize recipient name for filename (lowercase, replace non-alphanumeric with hyphens)
     const sanitizedName = recipientName

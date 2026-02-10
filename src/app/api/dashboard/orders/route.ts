@@ -50,12 +50,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Flatten nested customizations
+    // Flatten nested customisations
     const flattenedOrders = (orders || []).map(order => {
-      const customizationData = order.customizations
-      const customization = Array.isArray(customizationData)
-        ? customizationData[0]
-        : customizationData
+      const customisationData = order.customizations
+      const customisation = Array.isArray(customisationData)
+        ? customisationData[0]
+        : customisationData
 
       return {
         id: order.id,
@@ -64,8 +64,8 @@ export async function GET(request: NextRequest) {
         orderType: order.order_type,
         createdAt: order.created_at,
         stripeSessionId: order.stripe_session_id,
-        recipientName: customization?.recipient_name || 'Unknown',
-        occasion: customization?.occasion || 'unknown',
+        recipientName: customisation?.recipient_name || 'Unknown',
+        occasion: customisation?.occasion || 'unknown',
       }
     })
 

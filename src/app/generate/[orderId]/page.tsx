@@ -244,7 +244,7 @@ export default function GenerationPage() {
       <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-pink-50 flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-4xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Favorite</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Favourite</h1>
             <p className="text-lg text-gray-600">
               Listen to each variant and select the one you love
             </p>

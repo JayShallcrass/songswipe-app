@@ -155,7 +155,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold text-center bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
             >
-              Your Personalized Song
+              Your Personalised Song
             </motion.h2>
 
             {/* Personal Message Card */}

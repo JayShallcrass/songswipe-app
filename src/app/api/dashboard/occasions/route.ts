@@ -39,19 +39,19 @@ export async function GET() {
       )
     }
 
-    // Flatten nested customizations
+    // Flatten nested customisations
     const flattenedOccasions = (orders || []).map(order => {
-      const customizationData = order.customizations
-      const customization = Array.isArray(customizationData)
-        ? customizationData[0]
-        : customizationData
+      const customisationData = order.customizations
+      const customisation = Array.isArray(customisationData)
+        ? customisationData[0]
+        : customisationData
 
       return {
         id: order.id,
         occasionDate: order.occasion_date,
         createdAt: order.created_at,
-        recipientName: customization?.recipient_name || 'Unknown',
-        occasion: customization?.occasion || 'unknown',
+        recipientName: customisation?.recipient_name || 'Unknown',
+        occasion: customisation?.occasion || 'unknown',
       }
     })
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { occasionQuestions } from '@/lib/elevenlabs'
 
-export interface PersonalizationData {
+export interface PersonalisationData {
   recipientName: string
   yourName: string
   specialMemories: string
@@ -12,16 +12,16 @@ export interface PersonalizationData {
   occasionDate: string
 }
 
-interface PersonalizationFormProps {
-  onSubmit: (data: PersonalizationData) => void
+interface PersonalisationFormProps {
+  onSubmit: (data: PersonalisationData) => void
   onBack: () => void
   isLoading: boolean
   selections: Record<string, string>
 }
 
-const CACHE_KEY = 'songswipe_personalization'
+const CACHE_KEY = 'songswipe_personalisation'
 
-export function clearPersonalizationCache() {
+export function clearPersonalisationCache() {
   try {
     localStorage.removeItem(CACHE_KEY)
   } catch {
@@ -29,7 +29,7 @@ export function clearPersonalizationCache() {
   }
 }
 
-function loadCache(): Partial<PersonalizationData> {
+function loadCache(): Partial<PersonalisationData> {
   try {
     const stored = localStorage.getItem(CACHE_KEY)
     if (stored) return JSON.parse(stored)
@@ -39,7 +39,7 @@ function loadCache(): Partial<PersonalizationData> {
   return {}
 }
 
-function saveCache(data: PersonalizationData) {
+function saveCache(data: PersonalisationData) {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data))
   } catch {
@@ -47,12 +47,12 @@ function saveCache(data: PersonalizationData) {
   }
 }
 
-export function PersonalizationForm({
+export function PersonalisationForm({
   onSubmit,
   onBack,
   isLoading,
   selections,
-}: PersonalizationFormProps) {
+}: PersonalisationFormProps) {
   const [recipientName, setRecipientName] = useState('')
   const [yourName, setYourName] = useState('')
   const [specialMemories, setSpecialMemories] = useState('')

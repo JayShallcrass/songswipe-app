@@ -54,10 +54,10 @@ async function fetchShareData(token: string) {
 
   // Unwrap nested response
   const order = Array.isArray(data.orders) ? data.orders[0] : data.orders
-  const customizationData = order?.customizations
-  const customization = Array.isArray(customizationData) ? customizationData[0] : customizationData
+  const customisationData = order?.customizations
+  const customisation = Array.isArray(customisationData) ? customisationData[0] : customisationData
 
-  if (!order || !customization) {
+  if (!order || !customisation) {
     return null
   }
 
@@ -66,11 +66,11 @@ async function fetchShareData(token: string) {
     storagePath: data.storage_path,
     durationMs: data.duration_ms,
     shareToken: data.share_token,
-    recipientName: customization.recipient_name,
-    senderName: customization.your_name,
-    occasion: customization.occasion,
-    genre: customization.genre,
-    mood: customization.mood,
+    recipientName: customisation.recipient_name,
+    senderName: customisation.your_name,
+    occasion: customisation.occasion,
+    genre: customisation.genre,
+    mood: customisation.mood,
     occasionDate: order.occasion_date,
     orderCreatedAt: order.created_at,
   }
@@ -82,8 +82,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Validate UUID format
   if (!UUID_REGEX.test(token)) {
     return {
-      title: 'Personalized Song Gift | SongSwipe',
-      description: 'A special personalized song created with SongSwipe',
+      title: 'Personalised Song Gift | SongSwipe',
+      description: 'A special personalised song created with SongSwipe',
     }
   }
 
@@ -91,8 +91,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!data) {
     return {
-      title: 'Personalized Song Gift | SongSwipe',
-      description: 'A special personalized song created with SongSwipe',
+      title: 'Personalised Song Gift | SongSwipe',
+      description: 'A special personalised song created with SongSwipe',
     }
   }
 
@@ -100,7 +100,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${formattedOccasion} Song for ${data.recipientName} | SongSwipe`,
-    description: `${data.senderName} created a personalized ${formattedOccasion} song for ${data.recipientName}. Listen now!`,
+    description: `${data.senderName} created a personalised ${formattedOccasion} song for ${data.recipientName}. Listen now!`,
     openGraph: {
       title: `${formattedOccasion} Song for ${data.recipientName}`,
       description: `From ${data.senderName} with love`,

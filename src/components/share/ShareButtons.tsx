@@ -18,7 +18,7 @@ interface ShareButtonsProps {
 }
 
 export function ShareButtons({ url, title, recipientName, occasion }: ShareButtonsProps) {
-  const shareText = `Check out this personalized ${occasion} song for ${recipientName}!`
+  const shareText = `Check out this personalised ${occasion} song for ${recipientName}!`
 
   return (
     <section className="text-center space-y-6">

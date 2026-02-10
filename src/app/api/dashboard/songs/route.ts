@@ -58,20 +58,20 @@ export async function GET(request: NextRequest) {
     // Flatten nested Supabase response
     const flattenedSongs = (songs || []).map(song => {
       const order = Array.isArray(song.orders) ? song.orders[0] : song.orders
-      const customizationData = order?.customizations
-      const customization = Array.isArray(customizationData)
-        ? customizationData[0]
-        : customizationData
+      const customisationData = order?.customizations
+      const customisation = Array.isArray(customisationData)
+        ? customisationData[0]
+        : customisationData
 
       return {
         id: song.id,
         variantNumber: song.variant_number,
         createdAt: song.created_at,
         storagePath: song.storage_path,
-        recipientName: customization?.recipient_name || 'Unknown',
-        occasion: customization?.occasion || 'unknown',
-        genre: customization?.genre || 'unknown',
-        mood: customization?.mood || [],
+        recipientName: customisation?.recipient_name || 'Unknown',
+        occasion: customisation?.occasion || 'unknown',
+        genre: customisation?.genre || 'unknown',
+        mood: customisation?.mood || [],
       }
     })
 

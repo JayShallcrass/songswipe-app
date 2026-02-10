@@ -4,7 +4,7 @@ import { createCheckoutSession } from '@/lib/stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { getUserBundleBalance, redeemBundleCredit } from '@/lib/bundles/redemption'
 
-export async function createCheckout(customizationId: string) {
+export async function createCheckout(customisationId: string) {
   const supabase = createServerSupabaseClient()
 
   // Verify user authentication
@@ -13,16 +13,16 @@ export async function createCheckout(customizationId: string) {
     throw new Error('Authentication required')
   }
 
-  // Verify customization ownership
-  const { data: customization, error: customizationError } = await supabase
+  // Verify customisation ownership
+  const { data: customisation, error: customisationError } = await supabase
     .from('customizations')
     .select('id')
-    .eq('id', customizationId)
+    .eq('id', customisationId)
     .eq('user_id', user.id)
     .maybeSingle()
 
-  if (customizationError || !customization) {
-    throw new Error('Customization not found')
+  if (customisationError || !customisation) {
+    throw new Error('Customisation not found')
   }
 
   // Check for available bundle credits (PAY-06: Bundle credit redemption)
@@ -33,11 +33,11 @@ export async function createCheckout(customizationId: string) {
     const redemption = await redeemBundleCredit(user.id)
 
     if (redemption.redeemed) {
-      // Fetch occasion_date from customization for retention tracking
-      const { data: customizationWithDate } = await supabase
+      // Fetch occasion_date from customisation for retention tracking
+      const { data: customisationWithDate } = await supabase
         .from('customizations')
         .select('occasion_date')
-        .eq('id', customizationId)
+        .eq('id', customisationId)
         .single()
 
       // Create order directly (bypass Stripe checkout)
@@ -45,12 +45,12 @@ export async function createCheckout(customizationId: string) {
         .from('orders')
         .insert({
           user_id: user.id,
-          customization_id: customizationId,
+          customization_id: customisationId,
           status: 'paid',
           amount: 0, // Free via bundle credit
           order_type: 'base',
           payment_method: 'bundle_credit',
-          occasion_date: customizationWithDate?.occasion_date || null,
+          occasion_date: customisationWithDate?.occasion_date || null,
         })
         .select()
         .single()
@@ -85,7 +85,7 @@ export async function createCheckout(customizationId: string) {
 
   // No bundle credits available or redemption failed - use Stripe checkout
   const session = await createCheckoutSession({
-    customizationId,
+    customisationId,
     userId: user.id,
     email: user.email!,
     orderType: 'base',

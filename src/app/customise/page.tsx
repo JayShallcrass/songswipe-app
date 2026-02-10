@@ -7,11 +7,11 @@ import { useSwipeState } from '@/lib/swipe-state'
 import { useSwipeKeyboard } from '@/lib/swipe-keyboard'
 import { SwipeStack } from '@/components/swipe/SwipeStack'
 import { SwipeProgress } from '@/components/swipe/SwipeProgress'
-import { PersonalizationForm, PersonalizationData, clearPersonalizationCache } from '@/components/forms/PersonalizationForm'
+import { PersonalisationForm, PersonalisationData, clearPersonalisationCache } from '@/components/forms/PersonalisationForm'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 
-export default function CustomizePage() {
+export default function CustomisePage() {
   const router = useRouter()
   const [supabase, setSupabase] = useState<ReturnType<typeof createBrowserClient> | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -40,7 +40,7 @@ export default function CustomizePage() {
   // Get current card for keyboard navigation
   const currentCard = currentStageConfig?.cards[state.currentCardIndex]
 
-  // Set up keyboard navigation (disabled when on personalization form)
+  // Set up keyboard navigation (disabled when on personalisation form)
   useSwipeKeyboard({
     onSwipeLeft: useCallback(() => {
       if (currentCard) {
@@ -57,7 +57,7 @@ export default function CustomizePage() {
     disabled: isSwipeComplete,
   })
 
-  const handleFormSubmit = async (data: PersonalizationData) => {
+  const handleFormSubmit = async (data: PersonalisationData) => {
     setIsLoading(true)
 
     try {
@@ -68,7 +68,7 @@ export default function CustomizePage() {
 
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        router.push('/auth/login?redirect=/customize')
+        router.push('/auth/login?redirect=/customise')
         return
       }
 
@@ -86,20 +86,20 @@ export default function CustomizePage() {
       }
 
       // Submit to API
-      const response = await fetch('/api/customize', {
+      const response = await fetch('/api/customise', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
 
       if (!response.ok) {
-        throw new Error('Failed to create customization')
+        throw new Error('Failed to create customisation')
       }
 
       const { checkoutUrl } = await response.json()
-      // Clear swipe state and personalization cache before redirecting
+      // Clear swipe state and personalisation cache before redirecting
       reset()
-      clearPersonalizationCache()
+      clearPersonalisationCache()
       window.location.href = checkoutUrl
     } catch (error) {
       console.error('Error:', error)
@@ -191,13 +191,13 @@ export default function CustomizePage() {
             </motion.div>
           ) : (
             <motion.div
-              key="personalization-form"
+              key="personalisation-form"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <PersonalizationForm
+              <PersonalisationForm
                 onSubmit={handleFormSubmit}
                 onBack={handleBack}
                 isLoading={isLoading}

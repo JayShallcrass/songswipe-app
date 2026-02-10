@@ -29,7 +29,7 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
 
   const pendingVariant = variants.find(v => v.generation_status === 'pending')
   if (!pendingVariant) {
-    // No pending variants - check if order is already finalized
+    // No pending variants - check if order is already finalised
     const completedCount = variants.filter(v => v.generation_status === 'complete').length
     return {
       status: completedCount > 0 ? 'all_complete' : 'all_failed',
@@ -37,7 +37,7 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
     }
   }
 
-  // Fetch the order to get userId and customizationId
+  // Fetch the order to get userId and customisation ID
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .select('user_id, customization_id, status')
@@ -53,15 +53,15 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
     await supabase.from('orders').update({ status: 'generating' }).eq('id', orderId)
   }
 
-  // Fetch customization
-  const { data: customization, error: custError } = await supabase
+  // Fetch customisation
+  const { data: customisation, error: custError } = await supabase
     .from('customizations')
     .select('*')
     .eq('id', order.customization_id)
     .single()
 
-  if (custError || !customization) {
-    return { status: 'no_pending', remaining: 0, error: 'Customization not found' }
+  if (custError || !customisation) {
+    return { status: 'no_pending', remaining: 0, error: 'Customisation not found' }
   }
 
   // Mark variant as generating
@@ -73,14 +73,14 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
   try {
     // Generate via ElevenLabs
     const audioBuffer = await generateSong({
-      recipientName: customization.recipient_name,
-      yourName: customization.your_name,
-      occasion: customization.occasion,
-      songLength: customization.song_length.toString(),
-      mood: customization.mood,
-      genre: customization.genre,
-      specialMemories: customization.special_memories || undefined,
-      thingsToAvoid: customization.things_to_avoid || undefined,
+      recipientName: customisation.recipient_name,
+      yourName: customisation.your_name,
+      occasion: customisation.occasion,
+      songLength: customisation.song_length.toString(),
+      mood: customisation.mood,
+      genre: customisation.genre,
+      specialMemories: customisation.special_memories || undefined,
+      thingsToAvoid: customisation.things_to_avoid || undefined,
     })
 
     // Upload to Supabase Storage
@@ -138,7 +138,7 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
     v => v.generation_status === 'pending' && v.id !== pendingVariant.id
   ).length
 
-  // If no more pending, finalize order status
+  // If no more pending, finalise order status
   if (remainingPending === 0) {
     // Re-fetch to get updated statuses
     const { data: updatedVariants } = await supabase

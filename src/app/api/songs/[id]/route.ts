@@ -68,11 +68,11 @@ export async function GET(
 
     // Map nested response to flat camelCase structure
     const order = Array.isArray(data.orders) ? data.orders[0] : data.orders
-    const customizationData = order?.customizations
-    const customization = Array.isArray(customizationData) ? customizationData[0] : customizationData
+    const customisationData = order?.customizations
+    const customisation = Array.isArray(customisationData) ? customisationData[0] : customisationData
 
-    if (!order || !customization) {
-      console.error('Missing order or customization data for song variant:', params.id)
+    if (!order || !customisation) {
+      console.error('Missing order or customisation data for song variant:', params.id)
       return NextResponse.json(
         { error: 'Song not found' },
         { status: 404 }
@@ -85,11 +85,11 @@ export async function GET(
       durationMs: data.duration_ms,
       createdAt: data.created_at,
       shareToken: data.share_token,
-      recipientName: customization.recipient_name,
-      occasion: customization.occasion,
-      senderName: customization.your_name,
-      genre: customization.genre,
-      mood: customization.mood,
+      recipientName: customisation.recipient_name,
+      occasion: customisation.occasion,
+      senderName: customisation.your_name,
+      genre: customisation.genre,
+      mood: customisation.mood,
       occasionDate: order.occasion_date,
       orderCreatedAt: order.created_at,
     }

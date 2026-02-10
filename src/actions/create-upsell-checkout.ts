@@ -41,7 +41,7 @@ export async function createUpsellCheckout({ orderId }: { orderId: string }): Pr
 
   // Create Stripe checkout session
   const session = await createCheckoutSession({
-    customizationId: order.customization_id,
+    customisationId: order.customization_id,
     userId: user.id,
     email: user.email!,
     amount: UPSELL_PRICE,

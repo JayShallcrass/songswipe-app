@@ -47,7 +47,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!isLoadingSongs && !isLoadingOrders && songData && orderData) {
       if (songData.total === 0 && orderData.total === 0) {
-        router.push('/customize')
+        router.push('/customise')
       }
     }
   }, [isLoadingSongs, isLoadingOrders, songData, orderData, router])
@@ -179,10 +179,10 @@ export default function DashboardPage() {
                   <EmptyState
                     icon="🎵"
                     title="No songs yet"
-                    description="Create your first personalized song!"
+                    description="Create your first personalised song!"
                     action={
                       <Link
-                        href="/customize"
+                        href="/customise"
                         className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md"
                       >
                         Create a Song

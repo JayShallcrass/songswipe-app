@@ -8,10 +8,10 @@ export default function Header() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  // Don't show header on dashboard, auth pages, customize, order, or checkout
+  // Don't show header on dashboard, auth pages, customise, order, or checkout
   if (pathname?.startsWith('/dashboard') ||
       pathname?.startsWith('/auth') ||
-      pathname?.startsWith('/customize') ||
+      pathname?.startsWith('/customise') ||
       pathname?.startsWith('/order') ||
       pathname?.startsWith('/checkout')) {
     return null

@@ -94,7 +94,7 @@ export default function PricingPage({
 
           {/* CTA button */}
           <Link
-            href="/customize"
+            href="/customise"
             className="block w-full py-4 text-center font-bold text-lg text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all hover:scale-[1.02] shadow-lg hover:shadow-xl"
           >
             Create Your Song

@@ -3,8 +3,8 @@ import { BundleTier } from './types'
 // Base pricing (£7.99)
 export const BASE_PRICE = 799 // pence
 
-// Upsell pricing (£4.99 -- 37% discount per research recommendation)
-export const UPSELL_PRICE = 499 // pence
+// Upsell pricing (£1.99 -- impulse buy for extra variant)
+export const UPSELL_PRICE = 199 // pence
 
 // Bundle tiers
 export const BUNDLE_TIERS: BundleTier[] = [

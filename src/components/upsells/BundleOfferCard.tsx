@@ -45,7 +45,7 @@ export function BundleOfferCard() {
       <div className="text-center mb-6">
         <h3 className="text-3xl font-bold mb-2">Loved Your Song? Create More & Save</h3>
         <p className="text-purple-100 text-lg">
-          Stock up on song credits for upcoming birthdays, anniversaries, and celebrations
+          Stock up on songs for upcoming birthdays, anniversaries, and celebrations
         </p>
       </div>
 
@@ -96,7 +96,7 @@ export function BundleOfferCard() {
           </li>
           <li className="flex items-start gap-2">
             <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-            <span>Credits never expire</span>
+            <span>Prepaid songs never expire</span>
           </li>
           <li className="flex items-start gap-2">
             <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />

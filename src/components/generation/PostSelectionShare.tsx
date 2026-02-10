@@ -13,6 +13,7 @@ import {
 import { CopyLinkButton } from '@/components/share/CopyLinkButton'
 import { useDownloadSong } from '@/lib/hooks/useDownloadSong'
 import { generateShareUrl } from '@/lib/share/generateShareUrl'
+import { BundleOfferCard } from '@/components/upsells/BundleOfferCard'
 
 interface ShareData {
   variantId: string
@@ -328,6 +329,9 @@ export function PostSelectionShare({ data }: PostSelectionShareProps) {
             {downloadMutation.isPending ? 'Downloading...' : 'Download MP3'}
           </button>
         </div>
+
+        {/* Bundle offer - make more songs */}
+        <BundleOfferCard />
 
         {/* Dashboard link */}
         <div className="text-center">

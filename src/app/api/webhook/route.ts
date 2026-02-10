@@ -131,10 +131,66 @@ export async function POST(request: NextRequest) {
           break
         }
 
-        // Base or upsell order: create variant records (generation triggered by client)
-        const variantCount = orderType === 'upsell' ? 1 : 3
+        if (orderType === 'upsell') {
+          // Upsell: add variant to the PARENT order (not the upsell order)
+          // The upsell order exists purely for payment tracking
+          if (!parentOrderId) {
+            console.error('Upsell order missing parent_order_id:', order.id)
+            break
+          }
 
-        const variantRecords = Array.from({ length: variantCount }, (_, i) => ({
+          // Count existing variants on parent order to get next number
+          const { count: existingCount } = await supabase
+            .from('song_variants')
+            .select('id', { count: 'exact', head: true })
+            .eq('order_id', parentOrderId)
+
+          const nextVariantNumber = (existingCount || 0) + 1
+
+          const { error: variantError } = await supabase
+            .from('song_variants')
+            .insert({
+              order_id: parentOrderId,
+              user_id: userId,
+              variant_number: nextVariantNumber,
+              storage_path: `${parentOrderId}/variant-${nextVariantNumber}.mp3`,
+              generation_status: 'pending' as const,
+            })
+
+          if (variantError && variantError.code !== '23505') {
+            console.error('Failed to create upsell variant:', variantError)
+            break
+          }
+
+          // Set parent order back to generating so the status poll resumes
+          await supabase
+            .from('orders')
+            .update({ status: 'generating' })
+            .eq('id', parentOrderId)
+
+          console.log('Upsell variant added to parent order:', {
+            upsellOrderId: order.id,
+            parentOrderId,
+            variantNumber: nextVariantNumber,
+          })
+
+          // Trigger generation on the PARENT order
+          const generationSecret = process.env.GENERATION_SECRET
+          if (generationSecret) {
+            const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'
+            fetch(`${appUrl}/api/generate/start`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderId: parentOrderId, secret: generationSecret }),
+            }).catch(err => {
+              console.error('Failed to trigger upsell generation:', err)
+            })
+          }
+          break
+        }
+
+        // Base order: create 3 variant records
+        const variantRecords = Array.from({ length: 3 }, (_, i) => ({
           order_id: order.id,
           user_id: userId,
           variant_number: i + 1,
@@ -153,7 +209,7 @@ export async function POST(request: NextRequest) {
         console.log('Order created with pending variants:', {
           orderId: order.id,
           type: orderType,
-          variantCount,
+          variantCount: 3,
         })
 
         // Trigger generation immediately (fire-and-forget)

@@ -32,6 +32,13 @@ export default function GenerationPage() {
   } | null>(null)
   const generationStarted = useRef(false)
 
+  const isUpsellReturn = searchParams.get('upsell') === 'success'
+  const isPrepaid = searchParams.get('prepaid') === 'true'
+  const prepaidRemaining = searchParams.get('remaining')
+  const [upsellVariantReady, setUpsellVariantReady] = useState(false)
+  const [showPrepaidBanner, setShowPrepaidBanner] = useState(isPrepaid)
+  const prevCompletedCount = useRef(0)
+
   const {
     data,
     isLoading,
@@ -96,6 +103,25 @@ export default function GenerationPage() {
       triggerGeneration()
     }
   }, [data, isLoading, triggerGeneration])
+
+  // On upsell return, show swiper immediately with existing variants
+  useEffect(() => {
+    if (isUpsellReturn && completedCount > 0 && !showSwiper) {
+      setShowSwiper(true)
+      setUpsellDismissed(true)
+      setHasSwipedAll(false)
+    }
+  }, [isUpsellReturn, completedCount, showSwiper])
+
+  // Track when the 4th variant finishes generating
+  useEffect(() => {
+    if (isUpsellReturn && completedCount > prevCompletedCount.current && completedCount >= 4) {
+      setUpsellVariantReady(true)
+      const timer = setTimeout(() => setUpsellVariantReady(false), 4000)
+      return () => clearTimeout(timer)
+    }
+    prevCompletedCount.current = completedCount
+  }, [isUpsellReturn, completedCount])
 
   // Trigger upsell modal after viewing all variants (5-second delay)
   useEffect(() => {
@@ -278,10 +304,20 @@ export default function GenerationPage() {
             onClose={handleCloseUpsell}
           />
 
-          {/* Upsell success notification */}
-          {searchParams.get('upsell') === 'success' && (
-            <div className="fixed bottom-4 right-4 bg-green-50 border border-green-200 rounded-lg p-4 shadow-lg animate-pulse">
-              <p className="text-green-600 font-medium">4th variant is being generated...</p>
+          {/* 4th variant generating banner */}
+          {isUpsellReturn && data?.variants.some(v => v.generation_status === 'pending' || v.generation_status === 'generating') && (
+            <div className="mt-4 bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-purple-700 font-medium text-sm">Your 4th variant is being generated...</p>
+              </div>
+            </div>
+          )}
+
+          {/* 4th variant ready notification */}
+          {upsellVariantReady && (
+            <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+              <p className="text-green-700 font-medium text-sm">Your 4th variant is ready! Swipe through to find it.</p>
             </div>
           )}
         </div>
@@ -293,6 +329,18 @@ export default function GenerationPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-purple-50 flex items-center justify-center px-4 py-16">
       <div className="max-w-2xl mx-auto w-full">
+        {/* Prepaid song banner */}
+        {showPrepaidBanner && (
+          <div className="mb-6 bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
+            <p className="text-purple-700 font-medium text-sm">
+              Using one of your prepaid songs{prepaidRemaining ? ` (${prepaidRemaining} remaining)` : ''}
+            </p>
+            <button onClick={() => setShowPrepaidBanner(false)} className="text-purple-500 text-xs mt-1 hover:text-purple-700">
+              Dismiss
+            </button>
+          </div>
+        )}
+
         <GenerationProgress
           orderId={orderId}
           onAllComplete={() => setShowSwiper(true)}

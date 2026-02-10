@@ -54,7 +54,7 @@ export async function createCheckoutSession({
       const bundleTier = metadata.bundleTier || 'Bundle'
       const quantity = metadata.quantity || ''
       productName = `Song Bundle - ${bundleTier}`
-      productDescription = `${quantity} song credits`
+      productDescription = `${quantity} prepaid songs`
       break
     case 'base':
     default:

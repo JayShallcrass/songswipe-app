@@ -28,8 +28,11 @@ export function useGenerationStatus(orderId: string) {
       const data = query.state.data
       if (!data) return false
 
-      // Poll every 3 seconds while generating
-      if (data.order_status === 'paid' || data.order_status === 'generating') {
+      // Poll every 3 seconds while generating or if any variants are still in progress
+      const hasActiveVariants = data.variants.some(
+        v => v.generation_status === 'pending' || v.generation_status === 'generating'
+      )
+      if (data.order_status === 'paid' || data.order_status === 'generating' || hasActiveVariants) {
         return 3000
       }
 

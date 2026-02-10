@@ -7,7 +7,6 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 import { useSongData } from '@/lib/hooks/useSongData'
 import { SongPlayer } from '@/components/song/SongPlayer'
 import { SongDetails } from '@/components/song/SongDetails'
-import { BundleOfferCard } from '@/components/upsells/BundleOfferCard'
 import { generateShareUrl } from '@/lib/share/generateShareUrl'
 import { CopyLinkButton } from '@/components/share/CopyLinkButton'
 
@@ -119,12 +118,6 @@ export default function SongPage() {
             createdAt={song.orderCreatedAt}
             occasionDate={song.occasionDate}
           />
-
-          {/* Divider */}
-          <div className="border-t border-purple-500/20 my-12"></div>
-
-          {/* Bundle Offer */}
-          <BundleOfferCard />
 
           {/* Bottom spacing for mobile */}
           <div className="h-12"></div>

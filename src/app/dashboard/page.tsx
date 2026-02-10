@@ -9,6 +9,7 @@ import { useSongHistory } from '@/lib/hooks/useSongHistory'
 import { useOrderHistory } from '@/lib/hooks/useOrderHistory'
 import { useOccasions } from '@/lib/hooks/useOccasions'
 import { useDashboardStats } from '@/lib/hooks/useDashboardStats'
+import { useSongBalance } from '@/lib/hooks/useSongBalance'
 import SongCard from '@/components/dashboard/SongCard'
 import OrderRow from '@/components/dashboard/OrderRow'
 import OccasionCard from '@/components/dashboard/OccasionCard'
@@ -46,6 +47,7 @@ export default function DashboardPage() {
   const { data: orderData, isLoading: isLoadingOrders } = useOrderHistory(orderPage)
   const { data: occasions, isLoading: isLoadingOccasions } = useOccasions()
   const { data: stats } = useDashboardStats()
+  const { data: balance } = useSongBalance()
 
   // Redirect first-time users (no songs AND no orders) straight to creation flow
   useEffect(() => {
@@ -83,6 +85,11 @@ export default function DashboardPage() {
             <p className="text-gray-600 mt-1 text-sm sm:text-base truncate">{userEmail}</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            {balance && balance.songsRemaining > 0 && (
+              <span className="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
+                {balance.songsRemaining} prepaid {balance.songsRemaining === 1 ? 'song' : 'songs'}
+              </span>
+            )}
             <Link
               href="/customise"
               className="px-3 sm:px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold text-sm sm:text-base whitespace-nowrap hover:from-pink-600 hover:to-purple-700 transition-all shadow-sm"

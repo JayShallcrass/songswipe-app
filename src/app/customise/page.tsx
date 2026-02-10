@@ -10,11 +10,13 @@ import { SwipeProgress } from '@/components/swipe/SwipeProgress'
 import { PersonalisationForm, PersonalisationData, clearPersonalisationCache } from '@/components/forms/PersonalisationForm'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
+import { useSongBalance } from '@/lib/hooks/useSongBalance'
 
 export default function CustomisePage() {
   const router = useRouter()
   const [supabase, setSupabase] = useState<ReturnType<typeof createBrowserClient> | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const { data: balance } = useSongBalance()
 
   // Initialize Supabase client on mount
   useEffect(() => {
@@ -131,7 +133,12 @@ export default function CustomisePage() {
               SongSwipe
             </span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {balance && balance.songsRemaining > 0 && (
+              <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                {balance.songsRemaining} prepaid
+              </span>
+            )}
             <Link href="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium text-sm">
               My Songs
             </Link>

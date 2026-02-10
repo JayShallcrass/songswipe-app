@@ -35,6 +35,7 @@ export default function CustomisePage() {
     canUndo,
     isSwipeComplete,
     currentStageConfig,
+    didLoop,
   } = useSwipeState()
 
   // Get current card for keyboard navigation
@@ -182,6 +183,7 @@ export default function CustomisePage() {
                 canUndo={canUndo}
                 showHints={showHints}
                 onHintsDismiss={handleHintsDismiss}
+                didLoop={didLoop}
               />
             )}
 

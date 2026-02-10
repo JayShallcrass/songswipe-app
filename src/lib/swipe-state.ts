@@ -16,6 +16,7 @@ const initialState: SwipeFlowState = {
 export function useSwipeState() {
   const [state, setState] = useState<SwipeFlowState>(initialState)
   const [isHydrated, setIsHydrated] = useState(false)
+  const [didLoop, setDidLoop] = useState(false)
 
   // Load state from sessionStorage on mount
   useEffect(() => {
@@ -41,6 +42,14 @@ export function useSwipeState() {
       }
     }
   }, [state, isHydrated])
+
+  // Auto-clear the loop indicator after a delay
+  useEffect(() => {
+    if (didLoop) {
+      const timer = setTimeout(() => setDidLoop(false), 2500)
+      return () => clearTimeout(timer)
+    }
+  }, [didLoop])
 
   const handleSwipe = useCallback((cardId: string, direction: 'left' | 'right') => {
     setState(prevState => {
@@ -79,12 +88,17 @@ export function useSwipeState() {
         }
       }
 
-      // Left swipe = skip this card, show next card in same stage
+      // Left swipe = skip this card, show next card in same stage (loop if at end)
       const currentStageConfig = STAGE_CONFIG.find(s => s.stage === prevState.currentStage)
       if (!currentStageConfig) return prevState
 
       const totalCardsInStage = currentStageConfig.cards.length
-      const nextCardIndex = Math.min(prevState.currentCardIndex + 1, totalCardsInStage - 1)
+      const nextCardIndex = (prevState.currentCardIndex + 1) % totalCardsInStage
+
+      // If we wrapped back to 0, signal the loop
+      if (nextCardIndex === 0) {
+        setDidLoop(true)
+      }
 
       return {
         ...prevState,
@@ -142,6 +156,7 @@ export function useSwipeState() {
       console.error('Failed to clear sessionStorage:', error)
     }
     setState(initialState)
+    setDidLoop(false)
   }, [])
 
   const canUndo = state.history.length > 0
@@ -161,5 +176,6 @@ export function useSwipeState() {
     isSwipeComplete,
     progress,
     currentStageConfig,
+    didLoop,
   }
 }

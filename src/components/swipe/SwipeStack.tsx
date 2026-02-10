@@ -16,6 +16,7 @@ interface SwipeStackProps {
   canUndo: boolean
   showHints: boolean
   onHintsDismiss: () => void
+  didLoop?: boolean
 }
 
 export function SwipeStack({
@@ -29,10 +30,15 @@ export function SwipeStack({
   canUndo,
   showHints,
   onHintsDismiss,
+  didLoop,
 }: SwipeStackProps) {
-  const visibleCards = cards.slice(currentCardIndex, currentCardIndex + 3)
+  // Build visible cards with wrapping support
+  const visibleCards: SwipeCardData[] = []
+  for (let i = 0; i < Math.min(3, cards.length); i++) {
+    const idx = (currentCardIndex + i) % cards.length
+    visibleCards.push(cards[idx])
+  }
   const currentCard = cards[currentCardIndex]
-  const hasMoreCards = currentCardIndex < cards.length
 
   const handleCardSwipe = (direction: 'left' | 'right') => {
     if (currentCard) {
@@ -56,58 +62,74 @@ export function SwipeStack({
         className="relative w-full max-w-[260px] sm:max-w-sm aspect-[4/5] sm:aspect-[3/4] mx-auto mb-3 sm:mb-6"
         style={{ touchAction: 'none' }}
       >
-        {!hasMoreCards ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-xl p-8">
-            <div className="text-center">
-              <p className="text-gray-600 text-lg mb-4">No more options</p>
-              {canUndo && (
-                <p className="text-gray-500 text-sm">Tap undo to go back</p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <AnimatePresence mode="popLayout">
-            {visibleCards.map((card, index) => {
-              const isTop = index === 0
-              const scale = 1 - index * 0.05
-              const translateY = index * 8
+        <AnimatePresence mode="popLayout">
+          {visibleCards.map((card, index) => {
+            const isTop = index === 0
+            const scale = 1 - index * 0.05
+            const translateY = index * 8
 
-              return (
-                <motion.div
-                  key={card.id}
-                  className="absolute inset-0"
-                  initial={{ scale, y: translateY }}
-                  animate={{ scale, y: translateY }}
-                  exit={{
-                    x: 300,
-                    opacity: 0,
-                    rotate: 15,
-                    transition: { duration: 0.3 },
-                  }}
-                  style={{ zIndex: visibleCards.length - index }}
-                >
-                  <SwipeCard
-                    card={card}
-                    onSwipe={handleCardSwipe}
-                    isTop={isTop}
-                  />
-                </motion.div>
-              )
-            })}
-          </AnimatePresence>
-        )}
+            return (
+              <motion.div
+                key={`${stage}-${card.id}`}
+                className="absolute inset-0"
+                initial={{ scale, y: translateY }}
+                animate={{ scale, y: translateY }}
+                exit={{
+                  x: 300,
+                  opacity: 0,
+                  rotate: 15,
+                  transition: { duration: 0.3 },
+                }}
+                style={{ zIndex: visibleCards.length - index }}
+              >
+                <SwipeCard
+                  card={card}
+                  onSwipe={handleCardSwipe}
+                  isTop={isTop}
+                />
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
 
         {/* Hints overlay */}
         {showHints && <SwipeHints onDismiss={onHintsDismiss} />}
       </div>
 
+      {/* Loop indicator */}
+      <AnimatePresence>
+        {didLoop && (
+          <motion.p
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-purple-600 text-xs sm:text-sm font-medium mb-2 text-center"
+          >
+            Back to the start - swipe right on one you like!
+          </motion.p>
+        )}
+      </AnimatePresence>
+
+      {/* Card position dots */}
+      <div className="flex gap-1.5 mb-3">
+        {cards.map((card, index) => (
+          <div
+            key={card.id}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+              index === currentCardIndex
+                ? 'bg-purple-600 w-3'
+                : 'bg-gray-300'
+            }`}
+          />
+        ))}
+      </div>
+
       {/* Controls */}
       <div className="flex items-center gap-3 sm:gap-4">
-        {/* Desktop fallback buttons */}
         <button
           onClick={handleSkip}
-          disabled={!hasMoreCards}
-          className="px-5 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 text-gray-600 font-medium rounded-xl hover:border-gray-400 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+          className="px-5 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 text-gray-600 font-medium rounded-xl hover:border-gray-400 hover:text-gray-700 transition-colors text-sm sm:text-base"
         >
           Skip
         </button>
@@ -125,8 +147,7 @@ export function SwipeStack({
 
         <button
           onClick={handleSelect}
-          disabled={!hasMoreCards}
-          className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl hover:from-purple-700 hover:to-pink-700 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+          className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl hover:from-purple-700 hover:to-pink-700 transition-colors shadow-lg text-sm sm:text-base"
         >
           Select
         </button>

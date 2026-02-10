@@ -2,12 +2,31 @@
 
 import { motion, useMotionValue, useTransform, useAnimate, PanInfo } from 'framer-motion'
 import { SwipeCardData } from '@/types/swipe'
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 
 interface SwipeCardProps {
   card: SwipeCardData
   onSwipe: (direction: 'left' | 'right') => void
   isTop: boolean
+}
+
+// Finger/hand SVG for swipe gesture hint
+function SwipeFinger() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 1C10.34 1 9 2.34 9 4V9.38C8.36 8.88 7.55 8.63 6.73 8.78C5.26 9.05 4.15 10.43 4.15 11.93V16C4.15 19.31 6.84 22 10.15 22H14C17.31 22 20 19.31 20 16V8C20 6.34 18.66 5 17 5C16.65 5 16.32 5.07 16 5.18V4C16 2.34 14.66 1 13 1C12.65 1 12.32 1.07 12 1.18V1Z"
+        fill="white"
+        fillOpacity="0.9"
+      />
+      <path
+        d="M12 1C10.34 1 9 2.34 9 4V9.38C8.36 8.88 7.55 8.63 6.73 8.78C5.26 9.05 4.15 10.43 4.15 11.93V16C4.15 19.31 6.84 22 10.15 22H14C17.31 22 20 19.31 20 16V8C20 6.34 18.66 5 17 5C16.65 5 16.32 5.07 16 5.18V4C16 2.34 14.66 1 13 1C12.65 1 12.32 1.07 12 1.18V1Z"
+        stroke="white"
+        strokeWidth="0.5"
+        strokeOpacity="0.5"
+      />
+    </svg>
+  )
 }
 
 export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
@@ -19,27 +38,40 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
   const hasInteracted = useRef(false)
   const nudgeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const nudgeInterval = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [showFinger, setShowFinger] = useState(false)
+  const [fingerDirection, setFingerDirection] = useState<'left' | 'right'>('right')
 
   const clearTimers = useCallback(() => {
     if (nudgeTimer.current) clearTimeout(nudgeTimer.current)
     if (nudgeInterval.current) clearInterval(nudgeInterval.current)
   }, [])
 
-  // Nudge animation: wiggle left then right to show SKIP/SELECT pills
+  // Nudge animation: finger swipe + card wiggle to show SKIP/SELECT pills
   const playNudge = useCallback(async () => {
     if (hasInteracted.current || !scope.current) return
     try {
+      // Show finger swiping left
+      setFingerDirection('left')
+      setShowFinger(true)
+      await new Promise(r => setTimeout(r, 600))
+      setShowFinger(false)
       // Wiggle left to flash SKIP
       await animate(scope.current, { x: -60 }, { duration: 0.3, ease: 'easeOut' })
       await animate(scope.current, { x: 0 }, { duration: 0.2, ease: 'easeIn' })
-      // Small pause
-      await new Promise(r => setTimeout(r, 200))
+      // Pause
+      await new Promise(r => setTimeout(r, 400))
       if (hasInteracted.current) return
+      // Show finger swiping right
+      setFingerDirection('right')
+      setShowFinger(true)
+      await new Promise(r => setTimeout(r, 600))
+      setShowFinger(false)
       // Wiggle right to flash SELECT
       await animate(scope.current, { x: 60 }, { duration: 0.3, ease: 'easeOut' })
       await animate(scope.current, { x: 0 }, { duration: 0.2, ease: 'easeIn' })
     } catch {
-      // Animation interrupted, that's fine
+      // Animation interrupted
+      setShowFinger(false)
     }
   }, [animate, scope])
 
@@ -47,21 +79,26 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
   useEffect(() => {
     if (!isTop) return
     hasInteracted.current = false
+    setShowFinger(false)
     clearTimers()
 
     // First nudge after 1.5s
     nudgeTimer.current = setTimeout(() => {
       playNudge()
-      // Repeat every 5s
-      nudgeInterval.current = setInterval(playNudge, 5000)
+      // Repeat every 6s
+      nudgeInterval.current = setInterval(playNudge, 6000)
     }, 1500)
 
-    return clearTimers
+    return () => {
+      clearTimers()
+      setShowFinger(false)
+    }
   }, [isTop, card.id, playNudge, clearTimers])
 
   const markInteracted = () => {
     hasInteracted.current = true
     clearTimers()
+    setShowFinger(false)
   }
 
   const handleDragStart = () => {
@@ -125,6 +162,27 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
           >
             SELECT
           </motion.div>
+
+          {/* Finger swipe gesture hint */}
+          {showFinger && (
+            <motion.div
+              className="absolute pointer-events-none z-20"
+              style={{ top: '65%' }}
+              initial={{
+                x: fingerDirection === 'right' ? -30 : 30,
+                opacity: 0,
+              }}
+              animate={{
+                x: fingerDirection === 'right' ? 60 : -60,
+                opacity: [0, 0.9, 0.9, 0],
+              }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+            >
+              <div className="drop-shadow-lg" style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))' }}>
+                <SwipeFinger />
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
     </motion.div>

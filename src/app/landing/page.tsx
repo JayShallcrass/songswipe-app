@@ -162,7 +162,20 @@ export default function LandingPage() {
             <span className="text-2xl">🎵</span>
             <span className="text-xl font-bold text-white">SongSwipe</span>
           </div>
-          <p className="text-sm">© 2025 SongSwipe. AI-generated personalised songs.</p>
+          <div className="flex items-center justify-center gap-4 mb-4 text-sm">
+            <Link href="/privacy" className="text-gray-400 hover:text-purple-300 transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-gray-600">|</span>
+            <Link href="/terms" className="text-gray-400 hover:text-purple-300 transition-colors">
+              Terms of Service
+            </Link>
+            <span className="text-gray-600">|</span>
+            <Link href="/faq" className="text-gray-400 hover:text-purple-300 transition-colors">
+              FAQ
+            </Link>
+          </div>
+          <p className="text-sm">&copy; 2025-2026 SongSwipe. AI-generated personalised songs.</p>
           <p className="text-xs mt-2">
             Powered by{' '}
             <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">

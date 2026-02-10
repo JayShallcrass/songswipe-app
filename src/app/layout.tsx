@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import Header from '@/components/Header'
+import CookieConsent from '@/components/CookieConsent'
 import { Providers } from '@/lib/providers'
 import './globals.css'
 
@@ -10,6 +11,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://songswipe.io'),
   title: {
     default: 'SongSwipe - Personalised AI Songs | Unique Gift Ideas',
     template: '%s | SongSwipe',
@@ -45,6 +47,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           {children}
+          <CookieConsent />
         </Providers>
       </body>
     </html>

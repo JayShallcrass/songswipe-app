@@ -301,6 +301,15 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        <div className="mt-6 text-center">
+          <Link
+            href="/dashboard/help"
+            className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
+          >
+            Need help? View FAQ &rarr;
+          </Link>
+        </div>
+
       </div>
     </div>
   )

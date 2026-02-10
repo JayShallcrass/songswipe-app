@@ -144,7 +144,7 @@ export default function BlogPage() {
       {/* Footer */}
       <footer className="py-8 px-4 bg-gray-900 text-gray-400">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-sm">© 2025 SongSwipe. AI-generated personalised songs.</p>
+          <p className="text-sm">&copy; 2025-2026 SongSwipe. AI-generated personalised songs.</p>
         </div>
       </footer>
     </div>

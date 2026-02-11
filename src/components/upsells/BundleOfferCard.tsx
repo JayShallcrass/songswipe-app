@@ -31,7 +31,7 @@ export function BundleOfferCard() {
   const savingsPerSong = BASE_PRICE - selectedTier.perSongPrice
 
   return (
-    <div className="relative bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-8 text-white shadow-xl">
+    <div className="relative bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl p-8 text-white">
       {/* Dismiss button */}
       <button
         onClick={() => setIsDismissed(true)}
@@ -59,12 +59,12 @@ export function BundleOfferCard() {
               onClick={() => setSelectedTier(tier)}
               className={`relative p-6 rounded-xl transition-all ${
                 isSelected
-                  ? 'bg-white text-purple-900 shadow-lg scale-105'
+                  ? 'bg-white text-surface-DEFAULT shadow-lg scale-105'
                   : 'bg-white/10 text-white hover:bg-white/20'
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-400 text-purple-900 px-3 py-1 rounded-full text-xs font-bold">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-yellow-400 text-surface-DEFAULT px-3 py-1 rounded-full text-xs font-bold">
                   POPULAR
                 </div>
               )}
@@ -113,13 +113,13 @@ export function BundleOfferCard() {
       <button
         onClick={handlePurchase}
         disabled={isLoading}
-        className="w-full py-4 px-6 bg-gradient-to-r from-purple-900 to-pink-900 text-white font-semibold rounded-full hover:from-purple-800 hover:to-pink-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg shadow-lg"
+        className="w-full py-4 px-6 bg-surface-DEFAULT text-white font-semibold rounded-full hover:bg-surface-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
       >
         {isLoading ? 'Loading...' : `Get ${selectedTier.quantity} Songs for £${(selectedTier.price / 100).toFixed(2)}`}
       </button>
 
       {/* Social proof */}
-      <p className="text-center text-sm text-purple-100 mt-4">
+      <p className="text-center text-sm text-white/70 mt-4">
         Join customers who have purchased bundles for gifting throughout the year
       </p>
     </div>

@@ -23,8 +23,8 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
 
   if (variants.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-        <p className="text-gray-600">No variants available</p>
+      <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
+        <p className="text-zinc-400">No variants available</p>
       </div>
     )
   }
@@ -125,15 +125,15 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
             key={variant.id}
             className={`h-2 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? 'w-6 bg-gradient-to-r from-purple-500 to-pink-500'
-                : 'w-2 bg-gray-300'
+                ? 'w-6 bg-gradient-to-r from-brand-500 to-purple-600'
+                : 'w-2 bg-surface-300'
             }`}
           />
         ))}
       </div>
 
       {/* Swipe hint text */}
-      <p className="text-center text-sm text-gray-500 mt-3">
+      <p className="text-center text-sm text-zinc-500 mt-3">
         Swipe right to select, left to skip
       </p>
     </div>

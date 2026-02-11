@@ -24,16 +24,16 @@ export default function CookieConsent() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4">
-      <div className="max-w-xl mx-auto bg-gray-900 text-white rounded-2xl shadow-2xl px-5 py-4 flex items-center justify-between gap-4">
-        <p className="text-sm text-gray-300">
+      <div className="max-w-xl mx-auto bg-surface-50 border border-surface-200 text-white rounded-2xl shadow-2xl px-5 py-4 flex items-center justify-between gap-4">
+        <p className="text-sm text-zinc-400">
           We use essential cookies to keep you signed in and process payments.{' '}
-          <Link href="/privacy#cookies" className="text-purple-400 hover:text-purple-300 underline">
+          <Link href="/privacy#cookies" className="text-brand-500 hover:text-brand-400 underline transition-colors">
             Privacy Policy
           </Link>
         </p>
         <button
           onClick={handleDismiss}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-lg transition-colors flex-shrink-0"
+          className="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold rounded-xl transition-colors flex-shrink-0"
         >
           OK
         </button>

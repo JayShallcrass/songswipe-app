@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Footer from '@/components/Footer'
 
 interface FAQItem {
   question: string
@@ -10,14 +11,12 @@ interface FAQItem {
 
 interface FAQSection {
   title: string
-  icon: string
   items: FAQItem[]
 }
 
 const faqSections: FAQSection[] = [
   {
     title: 'How It Works',
-    icon: '🎵',
     items: [
       {
         question: 'What is SongSwipe?',
@@ -39,7 +38,6 @@ const faqSections: FAQSection[] = [
   },
   {
     title: 'Pricing & Payment',
-    icon: '💷',
     items: [
       {
         question: 'How much does a song cost?',
@@ -61,7 +59,6 @@ const faqSections: FAQSection[] = [
   },
   {
     title: 'Songs & Sharing',
-    icon: '🎶',
     items: [
       {
         question: 'What occasions can I create songs for?',
@@ -83,7 +80,6 @@ const faqSections: FAQSection[] = [
   },
   {
     title: 'Privacy & Safety',
-    icon: '🔒',
     items: [
       {
         question: 'What data do you collect?',
@@ -105,14 +101,14 @@ function AccordionItem({ item }: { item: FAQItem }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border-b border-gray-100 last:border-b-0">
+    <div className="border-b border-surface-200 last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 px-1 text-left hover:text-purple-600 transition-colors"
+        className="w-full flex items-center justify-between py-4 px-1 text-left hover:text-brand-400 transition-colors"
       >
-        <span className="font-medium text-gray-900 pr-4">{item.question}</span>
+        <span className="font-medium text-white pr-4">{item.question}</span>
         <span
-          className={`text-gray-400 transition-transform flex-shrink-0 ${
+          className={`text-zinc-500 transition-transform flex-shrink-0 ${
             isOpen ? 'rotate-180' : ''
           }`}
         >
@@ -126,7 +122,7 @@ function AccordionItem({ item }: { item: FAQItem }) {
           isOpen ? 'max-h-96 pb-4' : 'max-h-0'
         }`}
       >
-        <p className="text-gray-600 leading-relaxed px-1">{item.answer}</p>
+        <p className="text-zinc-400 leading-relaxed px-1">{item.answer}</p>
       </div>
     </div>
   )
@@ -134,20 +130,19 @@ function AccordionItem({ item }: { item: FAQItem }) {
 
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-pink-50">
+    <div className="min-h-screen bg-surface-DEFAULT">
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-heading font-bold mb-3 text-white">
             Frequently Asked Questions
           </h1>
-          <p className="text-gray-600">Everything you need to know about SongSwipe</p>
+          <p className="text-zinc-500">Everything you need to know about SongSwipe</p>
         </div>
 
         <div className="space-y-8">
           {faqSections.map((section) => (
-            <div key={section.title} className="bg-white rounded-2xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <span>{section.icon}</span>
+            <div key={section.title} className="bg-surface-50 border border-surface-200 rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">
                 {section.title}
               </h2>
               <div>
@@ -160,21 +155,23 @@ export default function FAQPage() {
         </div>
 
         <div className="mt-12 text-center">
-          <p className="text-gray-600 mb-4">Still have questions?</p>
+          <p className="text-zinc-500 mb-4">Still have questions?</p>
           <a
             href="mailto:support@songswipe.io"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
           >
             Contact Us
           </a>
         </div>
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-purple-600 hover:text-purple-700 text-sm font-medium">
+          <Link href="/" className="text-brand-500 hover:text-brand-400 text-sm font-medium transition-colors">
             Back to SongSwipe
           </Link>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

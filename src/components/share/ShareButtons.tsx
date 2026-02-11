@@ -43,7 +43,7 @@ export function ShareButtons({ url, title, recipientName, occasion }: ShareButto
       </div>
 
       {/* Helper Text */}
-      <p className="text-sm text-gray-400">
+      <p className="text-sm text-zinc-400">
         Share this special gift with friends and family
       </p>
     </section>

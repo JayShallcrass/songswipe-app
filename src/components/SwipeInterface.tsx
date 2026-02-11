@@ -134,16 +134,16 @@ export function SwipeInterface({ onComplete }: SwipeInterfaceProps) {
   }, [handleSwipe])
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
+    <div className="min-h-screen bg-surface-DEFAULT flex flex-col items-center justify-center p-6">
       {/* Progress */}
       <div className="w-full max-w-md mb-8">
-        <div className="flex justify-between text-sm text-gray-600 mb-2">
+        <div className="flex justify-between text-sm text-zinc-400 mb-2">
           <span>Option {Math.min(currentIndex + 1, totalCards)} of {totalCards}</span>
           <span>{Math.round(progress)}%</span>
         </div>
-        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
+        <div className="h-2 bg-surface-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-brand-500 to-purple-600 transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -152,10 +152,10 @@ export function SwipeInterface({ onComplete }: SwipeInterfaceProps) {
       {/* Instructions */}
       {currentIndex < totalCards && (
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          <h2 className="text-2xl font-bold text-white mb-2">
             Preview Your Options
           </h2>
-          <p className="text-gray-600">
+          <p className="text-zinc-400">
             Listen to previews and swipe to pick your favourite version
           </p>
         </div>
@@ -182,13 +182,13 @@ export function SwipeInterface({ onComplete }: SwipeInterfaceProps) {
         <div className="flex gap-8 mt-8">
           <button
             onClick={() => handleSwipe('left')}
-            className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center text-3xl hover:scale-110 transition"
+            className="w-16 h-16 bg-surface-50 border border-surface-200 rounded-full flex items-center justify-center text-3xl hover:scale-110 transition text-white"
           >
             ✖
           </button>
           <button
             onClick={() => handleSwipe('right')}
-            className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-lg flex items-center justify-center text-3xl text-white hover:scale-110 transition"
+            className="w-16 h-16 bg-gradient-to-r from-brand-500 to-purple-600 rounded-full flex items-center justify-center text-3xl text-white hover:scale-110 transition"
           >
             ♥
           </button>
@@ -199,10 +199,10 @@ export function SwipeInterface({ onComplete }: SwipeInterfaceProps) {
       {currentIndex >= totalCards && (
         <div className="text-center">
           <div className="text-6xl mb-4">🎉</div>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+          <h3 className="text-2xl font-bold text-white mb-2">
             Selection Complete!
           </h3>
-          <p className="text-gray-600">
+          <p className="text-zinc-400">
             You selected {selections.length} version(s)
           </p>
         </div>

@@ -47,14 +47,14 @@ function HelpAccordionItem({ item }: { item: HelpItem }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className="border-b border-gray-100 last:border-b-0">
+    <div className="border-b border-surface-200 last:border-b-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between py-4 px-1 text-left hover:text-purple-600 transition-colors"
+        className="w-full flex items-center justify-between py-4 px-1 text-left hover:text-brand-400 transition-colors"
       >
-        <span className="font-medium text-gray-900 pr-4">{item.question}</span>
+        <span className="font-medium text-white pr-4">{item.question}</span>
         <span
-          className={`text-gray-400 transition-transform flex-shrink-0 ${
+          className={`text-zinc-500 transition-transform flex-shrink-0 ${
             isOpen ? 'rotate-180' : ''
           }`}
         >
@@ -68,7 +68,7 @@ function HelpAccordionItem({ item }: { item: HelpItem }) {
           isOpen ? 'max-h-96 pb-4' : 'max-h-0'
         }`}
       >
-        <p className="text-gray-600 leading-relaxed px-1">{item.answer}</p>
+        <p className="text-zinc-400 leading-relaxed px-1">{item.answer}</p>
       </div>
     </div>
   )
@@ -76,42 +76,42 @@ function HelpAccordionItem({ item }: { item: HelpItem }) {
 
 export default function DashboardHelpPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-surface-DEFAULT py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <Link
             href="/dashboard"
-            className="text-purple-600 hover:text-purple-700 text-sm font-medium inline-flex items-center gap-1"
+            className="text-brand-500 hover:text-brand-400 text-sm font-medium inline-flex items-center gap-1 transition-colors"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold mt-4 bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-heading font-bold mt-4 text-gradient">
             Help & Support
           </h1>
-          <p className="text-gray-600 mt-2">Quick answers to common questions</p>
+          <p className="text-zinc-500 mt-2">Quick answers to common questions</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm p-6">
+        <div className="bg-surface-50 border border-surface-200 rounded-2xl p-6">
           {helpItems.map((item) => (
             <HelpAccordionItem key={item.question} item={item} />
           ))}
         </div>
 
-        <div className="mt-8 bg-white rounded-2xl shadow-sm p-6 text-center">
-          <p className="text-gray-700 font-medium mb-2">Need more help?</p>
-          <p className="text-gray-500 text-sm mb-4">
+        <div className="mt-8 bg-surface-50 border border-surface-200 rounded-2xl p-6 text-center">
+          <p className="text-white font-medium mb-2">Need more help?</p>
+          <p className="text-zinc-500 text-sm mb-4">
             Check out our{' '}
-            <Link href="/faq" className="text-purple-600 hover:text-purple-700 underline">
+            <Link href="/faq" className="text-brand-500 hover:text-brand-400 underline transition-colors">
               full FAQ
             </Link>{' '}
             or get in touch.
           </p>
           <a
             href="mailto:support@songswipe.io"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
           >
             Email Support
           </a>

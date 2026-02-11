@@ -93,7 +93,7 @@ export function SwipeHints({ onDismiss }: SwipeHintsProps) {
         <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
           <button
             onClick={handleDismiss}
-            className="px-6 py-2 bg-white/90 text-gray-900 font-medium rounded-lg shadow-lg hover:bg-white transition-colors pointer-events-auto"
+            className="px-6 py-2 bg-white/90 text-surface-DEFAULT font-medium rounded-lg shadow-lg hover:bg-white transition-colors pointer-events-auto"
           >
             Got it!
           </button>

@@ -19,13 +19,13 @@ export default function Pagination({ page, pageCount, onPageChange }: Pagination
         disabled={isPrevDisabled}
         className={`px-4 py-2 rounded-lg font-medium transition-all ${
           isPrevDisabled
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
-            : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-sm'
+            ? 'bg-surface-200 text-zinc-600 cursor-not-allowed opacity-50'
+            : 'bg-gradient-to-r from-brand-500 to-purple-600 text-white hover:from-brand-600 hover:to-purple-700'
         }`}
       >
         Previous
       </button>
-      <div className="px-4 py-2 text-gray-600 font-medium">
+      <div className="px-4 py-2 text-zinc-400 font-medium">
         Page {page} of {pageCount}
       </div>
       <button
@@ -33,8 +33,8 @@ export default function Pagination({ page, pageCount, onPageChange }: Pagination
         disabled={isNextDisabled}
         className={`px-4 py-2 rounded-lg font-medium transition-all ${
           isNextDisabled
-            ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
-            : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-sm'
+            ? 'bg-surface-200 text-zinc-600 cursor-not-allowed opacity-50'
+            : 'bg-gradient-to-r from-brand-500 to-purple-600 text-white hover:from-brand-600 hover:to-purple-700'
         }`}
       >
         Next

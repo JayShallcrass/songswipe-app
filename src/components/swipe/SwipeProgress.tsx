@@ -51,10 +51,10 @@ export function SwipeProgress({ currentStage, selections, isPersonalising }: Swi
                     w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-300
                     ${
                       status === 'completed'
-                        ? 'bg-purple-600'
+                        ? 'bg-brand-500'
                         : status === 'current'
-                        ? 'bg-white border-[3px] border-purple-600 shadow-sm'
-                        : 'bg-gray-200'
+                        ? 'bg-surface-50 border-[3px] border-brand-500'
+                        : 'bg-surface-300'
                     }
                   `}
                 >
@@ -79,7 +79,7 @@ export function SwipeProgress({ currentStage, selections, isPersonalising }: Swi
                 <span
                   className={`
                     mt-1 text-[10px] sm:text-xs font-medium transition-colors leading-tight
-                    ${status === 'completed' || status === 'current' ? 'text-purple-600' : 'text-gray-400'}
+                    ${status === 'completed' || status === 'current' ? 'text-brand-400' : 'text-zinc-500'}
                   `}
                 >
                   {STEP_LABELS[step]}
@@ -89,13 +89,13 @@ export function SwipeProgress({ currentStage, selections, isPersonalising }: Swi
               {/* Connecting line */}
               {!isLast && (
                 <div className="flex-1 h-0.5 mx-1.5 sm:mx-2 relative">
-                  <div className="absolute inset-0 bg-gray-200 rounded-full" />
+                  <div className="absolute inset-0 bg-surface-300 rounded-full" />
                   <div
                     className={`
                       absolute inset-0 rounded-full transition-all duration-500
                       ${
                         status === 'completed'
-                          ? 'bg-purple-600'
+                          ? 'bg-brand-500'
                           : 'bg-transparent'
                       }
                     `}

@@ -30,7 +30,7 @@ export function SongPlayer({ audioUrl, isLoading }: SongPlayerProps) {
 
         .rhap_progress-filled,
         .rhap_progress-indicator {
-          background: linear-gradient(to right, #8B5CF6, #EC4899);
+          background: linear-gradient(to right, #e74c3c, #8b5cf6);
         }
 
         .rhap_button-clear {
@@ -38,7 +38,7 @@ export function SongPlayer({ audioUrl, isLoading }: SongPlayerProps) {
         }
 
         .rhap_button-clear:hover {
-          color: #EC4899;
+          color: #e74c3c;
         }
 
         .rhap_time {
@@ -46,11 +46,11 @@ export function SongPlayer({ audioUrl, isLoading }: SongPlayerProps) {
         }
 
         .rhap_volume-indicator {
-          background: linear-gradient(to right, #8B5CF6, #EC4899);
+          background: linear-gradient(to right, #e74c3c, #8b5cf6);
         }
 
         .rhap_volume-filled {
-          background: linear-gradient(to right, #8B5CF6, #EC4899);
+          background: linear-gradient(to right, #e74c3c, #8b5cf6);
         }
 
         .rhap_progress-container {

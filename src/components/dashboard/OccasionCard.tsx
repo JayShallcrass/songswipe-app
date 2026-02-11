@@ -20,11 +20,11 @@ export default function OccasionCard({ recipientName, occasion, date, daysUntil 
   // Badge styling based on days until
   const getBadgeStyle = () => {
     if (daysUntil >= 30) {
-      return 'bg-green-100 text-green-700'
+      return 'bg-green-500/10 text-green-400'
     } else if (daysUntil >= 7) {
-      return 'bg-yellow-100 text-yellow-700'
+      return 'bg-yellow-500/10 text-yellow-400'
     } else {
-      return 'bg-red-100 text-red-700'
+      return 'bg-red-500/10 text-red-400'
     }
   }
 
@@ -36,12 +36,12 @@ export default function OccasionCard({ recipientName, occasion, date, daysUntil 
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 p-4">
+    <div className="bg-surface-50 rounded-xl border border-surface-200 p-4">
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">{recipientName}</h3>
-          <p className="text-gray-600 text-sm mt-1">{formatOccasion(occasion)}</p>
-          <p className="text-gray-500 text-sm mt-1">{date}</p>
+          <h3 className="text-lg font-semibold text-white">{recipientName}</h3>
+          <p className="text-zinc-400 text-sm mt-1">{formatOccasion(occasion)}</p>
+          <p className="text-zinc-500 text-sm mt-1">{date}</p>
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-medium ${getBadgeStyle()}`}>
           {getBadgeText()}

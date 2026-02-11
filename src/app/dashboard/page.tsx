@@ -74,31 +74,31 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-surface-DEFAULT py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold text-gradient">
               My Dashboard
             </h1>
-            <p className="text-gray-600 mt-1 text-sm sm:text-base truncate">{userEmail}</p>
+            <p className="text-zinc-500 mt-1 text-sm sm:text-base truncate">{userEmail}</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             {balance && balance.songsRemaining > 0 && (
-              <span className="px-2.5 py-1 bg-purple-100 text-purple-700 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
+              <span className="px-2.5 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
                 {balance.songsRemaining} prepaid {balance.songsRemaining === 1 ? 'song' : 'songs'}
               </span>
             )}
             <Link
               href="/customise"
-              className="px-3 sm:px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold text-sm sm:text-base whitespace-nowrap hover:from-pink-600 hover:to-purple-700 transition-all shadow-sm"
+              className="px-3 sm:px-4 py-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold text-sm sm:text-base whitespace-nowrap hover:from-brand-600 hover:to-purple-700 transition-all shadow-sm"
             >
               Create a Song
             </Link>
             <button
               onClick={handleSignOut}
-              className="px-3 sm:px-4 py-2 text-gray-600 hover:text-gray-900 font-medium text-sm sm:text-base whitespace-nowrap"
+              className="px-3 sm:px-4 py-2 text-zinc-500 hover:text-white font-medium text-sm sm:text-base whitespace-nowrap transition-colors"
             >
               Sign Out
             </button>
@@ -107,63 +107,63 @@ export default function DashboardPage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
+          <div className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 text-center">
             <div className="text-2xl mb-1">🎵</div>
-            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats?.totalSongs ?? 0}</div>
-            <div className="text-gray-500 text-xs sm:text-sm">Songs Created</div>
+            <div className="text-2xl sm:text-3xl font-bold text-white">{stats?.totalSongs ?? 0}</div>
+            <div className="text-zinc-500 text-xs sm:text-sm">Songs Created</div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
+          <div className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 text-center">
             <div className="text-2xl mb-1">🎤</div>
-            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats?.peopleSerenaded ?? 0}</div>
-            <div className="text-gray-500 text-xs sm:text-sm">People Serenaded</div>
+            <div className="text-2xl sm:text-3xl font-bold text-white">{stats?.peopleSerenaded ?? 0}</div>
+            <div className="text-zinc-500 text-xs sm:text-sm">People Serenaded</div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 text-center">
+          <div className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 text-center">
             <div className="text-2xl mb-1">📅</div>
-            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{stats?.upcomingOccasions ?? 0}</div>
-            <div className="text-gray-500 text-xs sm:text-sm">Upcoming Occasions</div>
+            <div className="text-2xl sm:text-3xl font-bold text-white">{stats?.upcomingOccasions ?? 0}</div>
+            <div className="text-zinc-500 text-xs sm:text-sm">Upcoming Occasions</div>
           </div>
         </div>
 
         {/* Tab Bar */}
-        <div className="bg-white rounded-t-xl shadow-sm">
-          <div className="flex border-b border-gray-200">
+        <div className="bg-surface-50 border border-surface-200 rounded-t-2xl">
+          <div className="flex border-b border-surface-200">
             <button
               onClick={() => setActiveTab('songs')}
               className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-all relative ${
                 activeTab === 'songs'
-                  ? 'text-purple-600'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-brand-500'
+                  : 'text-zinc-500 hover:text-white'
               }`}
             >
               My Songs
               {activeTab === 'songs' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-purple-500" />
               )}
             </button>
             <button
               onClick={() => setActiveTab('orders')}
               className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-all relative ${
                 activeTab === 'orders'
-                  ? 'text-purple-600'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-brand-500'
+                  : 'text-zinc-500 hover:text-white'
               }`}
             >
               Orders
               {activeTab === 'orders' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-purple-500" />
               )}
             </button>
             <button
               onClick={() => setActiveTab('occasions')}
               className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-all relative ${
                 activeTab === 'occasions'
-                  ? 'text-purple-600'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-brand-500'
+                  : 'text-zinc-500 hover:text-white'
               }`}
             >
               Occasions
               {activeTab === 'occasions' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-purple-500" />
               )}
             </button>
           </div>
@@ -178,7 +178,7 @@ export default function DashboardPage() {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="bg-gray-200 animate-pulse rounded-xl h-24 w-full"
+                        className="bg-surface-100 animate-pulse rounded-2xl h-24 w-full"
                       />
                     ))}
                   </div>
@@ -203,7 +203,7 @@ export default function DashboardPage() {
                     action={
                       <Link
                         href="/customise"
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md"
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
                       >
                         Create a Song
                       </Link>
@@ -221,13 +221,13 @@ export default function DashboardPage() {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="bg-gray-200 animate-pulse rounded-xl h-24 w-full"
+                        className="bg-surface-100 animate-pulse rounded-2xl h-24 w-full"
                       />
                     ))}
                   </div>
                 ) : orderData && orderData.orders.length > 0 ? (
                   <>
-                    <div className="bg-white rounded-lg border border-gray-100">
+                    <div className="rounded-xl border border-surface-200 overflow-hidden">
                       {orderData.orders.map((order) => (
                         <OrderRow
                           key={order.id}
@@ -255,7 +255,7 @@ export default function DashboardPage() {
                     action={
                       <Link
                         href="/pricing"
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md"
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
                       >
                         View Pricing
                       </Link>
@@ -273,7 +273,7 @@ export default function DashboardPage() {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="bg-gray-200 animate-pulse rounded-xl h-24 w-full"
+                        className="bg-surface-100 animate-pulse rounded-2xl h-24 w-full"
                       />
                     ))}
                   </div>
@@ -304,7 +304,7 @@ export default function DashboardPage() {
         <div className="mt-6 text-center">
           <Link
             href="/dashboard/help"
-            className="text-sm text-gray-500 hover:text-purple-600 transition-colors"
+            className="text-sm text-zinc-500 hover:text-brand-500 transition-colors"
           >
             Need help? View FAQ &rarr;
           </Link>

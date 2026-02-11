@@ -141,15 +141,15 @@ export function PersonalisationForm({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 md:p-8"
+      className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 md:p-8"
     >
-      <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-gray-800">Tell us about them</h1>
-      <p className="text-gray-600 mb-4 sm:mb-8 text-sm sm:text-base">Add personal details to make your song special</p>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-white">Tell us about them</h1>
+      <p className="text-zinc-400 mb-4 sm:mb-8 text-sm sm:text-base">Add personal details to make your song special</p>
 
       {/* Song summary section */}
-      <div className="bg-purple-50 rounded-xl p-3 sm:p-4 mb-4 sm:mb-8">
-        <h3 className="font-semibold text-purple-800 mb-2">Your Song Summary</h3>
-        <div className="text-sm text-purple-700 space-y-1">
+      <div className="bg-brand-500/10 rounded-xl p-3 sm:p-4 mb-4 sm:mb-8">
+        <h3 className="font-semibold text-brand-400 mb-2">Your Song Summary</h3>
+        <div className="text-sm text-brand-300 space-y-1">
           {selections.occasion && (
             <p>
               <strong>Occasion:</strong> {formatLabel(selections.occasion)}
@@ -176,12 +176,12 @@ export function PersonalisationForm({
       {/* Form fields */}
       <div className="space-y-4 sm:space-y-6 mb-4 sm:mb-8">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Recipient's Name *
           </label>
           <input
             type="text"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             placeholder="e.g., Sarah"
             value={recipientName}
             onChange={(e) => setRecipientName(e.target.value)}
@@ -193,12 +193,12 @@ export function PersonalisationForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Your Name *
           </label>
           <input
             type="text"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             placeholder="e.g., John"
             value={yourName}
             onChange={(e) => setYourName(e.target.value)}
@@ -211,7 +211,7 @@ export function PersonalisationForm({
 
         {/* Relationship */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Your relationship to {recipientName || 'them'}
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -228,8 +228,8 @@ export function PersonalisationForm({
                 disabled={isLoading}
                 className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all border ${
                   relationship === opt.id
-                    ? 'bg-purple-100 border-purple-400 text-purple-700'
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                    : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
                 } disabled:opacity-50`}
               >
                 {opt.label}
@@ -240,7 +240,7 @@ export function PersonalisationForm({
 
         {/* Song Length */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Song length
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -256,12 +256,12 @@ export function PersonalisationForm({
                 disabled={isLoading}
                 className={`py-3 px-3 rounded-lg text-center transition-all border ${
                   songLength === opt.id
-                    ? 'bg-purple-100 border-purple-400 text-purple-700'
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                    : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
                 } disabled:opacity-50`}
               >
                 <div className="font-semibold text-sm">{opt.label}</div>
-                <div className="text-xs text-gray-500 mt-0.5">{opt.desc}</div>
+                <div className="text-xs text-zinc-500 mt-0.5">{opt.desc}</div>
               </button>
             ))}
           </div>
@@ -269,14 +269,14 @@ export function PersonalisationForm({
 
         {/* Language */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Language & accent
           </label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
             disabled={isLoading}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
           >
             <option value="en-GB">English (British)</option>
             <option value="en-US">English (American)</option>
@@ -288,14 +288,14 @@ export function PersonalisationForm({
             <option value="ja">Japanese</option>
             <option value="ko">Korean</option>
           </select>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-zinc-500 mt-1">
             This influences the vocal accent and any generated lyrics
           </p>
         </div>
 
         {/* Tempo */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Tempo
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -312,22 +312,22 @@ export function PersonalisationForm({
                 disabled={isLoading}
                 className={`py-2.5 px-3 rounded-lg text-center transition-all border ${
                   tempo === opt.id
-                    ? 'bg-purple-100 border-purple-400 text-purple-700'
-                    : 'bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-50'
+                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                    : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
                 } disabled:opacity-50`}
               >
                 <div className="font-medium text-sm">{opt.label}</div>
-                <div className="text-xs text-gray-400">{opt.bpm}</div>
+                <div className="text-xs text-zinc-500">{opt.bpm}</div>
               </button>
             ))}
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Special Memories (Optional)
           </label>
-          <p className="text-sm text-gray-500 mb-2">
+          <p className="text-sm text-zinc-500 mb-2">
             Tap a prompt below or write your own to help us craft the perfect lyrics
           </p>
 
@@ -342,8 +342,8 @@ export function PersonalisationForm({
                   disabled={isLoading}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
                     specialMemories.includes(question)
-                      ? 'bg-purple-100 border-purple-400 text-purple-700'
-                      : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-purple-50 hover:border-purple-300'
+                      ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                      : 'bg-surface-100 border-surface-300 text-zinc-300 hover:bg-surface-100 hover:border-brand-500/50'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {question}
@@ -353,7 +353,7 @@ export function PersonalisationForm({
           )}
 
           <textarea
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] resize-none"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 min-h-[120px] resize-none"
             placeholder="Share special memories, inside jokes, or details you'd like woven into the lyrics..."
             value={specialMemories}
             onChange={(e) => setSpecialMemories(e.target.value)}
@@ -362,12 +362,12 @@ export function PersonalisationForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Things to Avoid (Optional)
           </label>
           <input
             type="text"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             placeholder="Anything you'd like us to avoid mentioning?"
             value={thingsToAvoid}
             onChange={(e) => setThingsToAvoid(e.target.value)}
@@ -376,13 +376,13 @@ export function PersonalisationForm({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
             Occasion Date (Optional)
           </label>
-          <p className="text-sm text-gray-500 mb-2">We'll send you a reminder next year</p>
+          <p className="text-sm text-zinc-500 mb-2">We&apos;ll send you a reminder next year</p>
           <input
             type="date"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             value={occasionDate}
             onChange={(e) => setOccasionDate(e.target.value)}
             disabled={isLoading}
@@ -395,14 +395,14 @@ export function PersonalisationForm({
         <button
           onClick={onBack}
           disabled={isLoading}
-          className="flex-1 py-3 sm:py-4 text-gray-600 hover:text-gray-800 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 py-3 sm:py-4 text-zinc-400 hover:text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Back to Selections
         </button>
         <button
           onClick={handleSubmit}
           disabled={isLoading}
-          className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg font-semibold hover:from-pink-600 hover:to-purple-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Processing...' : 'Continue to Payment'}
         </button>

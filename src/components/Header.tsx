@@ -18,11 +18,11 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <header className="bg-surface-DEFAULT/80 backdrop-blur-xl sticky top-0 z-50 border-b border-surface-200">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-2xl">🎵</span>
-          <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <span className="text-xl font-heading font-bold text-white">
             SongSwipe
           </span>
         </Link>
@@ -31,19 +31,19 @@ export default function Header() {
         <nav className="hidden sm:flex items-center gap-3">
           <Link
             href="/pricing"
-            className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+            className="px-4 py-2 text-zinc-400 hover:text-white font-medium transition-colors"
           >
             Pricing
           </Link>
           <Link
             href="/auth/login"
-            className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+            className="px-4 py-2 text-zinc-400 hover:text-white font-medium transition-colors"
           >
             Sign In
           </Link>
           <Link
             href="/auth/login"
-            className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-medium hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
+            className="px-5 py-2.5 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-medium hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
           >
             Create a Song
           </Link>
@@ -52,7 +52,7 @@ export default function Header() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="sm:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
+          className="sm:hidden p-2 text-zinc-400 hover:text-white transition-colors"
           aria-label="Toggle menu"
         >
           {isMenuOpen ? (
@@ -69,26 +69,26 @@ export default function Header() {
 
       {/* Mobile dropdown menu */}
       {isMenuOpen && (
-        <div className="sm:hidden border-t border-gray-100 bg-white/95 backdrop-blur-md">
+        <div className="sm:hidden border-t border-surface-200 bg-surface-DEFAULT/95 backdrop-blur-xl">
           <nav className="flex flex-col px-4 py-3 space-y-1">
             <Link
               href="/pricing"
               onClick={() => setIsMenuOpen(false)}
-              className="px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium transition-colors rounded-lg"
+              className="px-4 py-3 text-zinc-400 hover:text-white hover:bg-surface-100 font-medium transition-colors rounded-xl"
             >
               Pricing
             </Link>
             <Link
               href="/auth/login"
               onClick={() => setIsMenuOpen(false)}
-              className="px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium transition-colors rounded-lg"
+              className="px-4 py-3 text-zinc-400 hover:text-white hover:bg-surface-100 font-medium transition-colors rounded-xl"
             >
               Sign In
             </Link>
             <Link
               href="/auth/login"
               onClick={() => setIsMenuOpen(false)}
-              className="mx-4 mt-2 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-medium text-center hover:from-purple-700 hover:to-pink-700 transition-all shadow-md"
+              className="mx-4 mt-2 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-medium text-center hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
             >
               Create a Song
             </Link>

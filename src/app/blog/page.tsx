@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Blog - SongSwipe | Personalised Song Ideas & Gift Guides',
@@ -49,33 +50,13 @@ export default function BlogPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">🎵</span>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              SongSwipe
-            </span>
-          </Link>
-          <nav className="flex items-center gap-4">
-            <Link
-              href="/auth/login"
-              className="px-5 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-medium"
-            >
-              Create a Song
-            </Link>
-          </nav>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-surface-DEFAULT">
       {/* Blog Header */}
       <section className="py-16 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-white">
           SongSwipe Blog
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
           Discover unique gift ideas, personalised song inspiration, and guides for creating the perfect musical gift.
         </p>
       </section>
@@ -85,31 +66,31 @@ export default function BlogPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid gap-8">
             {blogPosts.map((post) => (
-              <article 
+              <article
                 key={post.slug}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                className="bg-surface-50 border border-surface-200 rounded-2xl hover:border-surface-300 transition-all overflow-hidden"
               >
                 <div className="p-6 md:p-8">
                   <div className="flex items-center gap-4 mb-3">
-                    <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-brand-500/10 text-brand-400 rounded-full text-sm font-medium">
                       {post.category}
                     </span>
-                    <span className="text-gray-400 text-sm">{post.date}</span>
-                    <span className="text-gray-400 text-sm">{post.readTime}</span>
+                    <span className="text-zinc-600 text-sm">{post.date}</span>
+                    <span className="text-zinc-600 text-sm">{post.readTime}</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3 hover:text-purple-600 transition-colors">
+                  <h2 className="text-2xl font-bold text-white mb-3 hover:text-brand-400 transition-colors">
                     <Link href={`/blog/${post.slug}`}>
                       {post.title}
                     </Link>
                   </h2>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-zinc-400 mb-4">
                     {post.excerpt}
                   </p>
-                  <Link 
+                  <Link
                     href={`/blog/${post.slug}`}
-                    className="inline-flex items-center text-purple-600 font-semibold hover:text-purple-800 transition-colors"
+                    className="inline-flex items-center text-brand-500 font-semibold hover:text-brand-400 transition-colors"
                   >
-                    Read more →
+                    Read more &rarr;
                   </Link>
                 </div>
               </article>
@@ -117,22 +98,22 @@ export default function BlogPage() {
           </div>
 
           {/* Newsletter Signup */}
-          <div className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl p-8 md:p-12 text-white text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <div className="mt-16 bg-gradient-to-r from-brand-500 to-purple-600 rounded-2xl p-8 md:p-12 text-white text-center">
+            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4">
               Get Song Ideas Delivered
             </h2>
-            <p className="text-purple-100 mb-6 max-w-xl mx-auto">
+            <p className="text-white/80 mb-6 max-w-xl mx-auto">
               Subscribe to our newsletter for exclusive gift ideas, songwriting tips, and special offers.
             </p>
             <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="your@email.com"
-                className="flex-1 px-6 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="flex-1 px-6 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/50"
               />
               <button
                 type="submit"
-                className="px-8 py-3 bg-white text-purple-600 rounded-full font-semibold hover:bg-purple-50 transition-colors"
+                className="px-8 py-3 bg-white text-brand-600 rounded-full font-semibold hover:bg-gray-100 transition-colors"
               >
                 Subscribe
               </button>
@@ -141,12 +122,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-4 bg-gray-900 text-gray-400">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-sm">&copy; 2025-2026 SongSwipe. AI-generated personalised songs.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

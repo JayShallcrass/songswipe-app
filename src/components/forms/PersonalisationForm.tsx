@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { occasionQuestions } from '@/lib/elevenlabs'
+import { universalPromptCategories } from '@/lib/promptCategories'
+import { AccordionSection } from './AccordionSection'
+import { PromptCategory } from './PromptCategory'
 
 export interface PersonalisationData {
   recipientName: string
@@ -201,8 +204,8 @@ export function PersonalisationForm({
       <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-white">Tell us about them</h1>
       <p className="text-zinc-400 mb-4 sm:mb-8 text-sm sm:text-base">Add personal details to make your song special</p>
 
-      {/* Song summary section */}
-      <div className="bg-brand-500/10 rounded-xl p-3 sm:p-4 mb-4 sm:mb-8">
+      {/* Song summary banner - always visible */}
+      <div className="bg-brand-500/10 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
         <h3 className="font-semibold text-brand-400 mb-2">Your Song Summary</h3>
         <div className="text-sm text-brand-300 space-y-1">
           {selections.occasion && (
@@ -228,11 +231,11 @@ export function PersonalisationForm({
         </div>
       </div>
 
-      {/* Form fields */}
-      <div className="space-y-4 sm:space-y-6 mb-4 sm:mb-8">
+      {/* Required fields - always visible */}
+      <div className="space-y-4 sm:space-y-6 mb-4 sm:mb-6">
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Recipient's Name *
+            Recipient&apos;s Name *
           </label>
           <input
             type="text"
@@ -263,182 +266,205 @@ export function PersonalisationForm({
             <p className="text-red-500 text-sm mt-1">{errors.yourName}</p>
           )}
         </div>
+      </div>
 
-        {/* Relationship */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Your relationship to {recipientName || 'them'}
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[
-              { id: 'partner', label: 'Partner' },
-              { id: 'friend', label: 'Friend' },
-              { id: 'family', label: 'Family' },
-              { id: 'colleague', label: 'Colleague' },
-            ].map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => setRelationship(opt.id)}
-                disabled={isLoading}
-                className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all border ${
-                  relationship === opt.id
-                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
-                    : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
-                } disabled:opacity-50`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Song Length */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Song length
-          </label>
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { id: '60', label: '1 min', desc: 'Short & sweet' },
-              { id: '90', label: '1.5 min', desc: 'Just right' },
-              { id: '120', label: '2 min', desc: 'Full song' },
-            ].map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => setSongLength(opt.id)}
-                disabled={isLoading}
-                className={`py-3 px-3 rounded-lg text-center transition-all border ${
-                  songLength === opt.id
-                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
-                    : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
-                } disabled:opacity-50`}
-              >
-                <div className="font-semibold text-sm">{opt.label}</div>
-                <div className="text-xs text-zinc-500 mt-0.5">{opt.desc}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Language */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Language & accent
-          </label>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            disabled={isLoading}
-            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-          >
-            <option value="en-GB">English (British)</option>
-            <option value="en-US">English (American)</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="de">German</option>
-            <option value="it">Italian</option>
-            <option value="pt">Portuguese</option>
-            <option value="ja">Japanese</option>
-            <option value="ko">Korean</option>
-          </select>
-          <p className="text-xs text-zinc-500 mt-1">
-            This influences the vocal accent and any generated lyrics
-          </p>
-        </div>
-
-        {/* Tempo */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Tempo
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[
-              { id: 'slow', label: 'Slow & Gentle', bpm: '~70 BPM' },
-              { id: 'mid-tempo', label: 'Mid-Tempo', bpm: '~100 BPM' },
-              { id: 'upbeat', label: 'Upbeat', bpm: '~120 BPM' },
-              { id: 'high-energy', label: 'High Energy', bpm: '~140 BPM' },
-            ].map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => setTempo(opt.id)}
-                disabled={isLoading}
-                className={`py-2.5 px-3 rounded-lg text-center transition-all border ${
-                  tempo === opt.id
-                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
-                    : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
-                } disabled:opacity-50`}
-              >
-                <div className="font-medium text-sm">{opt.label}</div>
-                <div className="text-xs text-zinc-500">{opt.bpm}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Special Memories - Prompt Toggles */}
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Special Memories (Optional)
-          </label>
-          <p className="text-sm text-zinc-500 mb-2">
-            Tap a prompt to answer it, or write your own below
-          </p>
-
-          {/* Prompt toggle chips */}
-          {suggestions.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-3">
-              {suggestions.map((question) => (
+      {/* Accordion sections */}
+      <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-8">
+        {/* Song Details - collapsed by default */}
+        <AccordionSection title="Song Details">
+          {/* Relationship */}
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Your relationship to {recipientName || 'them'}
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { id: 'partner', label: 'Partner' },
+                { id: 'friend', label: 'Friend' },
+                { id: 'family', label: 'Family' },
+                { id: 'colleague', label: 'Colleague' },
+              ].map((opt) => (
                 <button
-                  key={question}
+                  key={opt.id}
                   type="button"
-                  onClick={() => handleTogglePrompt(question)}
+                  onClick={() => setRelationship(opt.id)}
                   disabled={isLoading}
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                    activePrompts.has(question)
+                  className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all border ${
+                    relationship === opt.id
                       ? 'bg-brand-500/10 border-brand-500 text-brand-400'
-                      : 'bg-surface-100 border-surface-300 text-zinc-300 hover:bg-surface-100 hover:border-brand-500/50'
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
+                  } disabled:opacity-50`}
                 >
-                  {question}
+                  {opt.label}
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Song Length */}
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Song length
+            </label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { id: '60', label: '1 min', desc: 'Short & sweet' },
+                { id: '90', label: '1.5 min', desc: 'Just right' },
+                { id: '120', label: '2 min', desc: 'Full song' },
+              ].map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => setSongLength(opt.id)}
+                  disabled={isLoading}
+                  className={`py-3 px-3 rounded-lg text-center transition-all border ${
+                    songLength === opt.id
+                      ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                      : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
+                  } disabled:opacity-50`}
+                >
+                  <div className="font-semibold text-sm">{opt.label}</div>
+                  <div className="text-xs text-zinc-500 mt-0.5">{opt.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Language */}
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Language & accent
+            </label>
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              disabled={isLoading}
+              className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+            >
+              <option value="en-GB">English (British)</option>
+              <option value="en-US">English (American)</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="it">Italian</option>
+              <option value="pt">Portuguese</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+            </select>
+            <p className="text-xs text-zinc-500 mt-1">
+              This influences the vocal accent and any generated lyrics
+            </p>
+          </div>
+
+          {/* Tempo */}
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Tempo
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { id: 'slow', label: 'Slow & Gentle', bpm: '~70 BPM' },
+                { id: 'mid-tempo', label: 'Mid-Tempo', bpm: '~100 BPM' },
+                { id: 'upbeat', label: 'Upbeat', bpm: '~120 BPM' },
+                { id: 'high-energy', label: 'High Energy', bpm: '~140 BPM' },
+              ].map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => setTempo(opt.id)}
+                  disabled={isLoading}
+                  className={`py-2.5 px-3 rounded-lg text-center transition-all border ${
+                    tempo === opt.id
+                      ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                      : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
+                  } disabled:opacity-50`}
+                >
+                  <div className="font-medium text-sm">{opt.label}</div>
+                  <div className="text-xs text-zinc-500">{opt.bpm}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </AccordionSection>
+
+        {/* Special Memories - expanded by default */}
+        <AccordionSection title="Special Memories" defaultOpen>
+          <p className="text-sm text-zinc-500">
+            Tap a prompt to answer it, or write your own below
+          </p>
+
+          {/* Occasion-specific prompt chips */}
+          {suggestions.length > 0 && (
+            <div>
+              <div className="flex flex-wrap gap-2 mb-2">
+                {suggestions.map((question) => (
+                  <button
+                    key={question}
+                    type="button"
+                    onClick={() => handleTogglePrompt(question)}
+                    disabled={isLoading}
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
+                      activePrompts.has(question)
+                        ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                        : 'bg-surface-100 border-surface-300 text-zinc-300 hover:bg-surface-100 hover:border-brand-500/50'
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
+
+              {/* Animated inputs for active occasion prompts */}
+              <AnimatePresence>
+                {suggestions
+                  .filter((q) => activePrompts.has(q))
+                  .map((question) => (
+                    <motion.div
+                      key={question}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-brand-400 mb-1">
+                          {question}
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                          placeholder="Type your answer..."
+                          value={promptAnswers[question] || ''}
+                          onChange={(e) => handlePromptAnswerChange(question, e.target.value)}
+                          disabled={isLoading}
+                        />
+                      </div>
+                    </motion.div>
+                  ))}
+              </AnimatePresence>
+            </div>
           )}
 
-          {/* Individual answer boxes for active prompts */}
-          <AnimatePresence>
-            {suggestions
-              .filter((q) => activePrompts.has(q))
-              .map((question) => (
-                <motion.div
-                  key={question}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-brand-400 mb-1">
-                      {question}
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-                      placeholder="Type your answer..."
-                      value={promptAnswers[question] || ''}
-                      onChange={(e) => handlePromptAnswerChange(question, e.target.value)}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-          </AnimatePresence>
+          {/* Universal prompt categories */}
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
+              Browse more prompts
+            </p>
+            {universalPromptCategories.map((category) => (
+              <PromptCategory
+                key={category.id}
+                category={category}
+                activePrompts={activePrompts}
+                promptAnswers={promptAnswers}
+                onTogglePrompt={handleTogglePrompt}
+                onAnswerChange={handlePromptAnswerChange}
+                disabled={isLoading}
+              />
+            ))}
+          </div>
 
-          {/* Freeform textarea */}
+          {/* Freeform textarea - always visible */}
           <textarea
             className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 min-h-[100px] resize-none"
             placeholder="Anything else? Share memories, inside jokes, or details you'd like woven into the lyrics..."
@@ -446,38 +472,41 @@ export function PersonalisationForm({
             onChange={(e) => setFreeformMemories(e.target.value)}
             disabled={isLoading}
           />
-        </div>
+        </AccordionSection>
 
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Things to Avoid (Optional)
-          </label>
-          <input
-            type="text"
-            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-            placeholder="Anything you'd like us to avoid mentioning?"
-            value={thingsToAvoid}
-            onChange={(e) => setThingsToAvoid(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
+        {/* Additional Options - collapsed by default */}
+        <AccordionSection title="Additional Options">
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Things to Avoid (Optional)
+            </label>
+            <input
+              type="text"
+              className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+              placeholder="Anything you'd like us to avoid mentioning?"
+              value={thingsToAvoid}
+              onChange={(e) => setThingsToAvoid(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-zinc-300 mb-1">
-            Occasion Date (Optional)
-          </label>
-          <p className="text-sm text-zinc-500 mb-2">We&apos;ll send you a reminder next year</p>
-          <input
-            type="date"
-            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
-            value={occasionDate}
-            onChange={(e) => setOccasionDate(e.target.value)}
-            disabled={isLoading}
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-zinc-300 mb-1">
+              Occasion Date (Optional)
+            </label>
+            <p className="text-sm text-zinc-500 mb-2">We&apos;ll send you a reminder next year</p>
+            <input
+              type="date"
+              className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+              value={occasionDate}
+              onChange={(e) => setOccasionDate(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+        </AccordionSection>
       </div>
 
-      {/* Action buttons */}
+      {/* Action buttons - always visible */}
       <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
         <button
           onClick={onBack}

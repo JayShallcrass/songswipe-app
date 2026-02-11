@@ -41,7 +41,7 @@ export function CopyLinkButton({ url }: CopyLinkButtonProps) {
     <button
       onClick={handleCopy}
       title="Copy link"
-      className="w-12 h-12 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors flex items-center justify-center"
+      className="w-12 h-12 rounded-full bg-surface-100 hover:bg-surface-200 transition-colors flex items-center justify-center"
     >
       {copied ? (
         <svg

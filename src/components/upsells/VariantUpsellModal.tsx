@@ -47,17 +47,17 @@ export function VariantUpsellModal({ orderId, isOpen, onClose }: VariantUpsellMo
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className="fixed inset-0 flex items-center justify-center z-50 px-4"
           >
-            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+            <div className="bg-surface-50 border border-surface-200 rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
               {/* Headline */}
-              <h2 className="text-3xl font-bold text-gray-900 mb-2 text-center">
+              <h2 className="text-3xl font-bold text-white mb-2 text-center">
                 One More Take?
               </h2>
-              <p className="text-gray-600 text-center mb-6">
+              <p className="text-zinc-400 text-center mb-6">
                 Add a 4th variant for just £{(UPSELL_PRICE / 100).toFixed(2)}
               </p>
 
               {/* Pricing Card */}
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-6 mb-6 text-white text-center">
+              <div className="bg-gradient-to-r from-brand-500 to-purple-600 rounded-xl p-6 mb-6 text-white text-center">
                 <p className="text-5xl font-bold mb-1">
                   £{(UPSELL_PRICE / 100).toFixed(2)}
                 </p>
@@ -71,14 +71,14 @@ export function VariantUpsellModal({ orderId, isOpen, onClose }: VariantUpsellMo
                 <button
                   onClick={handleAccept}
                   disabled={isLoading}
-                  className="w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-4 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? 'Loading...' : 'Add 4th Variant'}
                 </button>
                 <button
                   onClick={onClose}
                   disabled={isLoading}
-                  className="w-full px-6 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-4 border-2 border-surface-300 text-zinc-300 rounded-xl font-semibold hover:bg-surface-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   No Thanks
                 </button>

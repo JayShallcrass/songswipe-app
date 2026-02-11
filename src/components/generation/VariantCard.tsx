@@ -154,7 +154,7 @@ export function VariantCard({ orderId, variantId, variantNumber, isActive, isTop
       whileDrag={isTop ? { scale: 1.02, cursor: 'grabbing' } : undefined}
       className="absolute inset-0 w-full h-full"
     >
-      <div className="w-full h-full bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div className="w-full h-full bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
         <div className={`relative w-full h-full bg-gradient-to-br ${gradient} p-5 sm:p-8 flex flex-col items-center justify-center`}>
           {/* Variant label */}
           <div className="text-3xl sm:text-5xl mb-2 sm:mb-3">{icon}</div>

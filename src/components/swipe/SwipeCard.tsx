@@ -135,8 +135,8 @@ export function SwipeCard({ card, onSwipe, isTop }: SwipeCardProps) {
       whileDrag={isTop ? { scale: 1.02, cursor: 'grabbing' } : undefined}
       className="absolute inset-0 w-full h-full"
     >
-      {/* Solid white background behind gradient to prevent any transparency bleed */}
-      <div className="w-full h-full bg-white rounded-2xl shadow-xl overflow-hidden">
+      {/* Solid dark background behind gradient to prevent any transparency bleed */}
+      <div className="w-full h-full bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
         <div className={`relative w-full h-full bg-gradient-to-br ${card.gradient} p-4 sm:p-8 flex flex-col items-center justify-center`}>
           {/* Icon */}
           <div className="text-4xl sm:text-6xl mb-3 sm:mb-6">{card.icon}</div>

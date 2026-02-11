@@ -49,7 +49,7 @@ export function SongDetails({
 
   return (
     <div className="bg-white/5 backdrop-blur rounded-2xl p-6">
-      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+      <h2 className="text-2xl font-bold mb-6 text-gradient">
         Song for {recipientName}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

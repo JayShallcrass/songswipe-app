@@ -48,8 +48,8 @@ export function SwipeStack({
     <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
       {/* Stage header */}
       <div className="mb-2 sm:mb-4 text-center px-2">
-        <h1 className="text-lg sm:text-2xl font-bold text-gray-900 mb-0.5 sm:mb-1">{stageTitle}</h1>
-        <p className="text-xs sm:text-base text-gray-600">{stageSubtitle}</p>
+        <h1 className="text-lg sm:text-2xl font-bold text-white mb-0.5 sm:mb-1">{stageTitle}</h1>
+        <p className="text-xs sm:text-base text-zinc-400">{stageSubtitle}</p>
       </div>
 
       {/* Card stack container - touch-action:none prevents scroll hijacking */}
@@ -96,7 +96,7 @@ export function SwipeStack({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="text-purple-600 text-xs sm:text-sm font-medium mb-2 text-center"
+            className="text-brand-400 text-xs sm:text-sm font-medium mb-2 text-center"
           >
             Back to the start - swipe right on one you like!
           </motion.p>
@@ -110,8 +110,8 @@ export function SwipeStack({
             key={card.id}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
               index === currentCardIndex
-                ? 'bg-purple-600 w-3'
-                : 'bg-gray-300'
+                ? 'bg-brand-500 w-3'
+                : 'bg-surface-300'
             }`}
           />
         ))}
@@ -121,7 +121,7 @@ export function SwipeStack({
       <div className="flex items-center gap-3 sm:gap-4">
         <button
           onClick={handleSkip}
-          className="px-5 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 text-gray-600 font-medium rounded-xl hover:border-gray-400 hover:text-gray-700 transition-colors text-sm sm:text-base"
+          className="px-5 sm:px-6 py-2.5 sm:py-3 border-2 border-surface-300 text-zinc-400 font-medium rounded-xl hover:border-surface-200 hover:text-white transition-colors text-sm sm:text-base"
         >
           Skip
         </button>
@@ -130,7 +130,7 @@ export function SwipeStack({
         {canUndo && (
           <button
             onClick={onUndo}
-            className="px-3 py-2.5 text-gray-500 hover:text-gray-700 transition-colors font-medium text-sm"
+            className="px-3 py-2.5 text-zinc-500 hover:text-white transition-colors font-medium text-sm"
           >
             <span className="mr-1">↩</span>
             Undo
@@ -139,7 +139,7 @@ export function SwipeStack({
 
         <button
           onClick={handleSelect}
-          className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium rounded-xl hover:from-purple-700 hover:to-pink-700 transition-colors shadow-lg text-sm sm:text-base"
+          className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-medium rounded-xl hover:from-brand-600 hover:to-purple-700 transition-colors text-sm sm:text-base"
         >
           Select
         </button>

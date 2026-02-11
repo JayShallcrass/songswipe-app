@@ -1,85 +1,86 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import AudioPreview from '@/components/AudioPreview'
+import Footer from '@/components/Footer'
+import HeroBackground from '@/components/illustrations/HeroBackground'
+import { StepPersonalise, StepGenerate, StepShare } from '@/components/illustrations/StepIcons'
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-pink-50">
-      {/* Animated Sound Wave Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <svg className="absolute w-full h-full opacity-20" viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#ec4899" stopOpacity="0.4"/>
-              <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.4"/>
-              <stop offset="100%" stopColor="#ec4899" stopOpacity="0.4"/>
-            </linearGradient>
-          </defs>
-          {/* Wave 1 */}
-          <path 
-            fill="url(#wave-gradient)" 
-            fillOpacity="0.4"
-            d="M0,160 C320,120 480,200 720,160 C960,120 1120,200 1440,160 L1440,320 L0,320 Z"
-            className="animate-wave-1"
-          />
-        </svg>
-        <svg className="absolute w-full h-full opacity-20" viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ marginTop: '-80px' }}>
-          <path 
-            fill="url(#wave-gradient)" 
-            fillOpacity="0.3"
-            d="M0,200 C240,160 400,240 720,200 C1040,160 1200,240 1440,200 L1440,320 L0,320 Z"
-            className="animate-wave-2"
-          />
-        </svg>
-      </div>
-
+    <div className="min-h-screen bg-surface-DEFAULT">
       {/* Hero Section */}
-      <section className="relative pt-12 pb-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-6xl mb-6 animate-bounce-slow">🎵</div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent leading-tight">
-            Songs Made Just for Them
+      <section className="relative pt-20 pb-24 px-4 overflow-hidden">
+        <HeroBackground />
+
+        <div className="relative max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-heading font-bold mb-6 text-white leading-tight">
+            Songs Made Just<br />for Them
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            AI-powered personalised songs for Valentine&apos;s, birthdays, anniversaries, 
-            and every special moment. A gift they&apos;ll never forget.
+          <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl mx-auto font-body">
+            AI-powered personalised songs for birthdays, Valentine&apos;s, anniversaries,
+            and every moment worth celebrating. A gift they&apos;ll never forget.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <Link
               href="/auth/login"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full hover:from-brand-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
             >
-              Create a Song 🎶
+              Create a Song
+            </Link>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-zinc-300 border border-surface-300 rounded-full hover:bg-surface-100 hover:text-white transition-all"
+            >
+              View Pricing
             </Link>
           </div>
-          <p className="mt-4 text-sm text-gray-500">Starting at £7.99 • 60-120 second songs • Instant download</p>
+          <p className="text-sm text-zinc-500">Starting at &pound;7.99 &middot; 60-120 second songs &middot; Instant download</p>
+        </div>
+      </section>
+
+      {/* Audio Previews */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-heading font-bold text-white text-center mb-2">
+            Hear the Quality
+          </h2>
+          <p className="text-zinc-500 text-center mb-8">
+            Real examples of songs created by our AI
+          </p>
+          <AudioPreview />
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">How It Works</h2>
+          <h2 className="text-3xl font-heading font-bold text-center mb-14 text-white">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center group">
-              <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">1️⃣</div>
-              <h3 className="text-xl font-semibold mb-2">Tell Us About Them</h3>
-              <p className="text-gray-600">
+              <div className="w-20 h-20 mx-auto mb-5">
+                <StepPersonalise />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-white">Tell Us About Them</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed">
                 Share their name, the occasion, mood, and any special memories you want included.
               </p>
             </div>
             <div className="text-center group">
-              <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">2️⃣</div>
-              <h3 className="text-xl font-semibold mb-2">AI Generates Your Song</h3>
-              <p className="text-gray-600">
+              <div className="w-20 h-20 mx-auto mb-5">
+                <StepGenerate />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-white">AI Generates Your Song</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed">
                 Our AI creates a unique, professional-quality song in just a few minutes.
               </p>
             </div>
             <div className="text-center group">
-              <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">3️⃣</div>
-              <h3 className="text-xl font-semibold mb-2">Download & Share</h3>
-              <p className="text-gray-600">
+              <div className="w-20 h-20 mx-auto mb-5">
+                <StepShare />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-white">Download & Share</h3>
+              <p className="text-zinc-500 text-sm leading-relaxed">
                 Get your personalised MP3 and make their day unforgettable.
               </p>
             </div>
@@ -87,67 +88,160 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 px-4">
+      {/* Social Proof */}
+      <section className="py-20 px-4 border-t border-surface-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why SongSwipe?</h2>
+          <h2 className="text-3xl font-heading font-bold text-center mb-4 text-white">
+            Loved by Gift-Givers
+          </h2>
+          <p className="text-zinc-500 text-center mb-12">
+            Join hundreds of people creating unforgettable gifts
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "My mum cried happy tears when she heard her birthday song. Absolutely worth every penny.",
+                name: "Emily R.",
+                occasion: "Birthday",
+              },
+              {
+                quote: "Way better than a card. My wife plays it every morning. Best Valentine's gift I've ever given.",
+                name: "Marcus T.",
+                occasion: "Valentine's Day",
+              },
+              {
+                quote: "Used it for our 10th anniversary. The personalised lyrics were spot-on. Genuinely impressive.",
+                name: "Sophie K.",
+                occasion: "Anniversary",
+              },
+            ].map((testimonial, i) => (
+              <div
+                key={i}
+                className="bg-surface-50 border border-surface-200 rounded-2xl p-6"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-zinc-300 text-sm leading-relaxed mb-4">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-white text-sm font-medium">{testimonial.name}</p>
+                    <p className="text-zinc-500 text-xs">{testimonial.occasion}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-heading font-bold text-center mb-14 text-white">Why SongSwipe?</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="text-3xl mb-3">🎯</div>
-              <h3 className="text-lg font-semibold mb-2">100% Personalised</h3>
-              <p className="text-gray-600">
-                Every song is unique, written specifically for your recipient with their name, memories, and your message woven throughout.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="text-3xl mb-3">⚡</div>
-              <h3 className="text-lg font-semibold mb-2">Ready in Minutes</h3>
-              <p className="text-gray-600">
-                No waiting weeks for a human songwriter. Your AI-generated song is ready almost instantly.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="text-3xl mb-3">💷</div>
-              <h3 className="text-lg font-semibold mb-2">10x Cheaper</h3>
-              <p className="text-gray-600">
-                Professional human songs cost £100+. Our AI delivers comparable quality for just £7.99.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-              <div className="text-3xl mb-3">🎁</div>
-              <h3 className="text-lg font-semibold mb-2">Perfect Gift</h3>
-              <p className="text-gray-600">
-                Stand out from generic cards and flowers with a truly unique, personal gift they&apos;ll treasure forever.
-              </p>
-            </div>
+            {[
+              {
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ),
+                title: "100% Personalised",
+                description: "Every song is unique, written specifically for your recipient with their name, memories, and your message woven throughout.",
+              },
+              {
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                  </svg>
+                ),
+                title: "Ready in Minutes",
+                description: "No waiting weeks for a human songwriter. Your AI-generated song is ready almost instantly.",
+              },
+              {
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                  </svg>
+                ),
+                title: "10x Cheaper",
+                description: "Professional human songs cost \u00a3100+. Our AI delivers comparable quality for just \u00a37.99.",
+              },
+              {
+                icon: (
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                  </svg>
+                ),
+                title: "Perfect Gift",
+                description: "Stand out from generic cards and flowers with a truly unique, personal gift they'll treasure forever.",
+              },
+            ].map((feature, i) => (
+              <div
+                key={i}
+                className="bg-surface-50 border border-surface-200 rounded-2xl p-6 hover:border-surface-300 transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-white">{feature.title}</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Pricing */}
-      <section className="py-16 px-4 bg-gradient-to-r from-purple-600 to-pink-600">
-        <div className="max-w-4xl mx-auto text-center text-white">
-          <h2 className="text-3xl font-bold mb-8">Simple, Transparent Pricing</h2>
-          <div className="bg-white rounded-3xl p-8 max-w-md mx-auto">
-            <div className="text-gray-600 mb-2">Single Song</div>
-            <div className="text-5xl font-bold text-gray-900 mb-4">£7.99</div>
-            <ul className="text-left text-gray-600 space-y-3 mb-8">
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> 60-120 second personalised song
+      <section className="py-20 px-4 border-t border-surface-200">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-heading font-bold mb-4 text-white">Simple, Transparent Pricing</h2>
+          <p className="text-zinc-500 mb-10">One price. Three song variants. No hidden fees.</p>
+          <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8 max-w-md mx-auto">
+            <div className="text-zinc-400 mb-2 text-sm font-medium uppercase tracking-wider">Single Song</div>
+            <div className="text-5xl font-bold text-white mb-1">&pound;7.99</div>
+            <p className="text-zinc-500 text-sm mb-6">one-time payment</p>
+            <ul className="text-left text-zinc-400 space-y-3 mb-8">
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>60-120 second personalised song</span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Professional AI-generated music
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>3 unique variants to choose from</span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> MP3 download included
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>MP3 download included</span>
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Unlimited replays
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>Shareable gift link</span>
               </li>
             </ul>
             <Link
               href="/auth/login"
-              className="block w-full py-4 text-center font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all hover:scale-[1.02]"
+              className="block w-full py-4 text-center font-semibold text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full hover:from-brand-600 hover:to-purple-700 transition-all hover:scale-[1.02]"
             >
               Create Now
             </Link>
@@ -155,60 +249,25 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-8 px-4 bg-gray-900 text-gray-400">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="text-2xl">🎵</span>
-            <span className="text-xl font-bold text-white">SongSwipe</span>
-          </div>
-          <div className="flex items-center justify-center gap-4 mb-4 text-sm">
-            <Link href="/privacy" className="text-gray-400 hover:text-purple-300 transition-colors">
-              Privacy Policy
-            </Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/terms" className="text-gray-400 hover:text-purple-300 transition-colors">
-              Terms of Service
-            </Link>
-            <span className="text-gray-600">|</span>
-            <Link href="/faq" className="text-gray-400 hover:text-purple-300 transition-colors">
-              FAQ
-            </Link>
-          </div>
-          <p className="text-sm">&copy; 2025-2026 SongSwipe. AI-generated personalised songs.</p>
-          <p className="text-xs mt-2">
-            Powered by{' '}
-            <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">
-              ElevenLabs
-            </a>{' '}
-            AI Technology
+      {/* Final CTA */}
+      <section className="py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-white">
+            Make Their Day Unforgettable
+          </h2>
+          <p className="text-zinc-400 mb-8 text-lg">
+            A personalised song says what words alone can&apos;t. Create yours in minutes.
           </p>
+          <Link
+            href="/auth/login"
+            className="inline-flex items-center justify-center px-10 py-4 text-lg font-semibold text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full hover:from-brand-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+          >
+            Create a Song
+          </Link>
         </div>
-      </footer>
+      </section>
 
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes wave-1 {
-          0%, 100% { transform: translateX(0) translateY(0); }
-          50% { transform: translateX(-25px) translateY(-10px); }
-        }
-        @keyframes wave-2 {
-          0%, 100% { transform: translateX(0) translateY(0); }
-          50% { transform: translateX(25px) translateY(10px); }
-        }
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-wave-1 {
-          animation: wave-1 8s ease-in-out infinite;
-        }
-        .animate-wave-2 {
-          animation: wave-2 10s ease-in-out infinite;
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-        }
-      `}} />
+      <Footer />
     </div>
   )
 }

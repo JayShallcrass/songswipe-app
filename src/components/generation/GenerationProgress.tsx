@@ -58,14 +58,14 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl shadow-xl p-8 animate-pulse">
-        <div className="h-8 bg-gray-200 rounded w-1/2 mb-4"></div>
-        <div className="h-4 bg-gray-200 rounded w-1/3 mb-6"></div>
-        <div className="h-4 bg-gray-200 rounded w-full mb-6"></div>
+      <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8 animate-pulse">
+        <div className="h-8 bg-surface-200 rounded w-1/2 mb-4"></div>
+        <div className="h-4 bg-surface-200 rounded w-1/3 mb-6"></div>
+        <div className="h-4 bg-surface-200 rounded w-full mb-6"></div>
         <div className="space-y-4">
-          <div className="h-6 bg-gray-200 rounded"></div>
-          <div className="h-6 bg-gray-200 rounded"></div>
-          <div className="h-6 bg-gray-200 rounded"></div>
+          <div className="h-6 bg-surface-200 rounded"></div>
+          <div className="h-6 bg-surface-200 rounded"></div>
+          <div className="h-6 bg-surface-200 rounded"></div>
         </div>
       </div>
     )
@@ -73,10 +73,10 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
 
   if (error) {
     return (
-      <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-        <div className="text-5xl mb-4">❌</div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Status</h2>
-        <p className="text-gray-600">{error.message}</p>
+      <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
+        <div className="text-5xl mb-4">&#x274C;</div>
+        <h2 className="text-2xl font-bold text-white mb-2">Error Loading Status</h2>
+        <p className="text-zinc-400">{error.message}</p>
       </div>
     )
   }
@@ -90,22 +90,22 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
   const hasCompletedVariants = completedCount > 0
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8">
+    <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8">
       {/* Heading */}
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-white mb-2">
           {isComplete ? 'Your songs are ready!' : 'Creating your songs...'}
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-zinc-400">
           {completedCount}/{totalVariants} variants complete
         </p>
       </div>
 
       {/* Overall progress bar */}
       <div className="mb-8">
-        <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-3 bg-surface-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-brand-500 to-purple-600 transition-all duration-500 ease-out"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
@@ -115,7 +115,7 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
       {!isComplete && (
         <div className="mb-8 text-center min-h-[4rem] flex items-center justify-center px-4">
           <p
-            className={`text-sm text-gray-500 italic transition-opacity duration-400 ${
+            className={`text-sm text-zinc-500 italic transition-opacity duration-400 ${
               fadeIn ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -131,10 +131,10 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
             {/* Status icon */}
             <div className="flex-shrink-0 w-6 h-6">
               {variant.generation_status === 'pending' && (
-                <div className="w-6 h-6 border-2 border-gray-300 rounded-full" />
+                <div className="w-6 h-6 border-2 border-surface-300 rounded-full" />
               )}
               {variant.generation_status === 'generating' && (
-                <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
               )}
               {variant.generation_status === 'complete' && (
                 <svg className="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,16 +151,16 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
             {/* Status text */}
             <div className="flex-1">
               {variant.generation_status === 'pending' && (
-                <p className="text-gray-500">Variant {variant.variant_number}: Waiting...</p>
+                <p className="text-zinc-500">Variant {variant.variant_number}: Waiting...</p>
               )}
               {variant.generation_status === 'generating' && (
-                <p className="text-purple-600 font-medium">Variant {variant.variant_number}: Generating...</p>
+                <p className="text-brand-400 font-medium">Variant {variant.variant_number}: Generating...</p>
               )}
               {variant.generation_status === 'complete' && (
-                <p className="text-green-600 font-medium">Variant {variant.variant_number}: Ready</p>
+                <p className="text-green-400 font-medium">Variant {variant.variant_number}: Ready</p>
               )}
               {variant.generation_status === 'failed' && (
-                <p className="text-red-600 font-medium">Variant {variant.variant_number}: Failed</p>
+                <p className="text-red-400 font-medium">Variant {variant.variant_number}: Failed</p>
               )}
             </div>
           </div>
@@ -169,14 +169,14 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
 
       {/* Partial success banner */}
       {hasFailedVariants && hasCompletedVariants && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
           <div className="flex gap-2">
-            <div className="text-yellow-600 flex-shrink-0">
+            <div className="text-yellow-400 flex-shrink-0">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <p className="text-sm text-yellow-800">
+            <p className="text-sm text-yellow-300">
               Some variants could not be generated. You can still listen to the successful ones.
             </p>
           </div>

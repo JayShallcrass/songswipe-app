@@ -48,16 +48,16 @@ function CheckoutSuccessContent() {
   // If no session_id, show error
   if (!sessionId) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-red-50 via-white to-purple-50 flex items-center justify-center px-4">
-        <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center">
+      <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
+        <div className="max-w-md mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
           <div className="text-5xl mb-4">&#x274C;</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Invalid Checkout Session</h1>
-          <p className="text-gray-600 mb-6">
+          <h1 className="text-2xl font-bold text-white mb-4">Invalid Checkout Session</h1>
+          <p className="text-zinc-400 mb-6">
             We couldn&apos;t find your checkout session. Please try again or contact support.
           </p>
           <Link
             href="/pricing"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
           >
             Back to Pricing
           </Link>
@@ -70,48 +70,48 @@ function CheckoutSuccessContent() {
   const sessionReference = sessionId.slice(-8)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-purple-50 flex items-center justify-center px-4 py-16">
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4 py-16">
+      <div className="max-w-2xl mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8">
         {/* Success header */}
         <div className="text-center mb-8">
           <div className="text-6xl mb-4">🎉</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
-          <p className="text-lg text-gray-600">
+          <h1 className="text-3xl font-heading font-bold text-white mb-2">Payment Successful!</h1>
+          <p className="text-lg text-zinc-400">
             Your personalised song is being generated. This usually takes a few minutes.
           </p>
-          <div className="mt-4 inline-block bg-gray-100 rounded-lg px-4 py-2">
-            <p className="text-sm text-gray-500">
-              Reference: <span className="font-mono font-semibold text-gray-700">...{sessionReference}</span>
+          <div className="mt-4 inline-block bg-surface-100 rounded-xl px-4 py-2">
+            <p className="text-sm text-zinc-500">
+              Reference: <span className="font-mono font-semibold text-zinc-300">...{sessionReference}</span>
             </p>
           </div>
         </div>
 
         {/* What happens next */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">What happens next</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">What happens next</h2>
           <ol className="space-y-4">
             <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-sm font-bold">
+              <span className="flex-shrink-0 w-6 h-6 bg-brand-500/20 text-brand-400 rounded-full flex items-center justify-center text-sm font-bold">
                 1
               </span>
               <div>
-                <p className="text-gray-800 font-medium">Our AI is generating 3 unique song variants based on your preferences</p>
+                <p className="text-zinc-300 font-medium">Our AI is generating 3 unique song variants based on your preferences</p>
               </div>
             </li>
             <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-sm font-bold">
+              <span className="flex-shrink-0 w-6 h-6 bg-brand-500/20 text-brand-400 rounded-full flex items-center justify-center text-sm font-bold">
                 2
               </span>
               <div>
-                <p className="text-gray-800 font-medium">You&apos;ll be able to swipe through them and pick your favourite</p>
+                <p className="text-zinc-300 font-medium">You&apos;ll be able to swipe through them and pick your favourite</p>
               </div>
             </li>
             <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center text-sm font-bold">
+              <span className="flex-shrink-0 w-6 h-6 bg-brand-500/20 text-brand-400 rounded-full flex items-center justify-center text-sm font-bold">
                 3
               </span>
               <div>
-                <p className="text-gray-800 font-medium">Download your chosen song as a high-quality MP3</p>
+                <p className="text-zinc-300 font-medium">Download your chosen song as a high-quality MP3</p>
               </div>
             </li>
           </ol>
@@ -122,26 +122,26 @@ function CheckoutSuccessContent() {
           {orderId ? (
             <Link
               href={`/generate/${orderId}`}
-              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg text-center"
+              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg text-center"
             >
               Watch Your Song Being Created
             </Link>
           ) : polling ? (
-            <div className="w-full sm:w-auto px-8 py-3 bg-gray-300 text-white rounded-xl font-semibold text-center flex items-center justify-center gap-2 cursor-wait">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-full sm:w-auto px-8 py-3 bg-surface-200 text-zinc-400 rounded-full font-semibold text-center flex items-center justify-center gap-2 cursor-wait">
+              <div className="w-4 h-4 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin"></div>
               <span>Loading...</span>
             </div>
           ) : (
             <Link
               href="/dashboard"
-              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg text-center"
+              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg text-center"
             >
               Go to Dashboard
             </Link>
           )}
           <Link
             href="/"
-            className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+            className="text-zinc-500 hover:text-white font-medium transition-colors"
           >
             Create Another Song
           </Link>
@@ -155,8 +155,8 @@ export default function CheckoutSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gradient-to-b from-green-50 via-white to-purple-50 flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
       }
     >

@@ -19,9 +19,9 @@ export default function SongPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white text-lg animate-pulse">Loading your song...</p>
         </div>
       </div>
@@ -31,15 +31,15 @@ export default function SongPage() {
   // Error state
   if (error || !song) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <h1 className="text-3xl font-bold text-white mb-4">Song not found</h1>
-          <p className="text-gray-400 mb-8">
+          <p className="text-zinc-400 mb-8">
             This song may not exist or you may not have access.
           </p>
           <Link
             href="/"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-full hover:from-brand-600 hover:to-purple-700 transition-all"
           >
             Go Home
           </Link>
@@ -50,7 +50,7 @@ export default function SongPage() {
 
   // Success state
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900">
+    <div className="min-h-screen bg-surface-DEFAULT">
       <div className="max-w-2xl mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -61,7 +61,7 @@ export default function SongPage() {
           {/* Logo/Home Link */}
           <div className="text-center">
             <Link href="/" className="inline-block">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-pink-300 transition-all">
+              <h1 className="text-4xl font-bold text-gradient hover:opacity-80 transition-all">
                 SongSwipe
               </h1>
             </Link>
@@ -69,7 +69,7 @@ export default function SongPage() {
 
           {/* Song Title */}
           <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold text-gradient">
               A Song for {song.recipientName}
             </h2>
           </div>
@@ -81,7 +81,7 @@ export default function SongPage() {
           <button
             onClick={downloadSong}
             disabled={isDownloading}
-            className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-full hover:from-brand-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <ArrowDownTrayIcon className="w-5 h-5" />
             {isDownloading ? 'Downloading...' : 'Download MP3'}
@@ -90,7 +90,7 @@ export default function SongPage() {
           {/* Share Your Song Section */}
           {song.shareToken && (
             <div className="space-y-4">
-              <div className="border-t border-purple-500/20"></div>
+              <div className="border-t border-surface-200"></div>
               <h3 className="text-xl font-semibold text-white text-center">Share Your Song</h3>
               <div className="bg-white/5 backdrop-blur rounded-xl p-6 space-y-4">
                 <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export default function SongPage() {
                   </div>
                   <CopyLinkButton url={generateShareUrl(song.shareToken)} />
                 </div>
-                <p className="text-sm text-gray-400 text-center">
+                <p className="text-sm text-zinc-400 text-center">
                   Send this link to {song.recipientName} for a special gift reveal experience
                 </p>
               </div>

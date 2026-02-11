@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { createCheckoutSession } from '@/lib/stripe'
 import { getUserBundleBalance, redeemBundleCredit } from '@/lib/bundles/redemption'
+import { findStyleHint } from '@/lib/styleHints'
 
 // Zod schema for validation
 const customisationSchema = {
@@ -18,6 +19,7 @@ const customisationSchema = {
       language: z.string().optional(),
       tempo: z.string().optional(),
       relationship: z.string().optional(),
+      pronunciation: z.string().max(100).optional(),
       specialMemories: z.string().max(500).optional(),
       thingsToAvoid: z.string().max(300).optional(),
       occasionDate: z.string().optional(),
@@ -82,6 +84,12 @@ function buildRichPrompt(c: Record<string, any>): string {
   // Core description
   lines.push(`A ${c.mood.join(' and ')} ${c.genre} song for ${occasion}.`)
 
+  // Style hint for unusual combos
+  const styleHint = findStyleHint(c.mood, c.genre, c.tempo)
+  if (styleHint) {
+    lines.push(`Style direction: ${styleHint}`)
+  }
+
   // Vocal and language direction
   lines.push(`Performed by a ${voice} singing in ${lang}.`)
 
@@ -95,7 +103,11 @@ function buildRichPrompt(c: Record<string, any>): string {
     lines.push(`Written by ${c.yourName} as a gift for ${c.recipientName}.`)
   }
 
-  lines.push(`Include ${c.recipientName}'s name naturally in the lyrics.`)
+  if (c.pronunciation) {
+    lines.push(`Include ${c.recipientName} (pronounced "${c.pronunciation}") naturally in the lyrics.`)
+  } else {
+    lines.push(`Include ${c.recipientName}'s name naturally in the lyrics.`)
+  }
 
   // Special memories / content direction
   if (c.specialMemories) {
@@ -160,6 +172,7 @@ export async function POST(request: NextRequest) {
         genre: customisation.genre,
         special_memories: customisation.specialMemories || null,
         things_to_avoid: customisation.thingsToAvoid || null,
+        pronunciation: customisation.pronunciation || null,
         occasion_date: customisation.occasionDate || null,
         prompt,
       })

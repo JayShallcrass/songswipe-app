@@ -9,6 +9,7 @@ import { PromptCategory } from './PromptCategory'
 
 export interface PersonalisationData {
   recipientName: string
+  pronunciation: string
   yourName: string
   specialMemories: string
   thingsToAvoid: string
@@ -27,6 +28,7 @@ interface PersonalisationFormProps {
 }
 
 interface CacheData extends Omit<PersonalisationData, 'specialMemories'> {
+  pronunciation: string
   promptAnswers: Record<string, string>
   freeformMemories: string
 }
@@ -84,6 +86,7 @@ export function PersonalisationForm({
   selections,
 }: PersonalisationFormProps) {
   const [recipientName, setRecipientName] = useState('')
+  const [pronunciation, setPronunciation] = useState('')
   const [yourName, setYourName] = useState('')
   const [promptAnswers, setPromptAnswers] = useState<Record<string, string>>({})
   const [activePrompts, setActivePrompts] = useState<Set<string>>(new Set())
@@ -100,6 +103,7 @@ export function PersonalisationForm({
   useEffect(() => {
     const cached = loadCache()
     if (cached.recipientName) setRecipientName(cached.recipientName)
+    if (cached.pronunciation) setPronunciation(cached.pronunciation)
     if (cached.yourName) setYourName(cached.yourName)
     if (cached.promptAnswers) {
       setPromptAnswers(cached.promptAnswers)
@@ -118,6 +122,7 @@ export function PersonalisationForm({
   useEffect(() => {
     saveCache({
       recipientName,
+      pronunciation,
       yourName,
       promptAnswers,
       freeformMemories,
@@ -128,7 +133,7 @@ export function PersonalisationForm({
       tempo,
       relationship,
     })
-  }, [recipientName, yourName, promptAnswers, freeformMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
+  }, [recipientName, pronunciation, yourName, promptAnswers, freeformMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
 
   // Get suggestion chips for the selected occasion
   const occasion = selections.occasion || ''
@@ -176,6 +181,7 @@ export function PersonalisationForm({
 
     onSubmit({
       recipientName,
+      pronunciation,
       yourName,
       specialMemories: buildSpecialMemories(promptAnswers, freeformMemories),
       thingsToAvoid,
@@ -248,6 +254,24 @@ export function PersonalisationForm({
           {errors.recipientName && (
             <p className="text-red-500 text-sm mt-1">{errors.recipientName}</p>
           )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
+            Pronounced as <span className="text-zinc-500 font-normal">(optional)</span>
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+            placeholder="e.g., Ay-mee (for Amiee)"
+            value={pronunciation}
+            onChange={(e) => setPronunciation(e.target.value)}
+            disabled={isLoading}
+            maxLength={100}
+          />
+          <p className="text-xs text-zinc-500 mt-1">
+            Help us get the name right in the song
+          </p>
         </div>
 
         <div>

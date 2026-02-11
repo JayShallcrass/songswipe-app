@@ -47,6 +47,7 @@ export interface Database {
           special_memories: string | null
           things_to_avoid: string | null
           occasion_date: string | null
+          pronunciation: string | null
           prompt: string
           created_at: string
         }
@@ -62,6 +63,7 @@ export interface Database {
           special_memories?: string | null
           things_to_avoid?: string | null
           occasion_date?: string | null
+          pronunciation?: string | null
           prompt: string
           created_at?: string
         }
@@ -77,6 +79,7 @@ export interface Database {
           special_memories?: string | null
           things_to_avoid?: string | null
           occasion_date?: string | null
+          pronunciation?: string | null
           prompt?: string
           created_at?: string
         }

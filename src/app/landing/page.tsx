@@ -40,17 +40,7 @@ export default function LandingPage() {
       </section>
 
       {/* Audio Previews */}
-      <section className="py-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-heading font-bold text-white text-center mb-2">
-            Hear the Quality
-          </h2>
-          <p className="text-zinc-500 text-center mb-8">
-            Real examples of songs created by our AI
-          </p>
-          <AudioPreview />
-        </div>
-      </section>
+      <AudioPreview />
 
       {/* How It Works */}
       <section className="py-20 px-4">
@@ -58,7 +48,7 @@ export default function LandingPage() {
           <h2 className="text-3xl font-heading font-bold text-center mb-14 text-white">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center group">
-              <div className="w-20 h-20 mx-auto mb-5">
+              <div className="w-28 h-28 mx-auto mb-6 rounded-2xl bg-surface-50 border border-surface-200 p-4 group-hover:border-brand-500/30 transition-all">
                 <StepPersonalise />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-white">Tell Us About Them</h3>
@@ -67,7 +57,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="text-center group">
-              <div className="w-20 h-20 mx-auto mb-5">
+              <div className="w-28 h-28 mx-auto mb-6 rounded-2xl bg-surface-50 border border-surface-200 p-4 group-hover:border-brand-500/30 transition-all">
                 <StepGenerate />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-white">AI Generates Your Song</h3>
@@ -76,7 +66,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="text-center group">
-              <div className="w-20 h-20 mx-auto mb-5">
+              <div className="w-28 h-28 mx-auto mb-6 rounded-2xl bg-surface-50 border border-surface-200 p-4 group-hover:border-brand-500/30 transition-all">
                 <StepShare />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-white">Download & Share</h3>

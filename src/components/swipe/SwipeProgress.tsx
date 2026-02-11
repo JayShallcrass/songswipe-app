@@ -7,6 +7,7 @@ interface SwipeProgressProps {
   currentStage: SwipeStage
   selections: Partial<Record<SwipeStage, string>>
   isPersonalising?: boolean
+  onStageClick?: (stage: SwipeStage) => void
 }
 
 // Visual steps include the personalisation form as a final step
@@ -21,7 +22,7 @@ const STEP_LABELS: Record<VisualStep, string> = {
   personalise: 'Details',
 }
 
-export function SwipeProgress({ currentStage, selections, isPersonalising }: SwipeProgressProps) {
+export function SwipeProgress({ currentStage, selections, isPersonalising, onStageClick }: SwipeProgressProps) {
   const allSwipesComplete = STAGE_ORDER.every(stage => selections[stage] !== undefined)
 
   const getStepStatus = (step: VisualStep): 'completed' | 'current' | 'upcoming' => {
@@ -35,25 +36,40 @@ export function SwipeProgress({ currentStage, selections, isPersonalising }: Swi
     return 'upcoming'
   }
 
+  const handleClick = (step: VisualStep) => {
+    if (step === 'personalise') return
+    const status = getStepStatus(step)
+    if (status === 'upcoming') return
+    if (status === 'current') return
+    // Only completed stages are clickable
+    onStageClick?.(step as SwipeStage)
+  }
+
   return (
     <div className="w-full max-w-md mx-auto px-4 py-2">
       <div className="flex items-center justify-between">
         {VISUAL_STEPS.map((step, index) => {
           const status = getStepStatus(step)
           const isLast = index === VISUAL_STEPS.length - 1
+          const isClickable = status === 'completed' && step !== 'personalise'
 
           return (
             <div key={step} className="flex-1 flex items-center">
               {/* Step dot */}
-              <div className="relative flex flex-col items-center flex-shrink-0">
+              <div
+                className={`relative flex flex-col items-center flex-shrink-0 ${
+                  isClickable ? 'cursor-pointer group' : ''
+                }`}
+                onClick={() => handleClick(step)}
+              >
                 <div
                   className={`
                     w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-300
                     ${
                       status === 'completed'
-                        ? 'bg-brand-500'
+                        ? 'bg-brand-500 group-hover:scale-110'
                         : status === 'current'
-                        ? 'bg-surface-50 border-[3px] border-brand-500'
+                        ? 'bg-surface-50 border-[3px] border-brand-500 ring-2 ring-brand-500/30'
                         : 'bg-surface-300'
                     }
                   `}
@@ -75,11 +91,17 @@ export function SwipeProgress({ currentStage, selections, isPersonalising }: Swi
                   )}
                 </div>
 
-                {/* Step label */}
+                {/* Step label - always visible */}
                 <span
                   className={`
                     mt-1 text-[10px] sm:text-xs font-medium transition-colors leading-tight
-                    ${status === 'completed' || status === 'current' ? 'text-brand-400' : 'text-zinc-500'}
+                    ${
+                      status === 'completed'
+                        ? 'text-brand-400 group-hover:text-brand-300'
+                        : status === 'current'
+                        ? 'text-brand-400'
+                        : 'text-zinc-500'
+                    }
                   `}
                 >
                   {STEP_LABELS[step]}

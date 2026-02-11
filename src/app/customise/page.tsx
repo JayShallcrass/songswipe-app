@@ -1,16 +1,16 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { useSwipeState } from '@/lib/swipe-state'
-import { useSwipeKeyboard } from '@/lib/swipe-keyboard'
-import { SwipeStack } from '@/components/swipe/SwipeStack'
+import { CardCarousel } from '@/components/swipe/CardCarousel'
 import { SwipeProgress } from '@/components/swipe/SwipeProgress'
 import { PersonalisationForm, PersonalisationData, clearPersonalisationCache } from '@/components/forms/PersonalisationForm'
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useSongBalance } from '@/lib/hooks/useSongBalance'
+import { STAGE_ORDER } from '@/lib/swipe-data'
 
 export default function CustomisePage() {
   const router = useRouter()
@@ -30,34 +30,15 @@ export default function CustomisePage() {
   // Get swipe state
   const {
     state,
-    handleSwipe,
-    undo,
+    handleSelect,
+    goBack,
+    goToStage,
     reset,
-    canUndo,
     isSwipeComplete,
     currentStageConfig,
-    didLoop,
   } = useSwipeState()
 
-  // Get current card for keyboard navigation
-  const currentCard = currentStageConfig?.cards[state.currentCardIndex]
-
-  // Set up keyboard navigation (disabled when on personalisation form)
-  useSwipeKeyboard({
-    onSwipeLeft: useCallback(() => {
-      if (currentCard) {
-        handleSwipe(currentCard.id, 'left')
-      }
-    }, [currentCard, handleSwipe]),
-    onSwipeRight: useCallback(() => {
-      if (currentCard) {
-        handleSwipe(currentCard.id, 'right')
-      }
-    }, [currentCard, handleSwipe]),
-    onUndo: undo,
-    canUndo,
-    disabled: isSwipeComplete,
-  })
+  const currentStageIndex = STAGE_ORDER.indexOf(state.currentStage)
 
   const handleFormSubmit = async (data: PersonalisationData) => {
     setIsLoading(true)
@@ -115,7 +96,12 @@ export default function CustomisePage() {
   }
 
   const handleBack = () => {
-    undo()
+    if (isSwipeComplete) {
+      // Go back from personalisation form to last swipe stage
+      goToStage('voice')
+    } else {
+      goBack()
+    }
   }
 
   const handleStartOver = () => {
@@ -123,7 +109,7 @@ export default function CustomisePage() {
   }
 
   return (
-    <div className={`bg-surface-DEFAULT ${!isSwipeComplete ? 'h-[100dvh] overflow-hidden flex flex-col' : 'min-h-screen'}`}>
+    <div className="bg-surface-DEFAULT min-h-screen">
       {/* App Header */}
       <header className="bg-surface-50 border-b border-surface-200 flex-shrink-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-2 sm:py-3 flex justify-between items-center">
@@ -150,11 +136,12 @@ export default function CustomisePage() {
           </div>
         </div>
 
-        {/* SwipeProgress component */}
+        {/* SwipeProgress - now with navigation */}
         <SwipeProgress
           currentStage={state.currentStage}
           selections={state.selections}
           isPersonalising={isSwipeComplete}
+          onStageClick={goToStage}
         />
       </header>
 
@@ -162,32 +149,41 @@ export default function CustomisePage() {
       <AnimatePresence mode="wait">
         {!isSwipeComplete ? (
           <motion.div
-            key="swipe-interface"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex-1 flex flex-col items-center justify-center px-4 py-2 overflow-hidden"
-            style={{ touchAction: 'none' }}
+            key={`swipe-${state.currentStage}`}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.25 }}
+            className="flex flex-col items-center px-4 py-4 sm:py-8"
           >
+            {/* Back button (stages 2-4) */}
+            {currentStageIndex > 0 && (
+              <button
+                onClick={goBack}
+                className="self-start mb-2 flex items-center gap-1 text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+              </button>
+            )}
+
             {currentStageConfig && (
-              <SwipeStack
+              <CardCarousel
                 cards={currentStageConfig.cards}
-                currentCardIndex={state.currentCardIndex}
                 stage={currentStageConfig.stage}
                 stageTitle={currentStageConfig.title}
                 stageSubtitle={currentStageConfig.subtitle}
-                onSwipe={handleSwipe}
-                onUndo={undo}
-                canUndo={canUndo}
-                didLoop={didLoop}
+                onSelect={handleSelect}
+                previousSelection={state.selections[currentStageConfig.stage]}
               />
             )}
 
             {/* Start Over link */}
             <button
               onClick={handleStartOver}
-              className="mt-2 text-zinc-600 hover:text-zinc-400 text-xs font-medium transition-colors"
+              className="mt-6 text-zinc-600 hover:text-zinc-400 text-xs font-medium transition-colors"
             >
               Start Over
             </button>

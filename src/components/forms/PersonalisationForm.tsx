@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { occasionQuestions } from '@/lib/elevenlabs'
 
 export interface PersonalisationData {
@@ -23,6 +23,11 @@ interface PersonalisationFormProps {
   selections: Record<string, string>
 }
 
+interface CacheData extends Omit<PersonalisationData, 'specialMemories'> {
+  promptAnswers: Record<string, string>
+  freeformMemories: string
+}
+
 const CACHE_KEY = 'songswipe_personalisation'
 
 export function clearPersonalisationCache() {
@@ -33,7 +38,7 @@ export function clearPersonalisationCache() {
   }
 }
 
-function loadCache(): Partial<PersonalisationData> {
+function loadCache(): Partial<CacheData> {
   try {
     const stored = localStorage.getItem(CACHE_KEY)
     if (stored) return JSON.parse(stored)
@@ -43,12 +48,30 @@ function loadCache(): Partial<PersonalisationData> {
   return {}
 }
 
-function saveCache(data: PersonalisationData) {
+function saveCache(data: CacheData) {
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data))
   } catch {
     // localStorage unavailable
   }
+}
+
+function buildSpecialMemories(promptAnswers: Record<string, string>, freeformMemories: string): string {
+  const parts: string[] = []
+
+  for (const [question, answer] of Object.entries(promptAnswers)) {
+    const trimmed = answer.trim()
+    if (trimmed) {
+      parts.push(`${question} ${trimmed}`)
+    }
+  }
+
+  const freeform = freeformMemories.trim()
+  if (freeform) {
+    parts.push(freeform)
+  }
+
+  return parts.join('\n\n')
 }
 
 export function PersonalisationForm({
@@ -59,7 +82,9 @@ export function PersonalisationForm({
 }: PersonalisationFormProps) {
   const [recipientName, setRecipientName] = useState('')
   const [yourName, setYourName] = useState('')
-  const [specialMemories, setSpecialMemories] = useState('')
+  const [promptAnswers, setPromptAnswers] = useState<Record<string, string>>({})
+  const [activePrompts, setActivePrompts] = useState<Set<string>>(new Set())
+  const [freeformMemories, setFreeformMemories] = useState('')
   const [thingsToAvoid, setThingsToAvoid] = useState('')
   const [occasionDate, setOccasionDate] = useState('')
   const [songLength, setSongLength] = useState('90')
@@ -73,7 +98,11 @@ export function PersonalisationForm({
     const cached = loadCache()
     if (cached.recipientName) setRecipientName(cached.recipientName)
     if (cached.yourName) setYourName(cached.yourName)
-    if (cached.specialMemories) setSpecialMemories(cached.specialMemories)
+    if (cached.promptAnswers) {
+      setPromptAnswers(cached.promptAnswers)
+      setActivePrompts(new Set(Object.keys(cached.promptAnswers)))
+    }
+    if (cached.freeformMemories) setFreeformMemories(cached.freeformMemories)
     if (cached.thingsToAvoid) setThingsToAvoid(cached.thingsToAvoid)
     if (cached.occasionDate) setOccasionDate(cached.occasionDate)
     if (cached.songLength) setSongLength(cached.songLength)
@@ -84,18 +113,44 @@ export function PersonalisationForm({
 
   // Save to localStorage on every field change
   useEffect(() => {
-    saveCache({ recipientName, yourName, specialMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship })
-  }, [recipientName, yourName, specialMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
+    saveCache({
+      recipientName,
+      yourName,
+      promptAnswers,
+      freeformMemories,
+      thingsToAvoid,
+      occasionDate,
+      songLength,
+      language,
+      tempo,
+      relationship,
+    })
+  }, [recipientName, yourName, promptAnswers, freeformMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
 
   // Get suggestion chips for the selected occasion
   const occasion = selections.occasion || ''
   const suggestions = occasionQuestions[occasion] || []
 
-  const handleChipClick = (question: string) => {
-    setSpecialMemories(prev => {
-      if (prev.includes(question)) return prev
-      return prev ? `${prev}\n${question} ` : `${question} `
+  const handleTogglePrompt = (question: string) => {
+    setActivePrompts((prev) => {
+      const next = new Set(prev)
+      if (next.has(question)) {
+        next.delete(question)
+        // Clear the answer when deactivating
+        setPromptAnswers((pa) => {
+          const updated = { ...pa }
+          delete updated[question]
+          return updated
+        })
+      } else {
+        next.add(question)
+      }
+      return next
     })
+  }
+
+  const handlePromptAnswerChange = (question: string, value: string) => {
+    setPromptAnswers((prev) => ({ ...prev, [question]: value }))
   }
 
   const validate = (): boolean => {
@@ -119,7 +174,7 @@ export function PersonalisationForm({
     onSubmit({
       recipientName,
       yourName,
-      specialMemories,
+      specialMemories: buildSpecialMemories(promptAnswers, freeformMemories),
       thingsToAvoid,
       occasionDate,
       songLength,
@@ -323,25 +378,26 @@ export function PersonalisationForm({
           </div>
         </div>
 
+        {/* Special Memories - Prompt Toggles */}
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1">
             Special Memories (Optional)
           </label>
           <p className="text-sm text-zinc-500 mb-2">
-            Tap a prompt below or write your own to help us craft the perfect lyrics
+            Tap a prompt to answer it, or write your own below
           </p>
 
-          {/* Suggestion chips */}
+          {/* Prompt toggle chips */}
           {suggestions.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-3">
               {suggestions.map((question) => (
                 <button
                   key={question}
                   type="button"
-                  onClick={() => handleChipClick(question)}
+                  onClick={() => handleTogglePrompt(question)}
                   disabled={isLoading}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                    specialMemories.includes(question)
+                    activePrompts.has(question)
                       ? 'bg-brand-500/10 border-brand-500 text-brand-400'
                       : 'bg-surface-100 border-surface-300 text-zinc-300 hover:bg-surface-100 hover:border-brand-500/50'
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -352,11 +408,42 @@ export function PersonalisationForm({
             </div>
           )}
 
+          {/* Individual answer boxes for active prompts */}
+          <AnimatePresence>
+            {suggestions
+              .filter((q) => activePrompts.has(q))
+              .map((question) => (
+                <motion.div
+                  key={question}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-brand-400 mb-1">
+                      {question}
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                      placeholder="Type your answer..."
+                      value={promptAnswers[question] || ''}
+                      onChange={(e) => handlePromptAnswerChange(question, e.target.value)}
+                      disabled={isLoading}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+          </AnimatePresence>
+
+          {/* Freeform textarea */}
           <textarea
-            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 min-h-[120px] resize-none"
-            placeholder="Share special memories, inside jokes, or details you'd like woven into the lyrics..."
-            value={specialMemories}
-            onChange={(e) => setSpecialMemories(e.target.value)}
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 min-h-[100px] resize-none"
+            placeholder="Anything else? Share memories, inside jokes, or details you'd like woven into the lyrics..."
+            value={freeformMemories}
+            onChange={(e) => setFreeformMemories(e.target.value)}
             disabled={isLoading}
           />
         </div>

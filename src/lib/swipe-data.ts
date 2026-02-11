@@ -8,6 +8,7 @@ export const occasionCards: SwipeCardData[] = [
     icon: '💕',
     description: 'Express your love with a romantic melody',
     gradient: 'from-pink-500 to-rose-500',
+    sampleUrl: '/samples/swipe/occasion-valentines.mp3',
   },
   {
     id: 'birthday',
@@ -15,6 +16,7 @@ export const occasionCards: SwipeCardData[] = [
     icon: '🎂',
     description: 'Celebrate their special day with a song',
     gradient: 'from-amber-500 to-orange-500',
+    sampleUrl: '/samples/swipe/occasion-birthday.mp3',
   },
   {
     id: 'anniversary',
@@ -22,6 +24,7 @@ export const occasionCards: SwipeCardData[] = [
     icon: '💍',
     description: 'Mark your milestone with music',
     gradient: 'from-purple-500 to-violet-500',
+    sampleUrl: '/samples/swipe/occasion-anniversary.mp3',
   },
   {
     id: 'wedding',
@@ -29,6 +32,7 @@ export const occasionCards: SwipeCardData[] = [
     icon: '👰',
     description: 'The perfect musical wedding gift',
     gradient: 'from-emerald-500 to-teal-500',
+    sampleUrl: '/samples/swipe/occasion-wedding.mp3',
   },
   {
     id: 'graduation',
@@ -36,6 +40,7 @@ export const occasionCards: SwipeCardData[] = [
     icon: '🎓',
     description: 'Celebrate their achievement in song',
     gradient: 'from-blue-500 to-indigo-500',
+    sampleUrl: '/samples/swipe/occasion-graduation.mp3',
   },
   {
     id: 'just-because',
@@ -43,6 +48,7 @@ export const occasionCards: SwipeCardData[] = [
     icon: '✨',
     description: 'No occasion needed, just love',
     gradient: 'from-fuchsia-500 to-pink-500',
+    sampleUrl: '/samples/swipe/occasion-just-because.mp3',
   },
 ]
 
@@ -54,6 +60,7 @@ export const moodCards: SwipeCardData[] = [
     icon: '❤️',
     description: 'Tender and heartfelt',
     gradient: 'from-rose-500 to-pink-600',
+    sampleUrl: '/samples/swipe/mood-romantic.mp3',
   },
   {
     id: 'happy',
@@ -61,6 +68,7 @@ export const moodCards: SwipeCardData[] = [
     icon: '😊',
     description: 'Upbeat and joyful',
     gradient: 'from-yellow-400 to-amber-500',
+    sampleUrl: '/samples/swipe/mood-happy.mp3',
   },
   {
     id: 'funny',
@@ -68,6 +76,7 @@ export const moodCards: SwipeCardData[] = [
     icon: '😄',
     description: 'Playful and lighthearted',
     gradient: 'from-lime-500 to-green-500',
+    sampleUrl: '/samples/swipe/mood-funny.mp3',
   },
   {
     id: 'nostalgic',
@@ -75,6 +84,7 @@ export const moodCards: SwipeCardData[] = [
     icon: '🌅',
     description: 'Warm and reflective',
     gradient: 'from-amber-600 to-orange-600',
+    sampleUrl: '/samples/swipe/mood-nostalgic.mp3',
   },
   {
     id: 'epic',
@@ -82,6 +92,7 @@ export const moodCards: SwipeCardData[] = [
     icon: '🚀',
     description: 'Grand and powerful',
     gradient: 'from-indigo-600 to-purple-700',
+    sampleUrl: '/samples/swipe/mood-epic.mp3',
   },
 ]
 
@@ -93,6 +104,7 @@ export const genreCards: SwipeCardData[] = [
     icon: '🎵',
     description: 'Modern and catchy',
     gradient: 'from-pink-500 to-purple-500',
+    sampleUrl: '/samples/swipe/genre-pop.mp3',
   },
   {
     id: 'acoustic',
@@ -100,6 +112,7 @@ export const genreCards: SwipeCardData[] = [
     icon: '🎸',
     description: 'Warm and organic',
     gradient: 'from-amber-500 to-yellow-600',
+    sampleUrl: '/samples/swipe/genre-acoustic.mp3',
   },
   {
     id: 'electronic',
@@ -107,6 +120,7 @@ export const genreCards: SwipeCardData[] = [
     icon: '🎹',
     description: 'Synth-driven and dynamic',
     gradient: 'from-cyan-500 to-blue-600',
+    sampleUrl: '/samples/swipe/genre-electronic.mp3',
   },
   {
     id: 'orchestral',
@@ -114,6 +128,7 @@ export const genreCards: SwipeCardData[] = [
     icon: '🎻',
     description: 'Rich and cinematic',
     gradient: 'from-red-600 to-rose-700',
+    sampleUrl: '/samples/swipe/genre-orchestral.mp3',
   },
   {
     id: 'jazz',
@@ -121,6 +136,7 @@ export const genreCards: SwipeCardData[] = [
     icon: '🎷',
     description: 'Smooth and sophisticated',
     gradient: 'from-indigo-500 to-blue-700',
+    sampleUrl: '/samples/swipe/genre-jazz.mp3',
   },
 ]
 
@@ -132,6 +148,7 @@ export const voiceCards: SwipeCardData[] = [
     icon: '🎤',
     description: 'Rich baritone, smooth delivery',
     gradient: 'from-blue-600 to-indigo-600',
+    sampleUrl: '/samples/swipe/voice-warm-male.mp3',
   },
   {
     id: 'bright-female',
@@ -139,6 +156,7 @@ export const voiceCards: SwipeCardData[] = [
     icon: '🎤',
     description: 'Clear soprano, energetic feel',
     gradient: 'from-pink-500 to-rose-600',
+    sampleUrl: '/samples/swipe/voice-bright-female.mp3',
   },
   {
     id: 'soulful',
@@ -146,6 +164,7 @@ export const voiceCards: SwipeCardData[] = [
     icon: '🎤',
     description: 'Deep, emotional R&B style',
     gradient: 'from-purple-600 to-violet-700',
+    sampleUrl: '/samples/swipe/voice-soulful.mp3',
   },
   {
     id: 'energetic',
@@ -153,6 +172,7 @@ export const voiceCards: SwipeCardData[] = [
     icon: '🎤',
     description: 'Powerful, upbeat vocal style',
     gradient: 'from-orange-500 to-red-500',
+    sampleUrl: '/samples/swipe/voice-energetic.mp3',
   },
   {
     id: 'gentle',
@@ -160,6 +180,7 @@ export const voiceCards: SwipeCardData[] = [
     icon: '🎤',
     description: 'Soft, intimate whisper-style',
     gradient: 'from-teal-500 to-emerald-600',
+    sampleUrl: '/samples/swipe/voice-gentle.mp3',
   },
 ]
 
@@ -171,7 +192,7 @@ export const STAGE_CONFIG: StageConfig[] = [
   {
     stage: 'occasion',
     title: 'What\'s the occasion?',
-    subtitle: 'Swipe right to select',
+    subtitle: 'Browse and pick your favourite',
     cards: occasionCards,
     selectionMode: 'single',
   },

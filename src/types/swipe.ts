@@ -8,19 +8,12 @@ export interface SwipeCardData {
   icon: string
   description: string
   gradient: string
-}
-
-export interface SwipeSelection {
-  stage: SwipeStage
-  cardId: string
-  direction: 'left' | 'right'
+  sampleUrl?: string
 }
 
 export interface SwipeFlowState {
   currentStage: SwipeStage
-  currentCardIndex: number
   selections: Partial<Record<SwipeStage, string>>
-  history: SwipeSelection[]
 }
 
 export interface StageConfig {

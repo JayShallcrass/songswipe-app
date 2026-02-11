@@ -1,22 +1,19 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { SwipeFlowState, SwipeStage, SwipeSelection } from '@/types/swipe'
+import { SwipeFlowState, SwipeStage } from '@/types/swipe'
 import { STAGE_ORDER, STAGE_CONFIG } from '@/lib/swipe-data'
 
 const STORAGE_KEY = 'songswipe_builder_state'
 
 const initialState: SwipeFlowState = {
   currentStage: 'occasion',
-  currentCardIndex: 0,
   selections: {},
-  history: [],
 }
 
 export function useSwipeState() {
   const [state, setState] = useState<SwipeFlowState>(initialState)
   const [isHydrated, setIsHydrated] = useState(false)
-  const [didLoop, setDidLoop] = useState(false)
 
   // Load state from sessionStorage on mount
   useEffect(() => {
@@ -43,109 +40,63 @@ export function useSwipeState() {
     }
   }, [state, isHydrated])
 
-  // Auto-clear the loop indicator after a delay
-  useEffect(() => {
-    if (didLoop) {
-      const timer = setTimeout(() => setDidLoop(false), 2500)
-      return () => clearTimeout(timer)
-    }
-  }, [didLoop])
-
-  const handleSwipe = useCallback((cardId: string, direction: 'left' | 'right') => {
+  const handleSelect = useCallback((cardId: string) => {
     setState(prevState => {
-      const newHistory: SwipeSelection[] = [
-        ...prevState.history,
-        { stage: prevState.currentStage, cardId, direction },
-      ]
+      const newSelections = {
+        ...prevState.selections,
+        [prevState.currentStage]: cardId,
+      }
 
-      // Right swipe = select this card and advance to next stage
-      if (direction === 'right') {
-        const newSelections = {
-          ...prevState.selections,
-          [prevState.currentStage]: cardId,
-        }
+      const currentStageIndex = STAGE_ORDER.indexOf(prevState.currentStage)
+      const isLastStage = currentStageIndex === STAGE_ORDER.length - 1
 
-        const currentStageIndex = STAGE_ORDER.indexOf(prevState.currentStage)
-        const isLastStage = currentStageIndex === STAGE_ORDER.length - 1
-
-        if (isLastStage) {
-          // Completed all stages
-          return {
-            ...prevState,
-            selections: newSelections,
-            history: newHistory,
-          }
-        }
-
-        // Advance to next stage
-        const nextStage = STAGE_ORDER[currentStageIndex + 1]
+      if (isLastStage) {
         return {
           ...prevState,
-          currentStage: nextStage,
-          currentCardIndex: 0,
           selections: newSelections,
-          history: newHistory,
         }
       }
 
-      // Left swipe = skip this card, show next card in same stage (loop if at end)
-      const currentStageConfig = STAGE_CONFIG.find(s => s.stage === prevState.currentStage)
-      if (!currentStageConfig) return prevState
-
-      const totalCardsInStage = currentStageConfig.cards.length
-      const nextCardIndex = (prevState.currentCardIndex + 1) % totalCardsInStage
-
-      // If we wrapped back to 0, signal the loop
-      if (nextCardIndex === 0) {
-        setDidLoop(true)
-      }
-
+      const nextStage = STAGE_ORDER[currentStageIndex + 1]
       return {
-        ...prevState,
-        currentCardIndex: nextCardIndex,
-        history: newHistory,
+        currentStage: nextStage,
+        selections: newSelections,
       }
     })
   }, [])
 
-  const undo = useCallback(() => {
+  const goBack = useCallback(() => {
     setState(prevState => {
-      if (prevState.history.length === 0) return prevState
+      const currentStageIndex = STAGE_ORDER.indexOf(prevState.currentStage)
+      if (currentStageIndex <= 0) return prevState
 
-      const newHistory = [...prevState.history]
-      const lastAction = newHistory.pop()!
-
-      // If last action was a right swipe (selection), revert to that stage and clear selection
-      if (lastAction.direction === 'right') {
-        const newSelections = { ...prevState.selections }
-        delete newSelections[lastAction.stage]
-
-        const stageConfig = STAGE_CONFIG.find(s => s.stage === lastAction.stage)
-        const cardIndex = stageConfig?.cards.findIndex(c => c.id === lastAction.cardId) ?? 0
-
-        return {
-          ...prevState,
-          currentStage: lastAction.stage,
-          currentCardIndex: cardIndex,
-          selections: newSelections,
-          history: newHistory,
-        }
+      const prevStage = STAGE_ORDER[currentStageIndex - 1]
+      return {
+        ...prevState,
+        currentStage: prevStage,
       }
+    })
+  }, [])
 
-      // If last action was a left swipe (skip), go back to that card in that stage
-      if (lastAction.direction === 'left') {
-        const stageConfig = STAGE_CONFIG.find(s => s.stage === lastAction.stage)
-        const cardIndex = stageConfig?.cards.findIndex(c => c.id === lastAction.cardId) ?? 0
+  const goToStage = useCallback((stage: SwipeStage) => {
+    setState(prevState => {
+      const targetIndex = STAGE_ORDER.indexOf(stage)
+      const currentIndex = STAGE_ORDER.indexOf(prevState.currentStage)
 
-        return {
-          ...prevState,
-          currentStage: lastAction.stage,
-          currentCardIndex: cardIndex,
-          history: newHistory,
-        }
+      // Can go to any completed stage or current stage
+      // A stage is "reachable" if it's <= the furthest stage we've reached
+      // The furthest stage is determined by how many selections we have
+      const completedCount = STAGE_ORDER.filter(s => prevState.selections[s] !== undefined).length
+      // The furthest reachable index is the number of completed stages (next unselected)
+      // or the current stage, whichever is greater
+      const furthestReachable = Math.max(completedCount, currentIndex)
+
+      if (targetIndex > furthestReachable) return prevState
+
+      return {
+        ...prevState,
+        currentStage: stage,
       }
-
-      return prevState
     })
   }, [])
 
@@ -156,10 +107,7 @@ export function useSwipeState() {
       console.error('Failed to clear sessionStorage:', error)
     }
     setState(initialState)
-    setDidLoop(false)
   }, [])
-
-  const canUndo = state.history.length > 0
 
   const isSwipeComplete = STAGE_ORDER.every(stage => state.selections[stage] !== undefined)
 
@@ -169,13 +117,12 @@ export function useSwipeState() {
 
   return {
     state,
-    handleSwipe,
-    undo,
+    handleSelect,
+    goBack,
+    goToStage,
     reset,
-    canUndo,
     isSwipeComplete,
     progress,
     currentStageConfig,
-    didLoop,
   }
 }

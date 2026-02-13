@@ -57,6 +57,12 @@ export async function getAuthUser() {
       get(name: string) {
         return cookieStore.get(name)?.value
       },
+      set(name: string, value: string, options: { path?: string; maxAge?: number; domain?: string }) {
+        cookieStore.set({ name, value, ...options })
+      },
+      remove(name: string, options: { path?: string; maxAge?: number; domain?: string }) {
+        cookieStore.delete({ name, ...options })
+      },
     },
   })
   const { data: { user } } = await supabase.auth.getUser()

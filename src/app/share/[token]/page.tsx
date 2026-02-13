@@ -8,7 +8,7 @@ import { ShareButtons } from '@/components/share/ShareButtons'
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 interface PageProps {
-  params: Promise<{ token: string }>
+  params: { token: string }
 }
 
 // Helper to format occasion for display
@@ -77,7 +77,7 @@ async function fetchShareData(token: string) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { token } = await params
+  const { token } = params
 
   // Validate UUID format
   if (!UUID_REGEX.test(token)) {
@@ -113,7 +113,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function SharePage({ params }: PageProps) {
-  const { token } = await params
+  const { token } = params
 
   // Validate UUID format
   if (!UUID_REGEX.test(token)) {

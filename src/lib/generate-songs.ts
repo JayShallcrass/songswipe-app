@@ -73,23 +73,47 @@ export async function generateNextVariant(orderId: string): Promise<GenerateResu
     // Generate via ElevenLabs using the saved prompt
     const musicLengthMs = (customisation.song_length || 90) * 1000
 
-    const elResponse = await fetch('https://api.elevenlabs.io/v1/music', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'xi-api-key': process.env.ELEVEN_LABS_API_KEY!,
-      },
-      body: JSON.stringify({
-        prompt: customisation.prompt,
-        music_length_ms: musicLengthMs,
-        model_id: 'music_v1',
-        force_instrumental: false,
-      }),
-    })
+    let promptToUse = customisation.prompt
 
+    const callElevenLabs = async (prompt: string) => {
+      return fetch('https://api.elevenlabs.io/v1/music', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xi-api-key': process.env.ELEVEN_LABS_API_KEY!,
+        },
+        body: JSON.stringify({
+          prompt,
+          music_length_ms: musicLengthMs,
+          model_id: 'music_v1',
+          force_instrumental: false,
+        }),
+      })
+    }
+
+    let elResponse = await callElevenLabs(promptToUse)
+
+    // If prompt was rejected, retry with ElevenLabs' suggested prompt
     if (!elResponse.ok) {
       const errText = await elResponse.text()
-      throw new Error(`ElevenLabs API error: ${errText}`)
+      try {
+        const errJson = JSON.parse(errText)
+        if (errJson.detail?.status === 'bad_prompt' && errJson.detail?.data?.prompt_suggestion) {
+          console.warn('Prompt rejected by ElevenLabs, retrying with suggested prompt:', {
+            orderId,
+            variantNumber: pendingVariant.variant_number,
+          })
+          promptToUse = errJson.detail.data.prompt_suggestion
+          elResponse = await callElevenLabs(promptToUse)
+        }
+      } catch {
+        // Not JSON, fall through to error
+      }
+
+      if (!elResponse.ok) {
+        const retryErrText = await elResponse.text().catch(() => errText)
+        throw new Error(`ElevenLabs API error: ${retryErrText}`)
+      }
     }
 
     const audioBuffer = Buffer.from(await elResponse.arrayBuffer())

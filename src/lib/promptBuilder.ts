@@ -48,6 +48,21 @@ export const RELATIONSHIP_CONTEXT: Record<string, string> = {
   colleague: 'colleague or work friend',
 }
 
+/**
+ * Sanitise user-supplied text for inclusion in generation prompts.
+ * Strips control chars, excessive length, and obvious prompt injection attempts.
+ */
+function sanitiseInput(text: string, maxLength = 500): string {
+  return text
+    // Strip control characters
+    .replace(/[\x00-\x1F\x7F]/g, ' ')
+    // Collapse excessive whitespace
+    .replace(/\s{3,}/g, '  ')
+    // Truncate
+    .slice(0, maxLength)
+    .trim()
+}
+
 export function buildRichPrompt(c: Record<string, any>): string {
   const occasion = OCCASION_LABELS[c.occasion] || c.occasion
   const voice = VOICE_STYLES[c.voice] || 'versatile vocalist'
@@ -87,12 +102,12 @@ export function buildRichPrompt(c: Record<string, any>): string {
 
   // Special memories / content direction
   if (c.specialMemories) {
-    lines.push(`Weave in these personal details: ${c.specialMemories}`)
+    lines.push(`Weave in these personal details: ${sanitiseInput(c.specialMemories)}`)
   }
 
   // Things to avoid
   if (c.thingsToAvoid) {
-    lines.push(`Avoid mentioning: ${c.thingsToAvoid}`)
+    lines.push(`Avoid mentioning: ${sanitiseInput(c.thingsToAvoid, 200)}`)
   }
 
   // Duration

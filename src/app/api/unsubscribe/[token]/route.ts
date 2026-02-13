@@ -60,7 +60,7 @@ function generateHtmlPage(title: string, message: string, isError: boolean): str
     a {
       display: inline-block;
       padding: 12px 24px;
-      background: #7c3aed;
+      background: #f97316;
       color: white;
       text-decoration: none;
       border-radius: 8px;
@@ -68,7 +68,7 @@ function generateHtmlPage(title: string, message: string, isError: boolean): str
       transition: background 0.2s;
     }
     a:hover {
-      background: #6d28d9;
+      background: #ea580c;
     }
   </style>
 </head>
@@ -89,10 +89,10 @@ function generateHtmlPage(title: string, message: string, isError: boolean): str
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ token: string }> }
+  { params }: { params: { token: string } }
 ) {
   try {
-    const { token } = await params
+    const { token } = params
     const { searchParams } = new URL(request.url)
     const orderId = searchParams.get('order_id')
     const isGlobal = searchParams.get('all') !== null || !orderId
@@ -191,10 +191,10 @@ export async function GET(
  */
 export async function POST(
   _request: NextRequest,
-  { params }: { params: Promise<{ token: string }> }
+  { params }: { params: { token: string } }
 ) {
   try {
-    const { token } = await params
+    const { token } = params
 
     // Use service role client (no auth required for unsubscribe)
     const supabase = createServerSupabaseClient()

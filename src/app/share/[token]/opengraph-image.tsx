@@ -6,7 +6,7 @@ export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 interface OGImageProps {
-  params: Promise<{ token: string }>
+  params: { token: string }
 }
 
 // Helper to format occasion for display
@@ -18,7 +18,7 @@ function formatOccasion(occasion: string): string {
 }
 
 export default async function Image({ params }: OGImageProps) {
-  const { token } = await params
+  const { token } = params
   const supabase = createServerSupabaseClient()
 
   // Fetch minimal data needed for OG image
@@ -55,7 +55,7 @@ export default async function Image({ params }: OGImageProps) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            background: '#1F1128',
+            background: '#0f0d0a',
           }}
         >
           <svg width="96" height="96" viewBox="0 0 24 24" fill="white" style={{ marginBottom: 40 }}>
@@ -88,7 +88,7 @@ export default async function Image({ params }: OGImageProps) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #1F1128 0%, #4C1D95 50%, #BE185D 100%)',
+          background: 'linear-gradient(135deg, #0f0d0a 0%, #9a3412 50%, #f97316 100%)',
           position: 'relative',
         }}
       >

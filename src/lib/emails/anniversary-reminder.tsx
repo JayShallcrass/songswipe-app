@@ -1,15 +1,5 @@
-import {
-  Html,
-  Head,
-  Body,
-  Container,
-  Section,
-  Text,
-  Button,
-  Link,
-  Hr,
-  Preview,
-} from '@react-email/components'
+import { Text, Button, Hr, Link } from '@react-email/components'
+import { EmailLayout, styles } from './layout'
 
 export interface AnniversaryReminderEmailProps {
   recipientName: string
@@ -27,87 +17,35 @@ export function AnniversaryReminderEmail({
   unsubscribeAllUrl,
 }: AnniversaryReminderEmailProps) {
   return (
-    <Html>
-      <Head />
-      <Preview>It's almost time to celebrate {occasionType} again!</Preview>
-      <Body style={{ backgroundColor: '#ffffff', fontFamily: 'sans-serif' }}>
-        <Container style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-          <Section>
-            <Text
-              style={{
-                fontSize: '24px',
-                fontWeight: 'bold',
-                color: '#1a1a2e',
-                marginBottom: '20px',
-              }}
-            >
-              Continue the Story
-            </Text>
-            <Text
-              style={{
-                fontSize: '16px',
-                lineHeight: '24px',
-                color: '#333',
-                marginBottom: '16px',
-              }}
-            >
-              It's almost time to celebrate {occasionType} again! Last year, you created a
-              special song for {recipientName}.
-            </Text>
-            <Text
-              style={{
-                fontSize: '16px',
-                lineHeight: '24px',
-                color: '#333',
-                marginBottom: '24px',
-              }}
-            >
-              Create a new version to continue your musical tradition:
-            </Text>
-            <Button
-              href={createSongUrl}
-              style={{
-                backgroundColor: '#7c3aed',
-                color: '#ffffff',
-                padding: '14px 28px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                textDecoration: 'none',
-                display: 'inline-block',
-              }}
-            >
-              Create This Year's Song
-            </Button>
-          </Section>
+    <EmailLayout preview={`It's almost time to celebrate ${occasionType} again!`}>
+      <Text style={styles.heading}>Continue the Story</Text>
+      <Text style={styles.subheading}>
+        It's almost time to celebrate {occasionType} again!
+      </Text>
 
-          <Hr style={{ margin: '40px 0', borderColor: '#eee' }} />
+      <Text style={styles.body}>
+        Last year, you created a special song for {recipientName}. Why not make this year's
+        even better?
+      </Text>
 
-          <Section style={{ fontSize: '12px', color: '#999', textAlign: 'center' }}>
-            <Text style={{ marginBottom: '8px' }}>SongSwipe</Text>
-            <Text style={{ marginBottom: '8px' }}>
-              {process.env.COMPANY_ADDRESS || '[Physical Address]'}
-            </Text>
-            <Text style={{ marginBottom: '4px' }}>
-              <Link
-                href={unsubscribeUrl}
-                style={{ color: '#999', textDecoration: 'underline' }}
-              >
-                Unsubscribe from {occasionType} reminders
-              </Link>
-            </Text>
-            <Text>
-              <Link
-                href={unsubscribeAllUrl}
-                style={{ color: '#999', textDecoration: 'underline' }}
-              >
-                Unsubscribe from all SongSwipe emails
-              </Link>
-            </Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
+      <div style={{ textAlign: 'center', margin: '32px 0' }}>
+        <Button href={createSongUrl} style={styles.button}>
+          Create This Year's Song
+        </Button>
+      </div>
+
+      <Hr style={styles.divider} />
+
+      <Text style={{ fontSize: '12px', color: styles.textMuted, textAlign: 'center', lineHeight: '20px', margin: 0 }}>
+        <Link href={unsubscribeUrl} style={{ color: styles.textMuted, textDecoration: 'underline' }}>
+          Unsubscribe from {occasionType} reminders
+        </Link>
+        {' | '}
+        <Link href={unsubscribeAllUrl} style={{ color: styles.textMuted, textDecoration: 'underline' }}>
+          Unsubscribe from all
+        </Link>
+      </Text>
+    </EmailLayout>
   )
 }
 

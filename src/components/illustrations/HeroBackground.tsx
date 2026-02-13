@@ -6,20 +6,25 @@
  */
 export default function HeroBackground() {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden" aria-hidden="true" style={{ zIndex: 0 }}>
       {/* Radial glow - coral/purple center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[700px]">
-        <div className="absolute inset-0 bg-gradient-radial from-brand-500/15 via-purple-600/10 to-transparent rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[900px]">
+        <div className="absolute inset-0 bg-gradient-radial from-brand-500/12 via-purple-600/8 to-transparent rounded-full blur-3xl" />
       </div>
 
-      {/* Secondary glow - offset */}
-      <div className="absolute top-[30%] left-[60%] w-[500px] h-[400px]">
-        <div className="absolute inset-0 bg-gradient-radial from-purple-500/12 to-transparent rounded-full blur-3xl" />
+      {/* Secondary glow - lower on page */}
+      <div className="absolute top-[60%] left-[35%] w-[600px] h-[500px]">
+        <div className="absolute inset-0 bg-gradient-radial from-purple-500/8 to-transparent rounded-full blur-3xl" />
+      </div>
+
+      {/* Tertiary glow - bottom right */}
+      <div className="absolute top-[80%] left-[70%] w-[400px] h-[400px]">
+        <div className="absolute inset-0 bg-gradient-radial from-brand-500/6 to-transparent rounded-full blur-3xl" />
       </div>
 
       {/* Sound waves SVG */}
       <svg
-        className="absolute inset-0 w-full h-full opacity-20"
+        className="absolute inset-0 w-full h-full opacity-15"
         viewBox="0 0 1440 800"
         preserveAspectRatio="xMidYMid slice"
         fill="none"

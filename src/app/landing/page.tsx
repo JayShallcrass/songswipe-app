@@ -21,10 +21,12 @@ const stagger = {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-surface-DEFAULT">
+    <div className="min-h-screen bg-surface-DEFAULT relative overflow-hidden">
+      {/* Full-page animated background */}
+      <HeroBackground />
+
       {/* Hero Section */}
-      <section className="relative pt-20 pb-12 md:pb-24 px-4 overflow-hidden">
-        <HeroBackground />
+      <section className="relative pt-20 pb-12 md:pb-24 px-4">
 
         <div className="relative max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
@@ -66,7 +68,7 @@ export default function LandingPage() {
       <AudioPreview />
 
       {/* How It Works */}
-      <section className="py-20 px-4">
+      <section className="relative py-20 px-4">
         <div className="max-w-5xl mx-auto">
           <motion.h2
             initial="hidden"
@@ -128,7 +130,7 @@ export default function LandingPage() {
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
         variants={stagger}
-        className="py-20 px-4 border-t border-surface-200"
+        className="relative py-20 px-4"
       >
         <div className="max-w-4xl mx-auto">
           <motion.div variants={fadeUp}>
@@ -207,7 +209,7 @@ export default function LandingPage() {
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
         variants={stagger}
-        className="py-20 px-4"
+        className="relative py-20 px-4"
       >
         <div className="max-w-4xl mx-auto">
           <motion.h2 variants={fadeUp} className="text-3xl font-heading font-bold text-center mb-14 text-white">Why SongSwipe?</motion.h2>
@@ -274,7 +276,7 @@ export default function LandingPage() {
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
         variants={fadeUp}
-        className="py-20 px-4 border-t border-surface-200"
+        className="relative py-20 px-4"
       >
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-heading font-bold mb-4 text-white">Simple, Transparent Pricing</h2>
@@ -325,7 +327,7 @@ export default function LandingPage() {
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
         variants={fadeUp}
-        className="py-20 px-4"
+        className="relative py-20 px-4"
       >
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6 text-white">

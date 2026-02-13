@@ -77,7 +77,7 @@ export default function LoginPage({
                     id="email"
                     name="email"
                     required
-                    className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors placeholder-zinc-600"
+                    className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors placeholder-zinc-600"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -92,7 +92,7 @@ export default function LoginPage({
                     name="password"
                     required
                     minLength={6}
-                    className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors placeholder-zinc-600"
+                    className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors placeholder-zinc-600"
                     placeholder="••••••••"
                   />
                 </div>
@@ -102,7 +102,7 @@ export default function LoginPage({
                     type="submit"
                     name="action"
                     value="signin"
-                    className="flex-1 bg-gradient-to-r from-brand-500 to-purple-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                    className="flex-1 bg-gradient-to-r from-brand-500 to-amber-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
                   >
                     Sign In
                   </button>

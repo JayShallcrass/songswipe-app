@@ -24,22 +24,22 @@ export function StepPersonalise() {
 
       {/* Musical note in bubble */}
       <g transform="translate(74, 28)" opacity="0.9">
-        <path d="M6 0v10a4 4 0 1 1-2-3.46V2h8v8a4 4 0 1 1-2-3.46V0H6z" fill="#e74c3c" transform="scale(1.2)" />
+        <path d="M6 0v10a4 4 0 1 1-2-3.46V2h8v8a4 4 0 1 1-2-3.46V0H6z" fill="#f97316" transform="scale(1.2)" />
       </g>
 
       {/* Small floating notes */}
       <g transform="translate(86, 14)" opacity="0.5">
-        <path d="M3 0v6a2.5 2.5 0 1 1-1.5-2.3V0H3z" fill="#8b5cf6" transform="scale(0.9)" />
+        <path d="M3 0v6a2.5 2.5 0 1 1-1.5-2.3V0H3z" fill="#f59e0b" transform="scale(0.9)" />
       </g>
-      <circle cx="96" cy="16" r="2" fill="#e74c3c" opacity="0.4" />
+      <circle cx="96" cy="16" r="2" fill="#f97316" opacity="0.4" />
 
       <defs>
         <linearGradient id="step1-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#e74c3c" />
-          <stop offset="100%" stopColor="#8b5cf6" />
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#f59e0b" />
         </linearGradient>
         <radialGradient id="step1-glow">
-          <stop offset="0%" stopColor="#e74c3c" />
+          <stop offset="0%" stopColor="#f97316" />
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
       </defs>
@@ -59,16 +59,16 @@ export function StepGenerate() {
       <circle cx="60" cy="55" r="10" fill="url(#step2-grad)" opacity="0.3" />
 
       {/* AI "brain" circuit lines */}
-      <path d="M60 35 L60 25" stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5" />
-      <path d="M60 75 L60 85" stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5" />
-      <path d="M40 55 L30 55" stroke="#e74c3c" strokeWidth="1.5" opacity="0.5" />
-      <path d="M80 55 L90 55" stroke="#e74c3c" strokeWidth="1.5" opacity="0.5" />
+      <path d="M60 35 L60 25" stroke="#f59e0b" strokeWidth="1.5" opacity="0.5" />
+      <path d="M60 75 L60 85" stroke="#f59e0b" strokeWidth="1.5" opacity="0.5" />
+      <path d="M40 55 L30 55" stroke="#f97316" strokeWidth="1.5" opacity="0.5" />
+      <path d="M80 55 L90 55" stroke="#f97316" strokeWidth="1.5" opacity="0.5" />
 
       {/* Dots at circuit endpoints */}
-      <circle cx="60" cy="25" r="2.5" fill="#8b5cf6" opacity="0.7" />
-      <circle cx="60" cy="85" r="2.5" fill="#8b5cf6" opacity="0.7" />
-      <circle cx="30" cy="55" r="2.5" fill="#e74c3c" opacity="0.7" />
-      <circle cx="90" cy="55" r="2.5" fill="#e74c3c" opacity="0.7" />
+      <circle cx="60" cy="25" r="2.5" fill="#f59e0b" opacity="0.7" />
+      <circle cx="60" cy="85" r="2.5" fill="#f59e0b" opacity="0.7" />
+      <circle cx="30" cy="55" r="2.5" fill="#f97316" opacity="0.7" />
+      <circle cx="90" cy="55" r="2.5" fill="#f97316" opacity="0.7" />
 
       {/* Audio waveform coming out */}
       <path
@@ -80,17 +80,17 @@ export function StepGenerate() {
       />
 
       {/* Sparkles */}
-      <path d="M45 30 L47 26 L49 30 L47 34 Z" fill="#e74c3c" opacity="0.5" />
-      <path d="M78 32 L80 28 L82 32 L80 36 Z" fill="#8b5cf6" opacity="0.5" />
-      <path d="M90 70 L92 67 L94 70 L92 73 Z" fill="#e74c3c" opacity="0.4" />
+      <path d="M45 30 L47 26 L49 30 L47 34 Z" fill="#f97316" opacity="0.5" />
+      <path d="M78 32 L80 28 L82 32 L80 36 Z" fill="#f59e0b" opacity="0.5" />
+      <path d="M90 70 L92 67 L94 70 L92 73 Z" fill="#f97316" opacity="0.4" />
 
       <defs>
         <linearGradient id="step2-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#e74c3c" />
-          <stop offset="100%" stopColor="#8b5cf6" />
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#f59e0b" />
         </linearGradient>
         <radialGradient id="step2-glow">
-          <stop offset="0%" stopColor="#8b5cf6" />
+          <stop offset="0%" stopColor="#f59e0b" />
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
       </defs>
@@ -126,10 +126,10 @@ export function StepShare() {
 
       {/* Musical notes floating from box */}
       <g transform="translate(20, 24)" opacity="0.6">
-        <path d="M4 0v7a3 3 0 1 1-1.5-2.6V1.5h5V7a3 3 0 1 1-1.5-2.6V0H4z" fill="#e74c3c" transform="scale(0.9)" />
+        <path d="M4 0v7a3 3 0 1 1-1.5-2.6V1.5h5V7a3 3 0 1 1-1.5-2.6V0H4z" fill="#f97316" transform="scale(0.9)" />
       </g>
       <g transform="translate(76, 20)" opacity="0.5">
-        <path d="M2.5 0v5a2 2 0 1 1-1-1.7V0h1z" fill="#8b5cf6" transform="scale(0.9)" />
+        <path d="M2.5 0v5a2 2 0 1 1-1-1.7V0h1z" fill="#f59e0b" transform="scale(0.9)" />
       </g>
 
       {/* Share arrow */}
@@ -137,16 +137,16 @@ export function StepShare() {
       <path d="M20 72 L32 72" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.4" />
 
       {/* Hearts/sparkles */}
-      <circle cx="98" cy="48" r="2" fill="#e74c3c" opacity="0.4" />
-      <circle cx="16" cy="55" r="1.5" fill="#8b5cf6" opacity="0.3" />
+      <circle cx="98" cy="48" r="2" fill="#f97316" opacity="0.4" />
+      <circle cx="16" cy="55" r="1.5" fill="#f59e0b" opacity="0.3" />
 
       <defs>
         <linearGradient id="step3-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#e74c3c" />
-          <stop offset="100%" stopColor="#8b5cf6" />
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#f59e0b" />
         </linearGradient>
         <radialGradient id="step3-glow">
-          <stop offset="0%" stopColor="#e74c3c" />
+          <stop offset="0%" stopColor="#f97316" />
           <stop offset="100%" stopColor="transparent" />
         </radialGradient>
       </defs>

@@ -239,7 +239,7 @@ export default function GenerationPage() {
           <p className="text-zinc-400 mb-6">No order ID was provided.</p>
           <Link
             href="/dashboard"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
           >
             Go to Dashboard
           </Link>
@@ -273,7 +273,7 @@ export default function GenerationPage() {
           <p className="text-zinc-400 mb-6">{error.message}</p>
           <Link
             href="/dashboard"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
           >
             Go to Dashboard
           </Link>
@@ -304,7 +304,7 @@ export default function GenerationPage() {
                 setGenerationError(null)
                 triggerGeneration()
               }}
-              className="px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+              className="px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
             >
               Retry Generation
             </button>
@@ -383,10 +383,10 @@ export default function GenerationPage() {
 
           {/* Tweak variant generating banner */}
           {tweakGenerating && data?.variants.some(v => v.generation_status === 'pending' || v.generation_status === 'generating') && (
-            <div className="mt-4 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-center">
+            <div className="mt-4 bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-center">
               <div className="flex items-center justify-center gap-2">
-                <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
-                <p className="text-purple-400 font-medium text-sm">Your tweaked variant is generating...</p>
+                <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-amber-400 font-medium text-sm">Your tweaked variant is generating...</p>
               </div>
             </div>
           )}
@@ -400,10 +400,10 @@ export default function GenerationPage() {
 
           {/* 4th variant generating banner */}
           {isUpsellReturn && !tweakGenerating && data?.variants.some(v => v.generation_status === 'pending' || v.generation_status === 'generating') && (
-            <div className="mt-4 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-center">
+            <div className="mt-4 bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-center">
               <div className="flex items-center justify-center gap-2">
-                <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
-                <p className="text-purple-400 font-medium text-sm">Your 4th variant is being generated...</p>
+                <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-amber-400 font-medium text-sm">Your 4th variant is being generated...</p>
               </div>
             </div>
           )}
@@ -425,11 +425,11 @@ export default function GenerationPage() {
       <div className="max-w-2xl mx-auto w-full">
         {/* Prepaid song banner */}
         {showPrepaidBanner && (
-          <div className="mb-6 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-center">
-            <p className="text-purple-400 font-medium text-sm">
+          <div className="mb-6 bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-center">
+            <p className="text-amber-400 font-medium text-sm">
               Using one of your prepaid songs{prepaidRemaining ? ` (${prepaidRemaining} remaining)` : ''}
             </p>
-            <button onClick={() => setShowPrepaidBanner(false)} className="text-purple-500 text-xs mt-1 hover:text-purple-300 transition-colors">
+            <button onClick={() => setShowPrepaidBanner(false)} className="text-amber-500 text-xs mt-1 hover:text-amber-300 transition-colors">
               Dismiss
             </button>
           </div>

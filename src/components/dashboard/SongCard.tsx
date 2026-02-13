@@ -100,7 +100,7 @@ export default function SongCard({ song, onDelete }: SongCardProps) {
     <div className="bg-surface-50 rounded-xl border border-surface-200 p-4">
       <div className="flex items-start gap-4">
         {/* Gradient icon */}
-        <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
           <MusicalNoteIcon className="w-6 h-6 text-white" />
         </div>
 
@@ -136,7 +136,7 @@ export default function SongCard({ song, onDelete }: SongCardProps) {
                 <>
                   <style jsx global>{`
                     .rhap_container {
-                      background: linear-gradient(to right, #e74c3c, #8b5cf6);
+                      background: linear-gradient(to right, #f97316, #f59e0b);
                       border-radius: 0.75rem;
                       padding: 1rem;
                       box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
@@ -179,7 +179,7 @@ export default function SongCard({ song, onDelete }: SongCardProps) {
               <button
                 onClick={handleDownload}
                 disabled={downloadMutation.isPending}
-                className="mt-3 px-4 py-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-lg font-medium hover:from-brand-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="mt-3 px-4 py-2 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-lg font-medium hover:from-brand-600 hover:to-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 {downloadMutation.isPending ? 'Downloading...' : 'Download'}
               </button>
@@ -223,7 +223,7 @@ export default function SongCard({ song, onDelete }: SongCardProps) {
         <div className="flex flex-col gap-2 flex-shrink-0">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="px-4 py-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-lg font-medium hover:from-brand-600 hover:to-purple-700 transition-all text-sm"
+            className="px-4 py-2 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-lg font-medium hover:from-brand-600 hover:to-amber-600 transition-all text-sm"
           >
             {isExpanded ? 'Collapse' : 'Play'}
           </button>

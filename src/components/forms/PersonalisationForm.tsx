@@ -550,7 +550,7 @@ export function PersonalisationForm({
         <button
           onClick={handleSubmit}
           disabled={isLoading}
-          className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Processing...' : 'Continue to Payment'}
         </button>

@@ -57,7 +57,7 @@ export function VariantUpsellModal({ orderId, isOpen, onClose }: VariantUpsellMo
               </p>
 
               {/* Pricing Card */}
-              <div className="bg-gradient-to-r from-brand-500 to-purple-600 rounded-xl p-6 mb-6 text-white text-center">
+              <div className="bg-gradient-to-r from-brand-500 to-amber-500 rounded-xl p-6 mb-6 text-white text-center">
                 <p className="text-5xl font-bold mb-1">
                   £{(UPSELL_PRICE / 100).toFixed(2)}
                 </p>
@@ -71,7 +71,7 @@ export function VariantUpsellModal({ orderId, isOpen, onClose }: VariantUpsellMo
                 <button
                   onClick={handleAccept}
                   disabled={isLoading}
-                  className="w-full px-6 py-4 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-6 py-4 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? 'Loading...' : 'Add 4th Variant'}
                 </button>

@@ -163,7 +163,7 @@ export default function FAQPage() {
           <p className="text-zinc-500 mb-4">Still have questions?</p>
           <a
             href="mailto:support@songswipe.io"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
           >
             Contact Us
           </a>

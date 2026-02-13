@@ -44,7 +44,7 @@ export default function Header() {
           </Link>
           <Link
             href="/auth/login"
-            className="px-5 py-2.5 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-medium hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="px-5 py-2.5 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-medium hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
           >
             Create a Song
           </Link>
@@ -89,7 +89,7 @@ export default function Header() {
             <Link
               href="/auth/login"
               onClick={() => setIsMenuOpen(false)}
-              className="mx-4 mt-2 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-medium text-center hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
+              className="mx-4 mt-2 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-medium text-center hover:from-brand-600 hover:to-amber-600 transition-all shadow-md"
             >
               Create a Song
             </Link>

@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --primary: #e74c3c;
-  --primary-dark: #d43a2a;
-  --secondary: #8b5cf6;
+  --primary: #f97316;
+  --primary-dark: #ea580c;
+  --secondary: #f59e0b;
 }
 
 body {
   font-family: var(--font-body), system-ui, -apple-system, sans-serif;
-  background: #0a0a0b;
+  background: #0f0d0a;
   color: #e4e4e7;
   min-height: 100vh;
 }
 
 /* Text gradient utility */
 .text-gradient {
-  @apply bg-gradient-to-r from-brand-500 to-purple-500 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-brand-500 to-amber-500 bg-clip-text text-transparent;
 }
 
 /* Glassmorphism card */

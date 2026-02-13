@@ -125,7 +125,7 @@ export function VariantSwiper({ orderId, variants, onSelect, onIndexChange }: Va
             key={variant.id}
             className={`h-2 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? 'w-6 bg-gradient-to-r from-brand-500 to-purple-600'
+                ? 'w-6 bg-gradient-to-r from-brand-500 to-amber-500'
                 : 'w-2 bg-surface-300'
             }`}
           />

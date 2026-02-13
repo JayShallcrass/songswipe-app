@@ -7,17 +7,17 @@
 export default function HeroBackground() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      {/* Radial glow - coral/purple center (SVG, no CSS blur) */}
+      {/* Radial glow - orange/amber center (SVG, no CSS blur) */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
         <defs>
           <radialGradient id="hero-glow-1" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#e74c3c" stopOpacity="0.15" />
-            <stop offset="40%" stopColor="#8b5cf6" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+            <stop offset="0%" stopColor="#f97316" stopOpacity="0.15" />
+            <stop offset="40%" stopColor="#f59e0b" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="hero-glow-2" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0" />
           </radialGradient>
         </defs>
         <ellipse cx="720" cy="400" rx="500" ry="350" fill="url(#hero-glow-1)" />
@@ -112,17 +112,17 @@ export default function HeroBackground() {
         {/* Gradients */}
         <defs>
           <linearGradient id="hero-wave-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#e74c3c" />
-            <stop offset="50%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#e74c3c" />
+            <stop offset="0%" stopColor="#f97316" />
+            <stop offset="50%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#f97316" />
           </linearGradient>
           <linearGradient id="hero-bar-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#e74c3c" />
-            <stop offset="100%" stopColor="#8b5cf6" />
+            <stop offset="0%" stopColor="#f97316" />
+            <stop offset="100%" stopColor="#f59e0b" />
           </linearGradient>
           <linearGradient id="hero-note-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#e74c3c" />
-            <stop offset="100%" stopColor="#8b5cf6" />
+            <stop offset="0%" stopColor="#f97316" />
+            <stop offset="100%" stopColor="#f59e0b" />
           </linearGradient>
         </defs>
       </svg>

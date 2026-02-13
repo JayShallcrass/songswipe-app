@@ -37,7 +37,7 @@ export default function OrderRow({
   // Order type badge styling
   const getOrderTypeStyle = () => {
     if (orderType === 'base') return 'bg-brand-500/10 text-brand-400'
-    if (orderType === 'upsell') return 'bg-purple-500/10 text-purple-400'
+    if (orderType === 'upsell') return 'bg-amber-500/10 text-amber-400'
     if (orderType === 'bundle') return 'bg-blue-500/10 text-blue-400'
     return 'bg-surface-200 text-zinc-400'
   }

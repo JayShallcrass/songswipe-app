@@ -71,7 +71,7 @@ function CheckoutSuccessContent() {
           </p>
           <Link
             href="/pricing"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
           >
             Back to Pricing
           </Link>
@@ -136,7 +136,7 @@ function CheckoutSuccessContent() {
           {orderId ? (
             <Link
               href={`/generate/${orderId}`}
-              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg text-center"
+              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg text-center"
             >
               Watch Your Song Being Created
             </Link>
@@ -148,7 +148,7 @@ function CheckoutSuccessContent() {
           ) : (
             <Link
               href="/dashboard"
-              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg text-center"
+              className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg text-center"
             >
               Go to Dashboard
             </Link>

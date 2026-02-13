@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/solid'
 
 const VARIANT_GRADIENTS = [
-  'from-purple-500 to-indigo-600',
+  'from-brand-500 to-red-600',
   'from-pink-500 to-rose-600',
   'from-emerald-500 to-teal-600',
   'from-amber-500 to-orange-600',

@@ -17,7 +17,7 @@ type Stage = 'box' | 'revealing' | 'revealed'
 
 // Confetti particle component
 function ConfettiParticle({ index }: { index: number }) {
-  const colors = ['#e74c3c', '#8b5cf6', '#f59e0b', '#ec4899', '#10b981', '#3b82f6']
+  const colors = ['#f97316', '#f59e0b', '#ea580c', '#ec4899', '#10b981', '#3b82f6']
   const color = colors[index % colors.length]
   const left = Math.random() * 100
   const delay = Math.random() * 0.5
@@ -109,7 +109,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
     <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center relative overflow-hidden">
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-radial from-purple-600/10 via-brand-500/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-radial from-amber-600/10 via-brand-500/5 to-transparent rounded-full blur-3xl" />
       </div>
 
       {/* Confetti */}
@@ -134,7 +134,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="w-32 h-32 mx-auto rounded-3xl bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center shadow-2xl shadow-brand-500/20"
+              className="w-32 h-32 mx-auto rounded-3xl bg-gradient-to-br from-brand-500 to-amber-500 flex items-center justify-center shadow-2xl shadow-brand-500/20"
             >
               <svg className="w-16 h-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
@@ -151,7 +151,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
               onClick={handleOpenGift}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-brand-500 to-purple-600 text-white text-xl font-semibold rounded-full hover:from-brand-600 hover:to-purple-700 transition-all shadow-lg shadow-brand-500/20"
+              className="px-8 py-4 bg-gradient-to-r from-brand-500 to-amber-500 text-white text-xl font-semibold rounded-full hover:from-brand-600 hover:to-amber-600 transition-all shadow-lg shadow-brand-500/20"
             >
               Open Your Gift
             </motion.button>
@@ -177,7 +177,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
             animate={{ opacity: 0, rotateZ: 720, scale: [1, 1.2, 0] }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             onAnimationComplete={() => setStage('revealed')}
-            className="w-32 h-32 rounded-3xl bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center"
+            className="w-32 h-32 rounded-3xl bg-gradient-to-br from-brand-500 to-amber-500 flex items-center justify-center"
           >
             <svg className="w-16 h-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
@@ -253,7 +253,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
               </p>
               <Link
                 href="/auth/login"
-                className="inline-flex items-center justify-center px-8 py-3 text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                className="inline-flex items-center justify-center px-8 py-3 text-white bg-gradient-to-r from-brand-500 to-amber-500 rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
               >
                 Create a Song
               </Link>

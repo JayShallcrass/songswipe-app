@@ -56,7 +56,7 @@ export default function OrderPage({ params }: { params: { id: string } }) {
       <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">{error || 'Order not found'}</p>
-          <Link href="/" className="px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold">
+          <Link href="/" className="px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold">
             Go Home
           </Link>
         </div>
@@ -126,7 +126,7 @@ export default function OrderPage({ params }: { params: { id: string } }) {
               <a
                 href={order.audio_url}
                 download={`songswipe-${order.recipient_name}.mp3`}
-                className="block w-full mt-4 py-3 text-center bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all"
+                className="block w-full mt-4 py-3 text-center bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all"
               >
                 Download MP3
               </a>
@@ -159,7 +159,7 @@ export default function OrderPage({ params }: { params: { id: string } }) {
             <Link href="/" className="flex-1 py-4 text-center text-zinc-400 hover:text-white transition-colors">
               Create Another Song
             </Link>
-            <Link href="/dashboard" className="flex-1 py-4 text-center bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-full font-semibold hover:from-brand-600 hover:to-purple-700 transition-all">
+            <Link href="/dashboard" className="flex-1 py-4 text-center bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all">
               View Dashboard
             </Link>
           </div>

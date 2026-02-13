@@ -129,7 +129,7 @@ export default function CustomisePage() {
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
             {balance && balance.songsRemaining > 0 && (
-              <span className="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded-full text-xs font-semibold">
+              <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 rounded-full text-xs font-semibold">
                 {balance.songsRemaining} prepaid
               </span>
             )}

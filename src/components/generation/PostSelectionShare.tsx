@@ -165,7 +165,7 @@ export function PostSelectionShare({ data }: PostSelectionShareProps) {
           {!showEmailForm && emailStatus === 'idle' && (
             <button
               onClick={() => setShowEmailForm(true)}
-              className="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-xl hover:from-brand-600 hover:to-purple-700 transition-all flex items-center justify-center gap-3"
+              className="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-amber-500 text-white font-semibold rounded-xl hover:from-brand-600 hover:to-amber-600 transition-all flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -256,7 +256,7 @@ export function PostSelectionShare({ data }: PostSelectionShareProps) {
                 <button
                   onClick={handleSendEmail}
                   disabled={!recipientEmail || (scheduleEnabled && !scheduleDate)}
-                  className="flex-1 py-3 px-6 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-lg hover:from-brand-600 hover:to-purple-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex-1 py-3 px-6 bg-gradient-to-r from-brand-500 to-amber-500 text-white font-semibold rounded-lg hover:from-brand-600 hover:to-amber-600 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {scheduleEnabled ? 'Schedule Email' : 'Send Now'}
                 </button>

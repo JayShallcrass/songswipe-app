@@ -141,7 +141,7 @@ export default async function SharePage({ params }: PageProps) {
       />
 
       {/* Share Buttons Section */}
-      <div className="bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900 py-12">
+      <div className="bg-gradient-to-b from-gray-900 via-amber-900/20 to-gray-900 py-12">
         <div className="max-w-2xl mx-auto px-4">
           <ShareButtons
             url={shareUrl}

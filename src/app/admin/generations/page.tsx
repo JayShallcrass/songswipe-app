@@ -98,7 +98,7 @@ export default function AdminGenerations() {
         </div>
         <div className="bg-surface-50 border border-surface-200 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-1">
-            <StatusDot color="bg-purple-400 animate-pulse" />
+            <StatusDot color="bg-amber-400 animate-pulse" />
             <p className="text-sm text-zinc-400">Generating</p>
           </div>
           <p className="text-3xl font-bold text-white">{data.generating.length}</p>
@@ -118,12 +118,12 @@ export default function AdminGenerations() {
           <h2 className="text-lg font-semibold text-white mb-3">Currently Generating</h2>
           <div className="space-y-2">
             {data.generating.map((v) => (
-              <div key={v.id} className="bg-surface-50 border border-purple-500/30 rounded-lg p-3 flex items-center justify-between">
+              <div key={v.id} className="bg-surface-50 border border-amber-500/30 rounded-lg p-3 flex items-center justify-between">
                 <div>
                   <span className="text-sm text-white">Variant {v.variant_number}</span>
                   <span className="text-xs text-zinc-500 ml-3">Order: {v.order_id.slice(0, 8)}...</span>
                 </div>
-                <span className="text-xs text-purple-400 animate-pulse">Generating...</span>
+                <span className="text-xs text-amber-400 animate-pulse">Generating...</span>
               </div>
             ))}
           </div>

@@ -45,7 +45,7 @@ function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
     pending: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30',
     paid: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-    generating: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+    generating: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
     completed: 'bg-green-500/10 text-green-400 border-green-500/30',
     failed: 'bg-red-500/10 text-red-400 border-red-500/30',
   }

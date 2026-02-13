@@ -103,7 +103,7 @@ export default function BlogPage() {
           </div>
 
           {/* Newsletter Signup */}
-          <div className="mt-16 bg-gradient-to-r from-brand-500 to-purple-600 rounded-2xl p-8 md:p-12 text-white text-center">
+          <div className="mt-16 bg-gradient-to-r from-brand-500 to-amber-500 rounded-2xl p-8 md:p-12 text-white text-center">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4">
               Get Song Ideas Delivered
             </h2>

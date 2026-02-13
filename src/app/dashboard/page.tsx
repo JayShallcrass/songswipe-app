@@ -92,13 +92,13 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             {balance && balance.songsRemaining > 0 && (
-              <span className="px-2.5 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
+              <span className="px-2.5 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap">
                 {balance.songsRemaining} prepaid {balance.songsRemaining === 1 ? 'song' : 'songs'}
               </span>
             )}
             <Link
               href="/customise"
-              className="px-3 sm:px-4 py-2 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold text-sm sm:text-base whitespace-nowrap hover:from-brand-600 hover:to-purple-700 transition-all shadow-sm"
+              className="px-3 sm:px-4 py-2 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-xl font-semibold text-sm sm:text-base whitespace-nowrap hover:from-brand-600 hover:to-amber-600 transition-all shadow-sm"
             >
               Create a Song
             </Link>
@@ -143,7 +143,7 @@ export default function DashboardPage() {
             >
               My Songs
               {activeTab === 'songs' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-purple-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-amber-500" />
               )}
             </button>
             <button
@@ -156,7 +156,7 @@ export default function DashboardPage() {
             >
               Orders
               {activeTab === 'orders' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-purple-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-amber-500" />
               )}
             </button>
             <button
@@ -169,7 +169,7 @@ export default function DashboardPage() {
             >
               Occasions
               {activeTab === 'occasions' && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-purple-500" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-amber-500" />
               )}
             </button>
           </div>
@@ -209,7 +209,7 @@ export default function DashboardPage() {
                     action={
                       <Link
                         href="/customise"
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md"
                       >
                         Create a Song
                       </Link>
@@ -261,7 +261,7 @@ export default function DashboardPage() {
                     action={
                       <Link
                         href="/pricing"
-                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-purple-700 transition-all shadow-md"
+                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md"
                       >
                         View Pricing
                       </Link>

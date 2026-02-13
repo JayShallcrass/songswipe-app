@@ -56,7 +56,7 @@ const iconSizeClasses = {
 
 export default function AlbumArt({ recipientName, occasion, genre, size = 'md' }: AlbumArtProps) {
   const normalised = occasion.toLowerCase().replace(/\s+/g, '-').replace(/'/g, '')
-  const gradient = occasionGradients[normalised] || 'from-brand-500 to-purple-600'
+  const gradient = occasionGradients[normalised] || 'from-brand-500 to-amber-500'
   const icon = occasionIconMap[normalised] || <MusicalNoteIcon className="w-full h-full text-white" />
 
   return (

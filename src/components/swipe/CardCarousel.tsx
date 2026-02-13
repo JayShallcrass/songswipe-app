@@ -234,7 +234,7 @@ export function CardCarousel({
       {/* Select button */}
       <button
         onClick={() => handleSelectCard(cards[activeIndex].id)}
-        className="px-8 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-xl hover:from-brand-600 hover:to-purple-700 transition-colors text-sm sm:text-base"
+        className="px-8 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white font-semibold rounded-xl hover:from-brand-600 hover:to-amber-600 transition-colors text-sm sm:text-base"
       >
         Select This One
       </button>

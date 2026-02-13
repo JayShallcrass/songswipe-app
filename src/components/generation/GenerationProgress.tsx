@@ -105,7 +105,7 @@ export function GenerationProgress({ orderId, onAllComplete }: GenerationProgres
       <div className="mb-8">
         <div className="h-3 bg-surface-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-brand-500 to-purple-600 transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-brand-500 to-amber-500 transition-all duration-500 ease-out"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>

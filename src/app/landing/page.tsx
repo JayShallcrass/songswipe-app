@@ -41,7 +41,7 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-6">
                 <Link
                   href="/auth/login"
-                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full hover:from-brand-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-brand-500 to-amber-500 rounded-full hover:from-brand-600 hover:to-amber-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   Create a Song
                 </Link>
@@ -190,7 +190,7 @@ export default function LandingPage() {
                   &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold">
                     {testimonial.name.charAt(0)}
                   </div>
                   <div>
@@ -316,7 +316,7 @@ export default function LandingPage() {
             </ul>
             <Link
               href="/auth/login"
-              className="block w-full py-4 text-center font-semibold text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full hover:from-brand-600 hover:to-purple-700 transition-all hover:scale-[1.02]"
+              className="block w-full py-4 text-center font-semibold text-white bg-gradient-to-r from-brand-500 to-amber-500 rounded-full hover:from-brand-600 hover:to-amber-600 transition-all hover:scale-[1.02]"
             >
               Create Now
             </Link>
@@ -341,7 +341,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/auth/login"
-            className="inline-flex items-center justify-center px-10 py-4 text-lg font-semibold text-white bg-gradient-to-r from-brand-500 to-purple-600 rounded-full hover:from-brand-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            className="inline-flex items-center justify-center px-10 py-4 text-lg font-semibold text-white bg-gradient-to-r from-brand-500 to-amber-500 rounded-full hover:from-brand-600 hover:to-amber-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
           >
             Create a Song
           </Link>

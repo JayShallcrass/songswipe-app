@@ -75,7 +75,7 @@ export function FormScreenshot() {
         </div>
       </div>
 
-      <div className="w-full h-7 bg-gradient-to-r from-brand-500 to-purple-600 rounded-full mt-auto flex items-center justify-center">
+      <div className="w-full h-7 bg-gradient-to-r from-brand-500 to-amber-500 rounded-full mt-auto flex items-center justify-center">
         <p className="text-[9px] font-semibold text-white">Generate Song</p>
       </div>
     </div>

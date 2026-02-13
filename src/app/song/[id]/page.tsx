@@ -39,7 +39,7 @@ export default function SongPage() {
           </p>
           <Link
             href="/"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-full hover:from-brand-600 hover:to-purple-700 transition-all"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-brand-500 to-amber-500 text-white font-semibold rounded-full hover:from-brand-600 hover:to-amber-600 transition-all"
           >
             Go Home
           </Link>
@@ -81,7 +81,7 @@ export default function SongPage() {
           <button
             onClick={downloadSong}
             disabled={isDownloading}
-            className="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-purple-600 text-white font-semibold rounded-full hover:from-brand-600 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 px-6 bg-gradient-to-r from-brand-500 to-amber-500 text-white font-semibold rounded-full hover:from-brand-600 hover:to-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <ArrowDownTrayIcon className="w-5 h-5" />
             {isDownloading ? 'Downloading...' : 'Download MP3'}

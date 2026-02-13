@@ -31,7 +31,7 @@ export function BundleOfferCard() {
   const savingsPerSong = BASE_PRICE - selectedTier.perSongPrice
 
   return (
-    <div className="relative bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl p-8 text-white">
+    <div className="relative bg-gradient-to-br from-brand-500 to-amber-500 rounded-2xl p-8 text-white">
       {/* Dismiss button */}
       <button
         onClick={() => setIsDismissed(true)}
@@ -44,7 +44,7 @@ export function BundleOfferCard() {
       {/* Headline */}
       <div className="text-center mb-6">
         <h3 className="text-3xl font-bold mb-2">Loved Your Song? Create More & Save</h3>
-        <p className="text-purple-100 text-lg">
+        <p className="text-amber-100 text-lg">
           Stock up on songs for upcoming birthdays, anniversaries, and celebrations
         </p>
       </div>

@@ -12,6 +12,7 @@ export interface PersonalisationData {
   recipientName: string
   pronunciation: string
   yourName: string
+  songTitle: string
   specialMemories: string
   thingsToAvoid: string
   occasionDate: string
@@ -80,6 +81,51 @@ function buildSpecialMemories(promptAnswers: Record<string, string>, freeformMem
   return parts.join('\n\n')
 }
 
+const TITLE_TEMPLATES: Record<string, string[]> = {
+  birthday: [
+    '{name}\'s Song',
+    'Happy Birthday, {name}',
+    'One More Year of {name}',
+    'Here\'s to {name}',
+  ],
+  valentines: [
+    'For {name}, With Love',
+    '{name}\'s Love Song',
+    'All About {name}',
+    'You & {name}',
+  ],
+  anniversary: [
+    'Our Story, {name}',
+    'Still the One, {name}',
+    '{name} & Me',
+    'Another Year with {name}',
+  ],
+  wedding: [
+    '{name}\'s Wedding Song',
+    'Forever, {name}',
+    'To {name}, on Our Day',
+    'Here Comes {name}',
+  ],
+  graduation: [
+    '{name}\'s Next Chapter',
+    'Go Get \'Em, {name}',
+    'Proud of {name}',
+    '{name} Did It',
+  ],
+  'just-because': [
+    'A Song for {name}',
+    'This One\'s for {name}',
+    'The {name} Song',
+    'Dear {name}',
+  ],
+}
+
+function getSuggestedTitles(occasion: string, recipientName: string): string[] {
+  const name = recipientName.trim() || 'You'
+  const templates = TITLE_TEMPLATES[occasion] || TITLE_TEMPLATES['just-because']
+  return templates.map(t => t.replace('{name}', name))
+}
+
 export function PersonalisationForm({
   onSubmit,
   onBack,
@@ -89,6 +135,7 @@ export function PersonalisationForm({
   const [recipientName, setRecipientName] = useState('')
   const [pronunciation, setPronunciation] = useState('')
   const [yourName, setYourName] = useState('')
+  const [songTitle, setSongTitle] = useState('')
   const [promptAnswers, setPromptAnswers] = useState<Record<string, string>>({})
   const [activePrompts, setActivePrompts] = useState<Set<string>>(new Set())
   const [freeformMemories, setFreeformMemories] = useState('')
@@ -113,6 +160,7 @@ export function PersonalisationForm({
         recipientName,
         pronunciation,
         yourName,
+        songTitle,
         freeformMemories,
         thingsToAvoid,
         ...promptAnswers,
@@ -138,6 +186,7 @@ export function PersonalisationForm({
     if (cached.recipientName) setRecipientName(cached.recipientName)
     if (cached.pronunciation) setPronunciation(cached.pronunciation)
     if (cached.yourName) setYourName(cached.yourName)
+    if (cached.songTitle) setSongTitle(cached.songTitle)
     if (cached.promptAnswers) {
       setPromptAnswers(cached.promptAnswers)
       setActivePrompts(new Set(Object.keys(cached.promptAnswers)))
@@ -157,6 +206,7 @@ export function PersonalisationForm({
       recipientName,
       pronunciation,
       yourName,
+      songTitle,
       promptAnswers,
       freeformMemories,
       thingsToAvoid,
@@ -166,7 +216,7 @@ export function PersonalisationForm({
       tempo,
       relationship,
     })
-  }, [recipientName, pronunciation, yourName, promptAnswers, freeformMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
+  }, [recipientName, pronunciation, yourName, songTitle, promptAnswers, freeformMemories, thingsToAvoid, occasionDate, songLength, language, tempo, relationship])
 
   // Get suggestion chips for the selected occasion
   const occasion = selections.occasion || ''
@@ -217,6 +267,7 @@ export function PersonalisationForm({
       recipientName,
       pronunciation,
       yourName,
+      songTitle,
       specialMemories: buildSpecialMemories(promptAnswers, freeformMemories),
       thingsToAvoid,
       occasionDate,
@@ -332,6 +383,41 @@ export function PersonalisationForm({
           {moderationWarnings.yourName && (
             <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
           )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-zinc-300 mb-1">
+            Song Title <span className="text-zinc-500 font-normal">(optional)</span>
+          </label>
+          <input
+            type="text"
+            className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+            placeholder="Give your song a name, or pick one below"
+            value={songTitle}
+            onChange={(e) => setSongTitle(e.target.value)}
+            disabled={isLoading}
+            maxLength={100}
+          />
+          {moderationWarnings.songTitle && (
+            <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+          )}
+          <div className="flex flex-wrap gap-2 mt-2">
+            {getSuggestedTitles(occasion, recipientName).map((title) => (
+              <button
+                key={title}
+                type="button"
+                onClick={() => setSongTitle(title)}
+                disabled={isLoading}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                  songTitle === title
+                    ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                    : 'bg-surface-100 border-surface-300 text-zinc-400 hover:border-brand-500/50 hover:text-zinc-300'
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+              >
+                {title}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

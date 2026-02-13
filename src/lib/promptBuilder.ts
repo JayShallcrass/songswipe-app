@@ -100,6 +100,11 @@ export function buildRichPrompt(c: Record<string, any>): string {
     lines.push(`Include ${c.recipientName}'s name naturally in the lyrics.`)
   }
 
+  // Song title
+  if (c.songTitle) {
+    lines.push(`The song should be titled "${sanitiseInput(c.songTitle, 100)}".`)
+  }
+
   // Special memories / content direction
   if (c.specialMemories) {
     lines.push(`Weave in these personal details: ${sanitiseInput(c.specialMemories)}`)

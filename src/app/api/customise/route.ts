@@ -21,6 +21,7 @@ const customisationSchema = {
       tempo: z.string().optional(),
       relationship: z.string().optional(),
       pronunciation: z.string().max(100).optional(),
+      songTitle: z.string().max(100).optional(),
       specialMemories: z.string().max(500).optional(),
       thingsToAvoid: z.string().max(300).optional(),
       occasionDate: z.string().optional(),
@@ -62,6 +63,7 @@ export async function POST(request: NextRequest) {
       recipientName: customisation.recipientName,
       yourName: customisation.yourName,
       pronunciation: customisation.pronunciation,
+      songTitle: customisation.songTitle,
       specialMemories: customisation.specialMemories,
       thingsToAvoid: customisation.thingsToAvoid,
     })
@@ -97,6 +99,7 @@ export async function POST(request: NextRequest) {
         song_length: parseInt(customisation.songLength),
         mood: customisation.mood,
         genre: customisation.genre,
+        song_title: customisation.songTitle || null,
         special_memories: customisation.specialMemories || null,
         things_to_avoid: customisation.thingsToAvoid || null,
         pronunciation: customisation.pronunciation || null,

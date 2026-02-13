@@ -69,6 +69,7 @@ export default function CustomisePage() {
         language: data.language || 'en-GB',
         tempo: data.tempo || 'mid-tempo',
         relationship: data.relationship || undefined,
+        songTitle: data.songTitle || undefined,
         specialMemories: data.specialMemories || undefined,
         thingsToAvoid: data.thingsToAvoid || undefined,
         occasionDate: data.occasionDate || undefined,

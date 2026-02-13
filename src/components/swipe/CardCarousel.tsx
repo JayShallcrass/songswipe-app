@@ -30,6 +30,7 @@ export function CardCarousel({
   const [activeAudioId, setActiveAudioId] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
+  const [cardWidth, setCardWidth] = useState(0)
   const cardWidthRef = useRef(0)
   const centerOffsetRef = useRef(0)
 
@@ -55,11 +56,13 @@ export function CardCarousel({
         // Card takes 75% of container on mobile, 60% on desktop
         const containerWidth = containerRef.current.offsetWidth
         const isMobile = window.innerWidth < 640
-        cardWidthRef.current = containerWidth * (isMobile ? 0.75 : 0.6)
+        const cw = containerWidth * (isMobile ? 0.75 : 0.6)
+        cardWidthRef.current = cw
+        setCardWidth(cw)
         // Center the active card in the container
-        centerOffsetRef.current = (containerWidth - cardWidthRef.current) / 2
+        centerOffsetRef.current = (containerWidth - cw) / 2
         // Snap to active card (centered)
-        x.set(-activeIndex * cardWidthRef.current + centerOffsetRef.current)
+        x.set(-activeIndex * cw + centerOffsetRef.current)
       }
     }
     updateCardWidth()
@@ -211,7 +214,7 @@ export function CardCarousel({
             <div
               key={card.id}
               className="flex-shrink-0 px-2"
-              style={{ width: cardWidthRef.current || '75%' }}
+              style={{ width: cardWidth || '75vw' }}
             >
               <SwipeCard
                 card={card}

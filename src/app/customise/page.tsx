@@ -162,7 +162,7 @@ export default function CustomisePage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -30 }}
             transition={{ duration: 0.25 }}
-            className="flex flex-col items-center px-4 py-4 sm:py-8"
+            className="flex flex-col items-center px-4 py-4 sm:py-8 relative z-10"
           >
             {/* Back button (stages 2-4) */}
             {currentStageIndex > 0 && (
@@ -203,7 +203,7 @@ export default function CustomisePage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="max-w-2xl mx-auto px-4 sm:px-6 py-4 sm:py-8"
+            className="max-w-2xl mx-auto px-4 sm:px-6 py-4 sm:py-8 relative z-10"
           >
             <PersonalisationForm
               onSubmit={handleFormSubmit}

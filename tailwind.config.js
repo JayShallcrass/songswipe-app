@@ -79,6 +79,27 @@ module.exports = {
           '0%, 100%': { height: '4px' },
           '50%': { height: '16px' },
         },
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'float-delayed': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '33%': { transform: 'translateY(-8px)' },
+          '66%': { transform: 'translateY(4px)' },
+        },
+        'drift': {
+          '0%, 100%': { transform: 'translateX(0) translateY(0)' },
+          '50%': { transform: 'translateX(8px) translateY(-6px)' },
+        },
+        'pulse-soft': {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.6', transform: 'scale(1.05)' },
+        },
+        'spin-slow': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
       },
       animation: {
         'hero-wave-1': 'hero-wave-1 8s ease-in-out infinite',
@@ -90,6 +111,11 @@ module.exports = {
         'hero-float-slow': 'hero-float-slow 10s ease-in-out infinite',
         'hero-ring': 'hero-ring 4s ease-in-out infinite',
         'audio-eq': 'audio-eq 0.8s ease-in-out infinite',
+        'float-slow': 'float-slow 4s ease-in-out infinite',
+        'float-delayed': 'float-delayed 5s ease-in-out infinite',
+        'drift': 'drift 6s ease-in-out infinite',
+        'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
+        'spin-slow': 'spin-slow 20s linear infinite',
       },
     },
   },

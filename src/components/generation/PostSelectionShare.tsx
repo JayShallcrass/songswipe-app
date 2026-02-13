@@ -14,6 +14,7 @@ import { CopyLinkButton } from '@/components/share/CopyLinkButton'
 import { useDownloadSong } from '@/lib/hooks/useDownloadSong'
 import { generateShareUrl } from '@/lib/share/generateShareUrl'
 import { BundleOfferCard } from '@/components/upsells/BundleOfferCard'
+import { CheckCircleIcon, EnvelopeIcon, CalendarDaysIcon } from '@heroicons/react/24/solid'
 
 interface ShareData {
   variantId: string
@@ -109,7 +110,7 @@ export function PostSelectionShare({ data }: PostSelectionShareProps) {
       <div className="max-w-2xl mx-auto w-full space-y-6">
         {/* Success header */}
         <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
-          <div className="text-6xl mb-4">🎉</div>
+          <div className="flex justify-center mb-4"><CheckCircleIcon className="w-16 h-16 text-green-500" /></div>
           <h1 className="text-3xl font-bold text-white mb-2">
             Your song is ready!
           </h1>
@@ -280,7 +281,7 @@ export function PostSelectionShare({ data }: PostSelectionShareProps) {
           {/* Email sent confirmation */}
           {emailStatus === 'sent' && (
             <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-center">
-              <div className="text-3xl mb-2">📬</div>
+              <div className="flex justify-center mb-2"><EnvelopeIcon className="w-8 h-8 text-green-400" /></div>
               <p className="text-green-400 font-semibold">Email sent!</p>
               <p className="text-green-400/80 text-sm mt-1">
                 {recipientName} will receive the gift at {recipientEmail}
@@ -291,7 +292,7 @@ export function PostSelectionShare({ data }: PostSelectionShareProps) {
           {/* Email scheduled confirmation */}
           {emailStatus === 'scheduled' && (
             <div className="bg-brand-500/10 border border-brand-500/20 rounded-xl p-4 text-center">
-              <div className="text-3xl mb-2">📅</div>
+              <div className="flex justify-center mb-2"><CalendarDaysIcon className="w-8 h-8 text-brand-400" /></div>
               <p className="text-brand-400 font-semibold">Email scheduled!</p>
               <p className="text-brand-400/80 text-sm mt-1">
                 {recipientName} will receive the gift on{' '}

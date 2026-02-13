@@ -23,10 +23,14 @@ export function StepPersonalise() {
       <path d="M72 52 L68 58 L78 52" fill="white" opacity="0.15" />
 
       {/* Musical note in bubble */}
-      <text x="80" y="44" fontSize="18" fontFamily="serif" fill="#e74c3c" opacity="0.9">&#9835;</text>
+      <g transform="translate(74, 28)" opacity="0.9">
+        <path d="M6 0v10a4 4 0 1 1-2-3.46V2h8v8a4 4 0 1 1-2-3.46V0H6z" fill="#e74c3c" transform="scale(1.2)" />
+      </g>
 
-      {/* Small floating hearts/notes */}
-      <text x="88" y="22" fontSize="10" fontFamily="serif" fill="#8b5cf6" opacity="0.5">&#9834;</text>
+      {/* Small floating notes */}
+      <g transform="translate(86, 14)" opacity="0.5">
+        <path d="M3 0v6a2.5 2.5 0 1 1-1.5-2.3V0H3z" fill="#8b5cf6" transform="scale(0.9)" />
+      </g>
       <circle cx="96" cy="16" r="2" fill="#e74c3c" opacity="0.4" />
 
       <defs>
@@ -121,8 +125,12 @@ export function StepShare() {
       <path d="M78 32 L94 32" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.4" />
 
       {/* Musical notes floating from box */}
-      <text x="22" y="38" fontSize="14" fontFamily="serif" fill="#e74c3c" opacity="0.6">&#9835;</text>
-      <text x="76" y="30" fontSize="11" fontFamily="serif" fill="#8b5cf6" opacity="0.5">&#9834;</text>
+      <g transform="translate(20, 24)" opacity="0.6">
+        <path d="M4 0v7a3 3 0 1 1-1.5-2.6V1.5h5V7a3 3 0 1 1-1.5-2.6V0H4z" fill="#e74c3c" transform="scale(0.9)" />
+      </g>
+      <g transform="translate(76, 20)" opacity="0.5">
+        <path d="M2.5 0v5a2 2 0 1 1-1-1.7V0h1z" fill="#8b5cf6" transform="scale(0.9)" />
+      </g>
 
       {/* Share arrow */}
       <path d="M28 80 L20 72 L28 64" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { CheckCircleIcon, MusicalNoteIcon, ClockIcon } from '@heroicons/react/24/solid'
 
 interface OrderDetails {
   id: string
@@ -79,8 +80,8 @@ export default function OrderPage({ params }: { params: { id: string } }) {
 
         <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8">
           <div className="text-center mb-8">
-            <span className="text-6xl mb-4 block">
-              {isReady ? '🎉' : isGenerating ? '🎵' : '⏳'}
+            <span className="flex justify-center mb-4">
+              {isReady ? <CheckCircleIcon className="w-16 h-16 text-green-500" /> : isGenerating ? <MusicalNoteIcon className="w-16 h-16 text-brand-500" /> : <ClockIcon className="w-16 h-16 text-zinc-400" />}
             </span>
             <h1 className="text-3xl font-heading font-bold text-white mb-2">
               {isReady
@@ -136,7 +137,7 @@ export default function OrderPage({ params }: { params: { id: string } }) {
           {isGenerating && (
             <div className="text-center py-8">
               <div className="animate-pulse">
-                <div className="text-4xl mb-4">🎵</div>
+                <div className="flex justify-center mb-4"><MusicalNoteIcon className="w-10 h-10 text-brand-500" /></div>
                 <p className="text-zinc-400">
                   AI is composing your personalised song...
                 </p>

@@ -15,6 +15,8 @@ import OrderRow from '@/components/dashboard/OrderRow'
 import OccasionCard from '@/components/dashboard/OccasionCard'
 import EmptyState from '@/components/dashboard/EmptyState'
 import Pagination from '@/components/dashboard/Pagination'
+import { MusicalNoteIcon, MicrophoneIcon, CalendarDaysIcon } from '@heroicons/react/24/solid'
+import { InboxIcon } from '@heroicons/react/24/outline'
 
 type TabType = 'songs' | 'orders' | 'occasions'
 
@@ -108,17 +110,17 @@ export default function DashboardPage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-8">
           <div className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl mb-1">🎵</div>
+            <div className="flex justify-center mb-1"><MusicalNoteIcon className="w-7 h-7 text-brand-500" /></div>
             <div className="text-2xl sm:text-3xl font-bold text-white">{stats?.totalSongs ?? 0}</div>
             <div className="text-zinc-500 text-xs sm:text-sm">Songs Created</div>
           </div>
           <div className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl mb-1">🎤</div>
+            <div className="flex justify-center mb-1"><MicrophoneIcon className="w-7 h-7 text-brand-500" /></div>
             <div className="text-2xl sm:text-3xl font-bold text-white">{stats?.peopleSerenaded ?? 0}</div>
             <div className="text-zinc-500 text-xs sm:text-sm">People Serenaded</div>
           </div>
           <div className="bg-surface-50 border border-surface-200 rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl mb-1">📅</div>
+            <div className="flex justify-center mb-1"><CalendarDaysIcon className="w-7 h-7 text-brand-500" /></div>
             <div className="text-2xl sm:text-3xl font-bold text-white">{stats?.upcomingOccasions ?? 0}</div>
             <div className="text-zinc-500 text-xs sm:text-sm">Upcoming Occasions</div>
           </div>
@@ -197,7 +199,7 @@ export default function DashboardPage() {
                   </>
                 ) : (
                   <EmptyState
-                    icon="🎵"
+                    icon={<MusicalNoteIcon className="w-10 h-10 text-brand-500" />}
                     title="No songs yet"
                     description="Create your first personalised song!"
                     action={
@@ -249,7 +251,7 @@ export default function DashboardPage() {
                   </>
                 ) : (
                   <EmptyState
-                    icon="📦"
+                    icon={<InboxIcon className="w-10 h-10 text-zinc-500" />}
                     title="No orders yet"
                     description="Your purchase history will appear here."
                     action={
@@ -291,7 +293,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <EmptyState
-                    icon="📅"
+                    icon={<CalendarDaysIcon className="w-10 h-10 text-brand-500" />}
                     title="No upcoming occasions"
                     description="Create songs for special dates to track them here."
                   />

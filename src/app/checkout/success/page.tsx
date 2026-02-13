@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid'
 
 function CheckoutSuccessContent() {
   const searchParams = useSearchParams()
@@ -50,7 +51,7 @@ function CheckoutSuccessContent() {
     return (
       <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
-          <div className="text-5xl mb-4">&#x274C;</div>
+          <div className="flex justify-center mb-4"><XCircleIcon className="w-14 h-14 text-red-500" /></div>
           <h1 className="text-2xl font-bold text-white mb-4">Invalid Checkout Session</h1>
           <p className="text-zinc-400 mb-6">
             We couldn&apos;t find your checkout session. Please try again or contact support.
@@ -74,7 +75,7 @@ function CheckoutSuccessContent() {
       <div className="max-w-2xl mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8">
         {/* Success header */}
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">🎉</div>
+          <div className="flex justify-center mb-4"><CheckCircleIcon className="w-16 h-16 text-green-500" /></div>
           <h1 className="text-3xl font-heading font-bold text-white mb-2">Payment Successful!</h1>
           <p className="text-lg text-zinc-400">
             Your personalised song is being generated. This usually takes a few minutes.

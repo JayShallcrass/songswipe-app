@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { LockClosedIcon, CreditCardIcon } from '@heroicons/react/24/solid'
 
 export default function LoginPage({
   searchParams,
@@ -139,9 +140,9 @@ export default function LoginPage({
 
         {/* Trust badges */}
         <div className="mt-8 flex justify-center items-center gap-6 text-xs text-zinc-600">
-          <span>🔒 Secure</span>
-          <span>✓ Verified</span>
-          <span>💳 Stripe</span>
+          <span className="flex items-center gap-1"><LockClosedIcon className="w-3.5 h-3.5" /> Secure</span>
+          <span className="flex items-center gap-1"><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg> Verified</span>
+          <span className="flex items-center gap-1"><CreditCardIcon className="w-3.5 h-3.5" /> Stripe</span>
         </div>
       </div>
     </div>

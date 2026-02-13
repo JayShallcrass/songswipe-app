@@ -1,14 +1,17 @@
 // Swipe flow types for SongSwipe builder
 
+import { ReactNode } from 'react'
+
 export type SwipeStage = 'occasion' | 'mood' | 'genre' | 'voice'
 
 export interface SwipeCardData {
   id: string
   title: string
-  icon: string
+  icon: ReactNode
   description: string
   gradient: string
   sampleUrl?: string
+  illustration?: ReactNode
 }
 
 export interface SwipeFlowState {

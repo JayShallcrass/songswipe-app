@@ -62,14 +62,29 @@ export function SwipeCard({ card, isActive, isSelected, onClick, isPlaying, onTo
     >
       <div className="w-full bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
         <div className={`relative w-full aspect-[4/5] bg-gradient-to-br ${card.gradient} p-4 sm:p-8 flex flex-col items-center justify-center`}>
-          {/* Icon */}
-          <div className="text-4xl sm:text-6xl mb-3 sm:mb-6">{card.icon}</div>
+          {/* Illustration background */}
+          {card.illustration && (
+            <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+              {card.illustration}
+            </div>
+          )}
 
-          {/* Title */}
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-1.5 sm:mb-3 text-center">{card.title}</h2>
+          {/* Dark gradient overlay for text readability */}
+          {card.illustration && (
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-transparent pointer-events-none" />
+          )}
 
-          {/* Description */}
-          <p className="text-white/90 text-center text-xs sm:text-sm px-2">{card.description}</p>
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center justify-center">
+            {/* Icon */}
+            <div className="w-10 h-10 sm:w-14 sm:h-14 mb-3 sm:mb-6">{card.icon}</div>
+
+            {/* Title */}
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1.5 sm:mb-3 text-center">{card.title}</h2>
+
+            {/* Description */}
+            <p className="text-white/90 text-center text-xs sm:text-sm px-2">{card.description}</p>
+          </div>
 
           {/* Audio play/pause button */}
           {hasAudio && (

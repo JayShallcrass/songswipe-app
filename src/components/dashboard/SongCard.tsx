@@ -6,6 +6,7 @@ import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import { useDownloadSong } from '@/lib/hooks/useDownloadSong'
 import { format } from 'date-fns'
+import { MusicalNoteIcon } from '@heroicons/react/24/solid'
 
 interface SongCardProps {
   song: {
@@ -100,7 +101,7 @@ export default function SongCard({ song, onDelete }: SongCardProps) {
       <div className="flex items-start gap-4">
         {/* Gradient icon */}
         <div className="w-12 h-12 bg-gradient-to-br from-brand-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
-          <span className="text-white text-xl">🎵</span>
+          <MusicalNoteIcon className="w-6 h-6 text-white" />
         </div>
 
         {/* Song details */}

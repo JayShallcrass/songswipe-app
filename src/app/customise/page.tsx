@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useSongBalance } from '@/lib/hooks/useSongBalance'
 import { STAGE_ORDER } from '@/lib/swipe-data'
+import { MusicalNoteIcon } from '@heroicons/react/24/outline'
 
 export default function CustomisePage() {
   const router = useRouter()
@@ -114,7 +115,7 @@ export default function CustomisePage() {
       <header className="bg-surface-50 border-b border-surface-200 flex-shrink-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-2 sm:py-3 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-1.5">
-            <span className="text-xl">🎵</span>
+            <MusicalNoteIcon className="w-6 h-6 text-brand-500" />
             <span className="text-lg sm:text-xl font-heading font-bold text-white">
               SongSwipe
             </span>

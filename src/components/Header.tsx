@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { MusicalNoteIcon } from '@heroicons/react/24/outline'
 
 export default function Header() {
   const pathname = usePathname()
@@ -21,7 +22,7 @@ export default function Header() {
     <header className="bg-surface-DEFAULT/80 backdrop-blur-xl sticky top-0 z-50 border-b border-surface-200">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl">🎵</span>
+          <MusicalNoteIcon className="w-7 h-7 text-brand-500" />
           <span className="text-xl font-heading font-bold text-white">
             SongSwipe
           </span>

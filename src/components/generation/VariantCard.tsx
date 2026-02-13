@@ -1,8 +1,14 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, ReactNode } from 'react'
 import { motion, useMotionValue, useTransform, useAnimate, PanInfo } from 'framer-motion'
 import { useAudioPreview } from '@/lib/hooks/useAudioPreview'
+import {
+  MusicalNoteIcon,
+  SparklesIcon,
+  SpeakerWaveIcon,
+  StarIcon,
+} from '@heroicons/react/24/solid'
 
 const VARIANT_GRADIENTS = [
   'from-purple-500 to-indigo-600',
@@ -11,7 +17,12 @@ const VARIANT_GRADIENTS = [
   'from-amber-500 to-orange-600',
 ]
 
-const VARIANT_ICONS = ['🎵', '🎶', '🎧', '🎼']
+const VARIANT_ICONS: ReactNode[] = [
+  <MusicalNoteIcon key="note" className="w-full h-full text-white" />,
+  <SparklesIcon key="sparkles" className="w-full h-full text-white" />,
+  <SpeakerWaveIcon key="speaker" className="w-full h-full text-white" />,
+  <StarIcon key="star" className="w-full h-full text-white" />,
+]
 
 const VARIANT_NAMES = [
   'The First Take',
@@ -157,7 +168,7 @@ export function VariantCard({ orderId, variantId, variantNumber, isActive, isTop
       <div className="w-full h-full bg-surface-50 rounded-2xl border border-surface-200 overflow-hidden">
         <div className={`relative w-full h-full bg-gradient-to-br ${gradient} p-5 sm:p-8 flex flex-col items-center justify-center`}>
           {/* Variant label */}
-          <div className="text-3xl sm:text-5xl mb-2 sm:mb-3">{icon}</div>
+          <div className="w-8 h-8 sm:w-12 sm:h-12 mb-2 sm:mb-3">{icon}</div>
           <h2 className="text-xl sm:text-2xl font-bold text-white mb-0.5">{name}</h2>
           <p className="text-white/70 text-xs sm:text-sm mb-4 sm:mb-6">Variant {variantNumber}</p>
 

@@ -9,6 +9,7 @@ import { VariantSwiper } from '@/components/generation/VariantSwiper'
 import { VariantUpsellModal } from '@/components/upsells/VariantUpsellModal'
 import { TweakModal } from '@/components/tweak/TweakModal'
 import { PostSelectionShare } from '@/components/generation/PostSelectionShare'
+import { XCircleIcon, FaceFrownIcon } from '@heroicons/react/24/solid'
 
 export default function GenerationPage() {
   const params = useParams()
@@ -233,7 +234,7 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
-          <div className="text-5xl mb-4">&#10060;</div>
+          <div className="flex justify-center mb-4"><XCircleIcon className="w-14 h-14 text-red-500" /></div>
           <h1 className="text-2xl font-bold text-white mb-4">Invalid Order</h1>
           <p className="text-zinc-400 mb-6">No order ID was provided.</p>
           <Link
@@ -267,7 +268,7 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
-          <div className="text-5xl mb-4">&#10060;</div>
+          <div className="flex justify-center mb-4"><XCircleIcon className="w-14 h-14 text-red-500" /></div>
           <h1 className="text-2xl font-bold text-white mb-4">Order Not Found</h1>
           <p className="text-zinc-400 mb-6">{error.message}</p>
           <Link
@@ -286,7 +287,7 @@ export default function GenerationPage() {
     return (
       <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
         <div className="max-w-md mx-auto bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center">
-          <div className="text-5xl mb-4">&#128542;</div>
+          <div className="flex justify-center mb-4"><FaceFrownIcon className="w-14 h-14 text-red-400" /></div>
           <h1 className="text-2xl font-bold text-white mb-4">Generation Failed</h1>
           <p className="text-zinc-400 mb-6">
             Unfortunately, all song variants failed to generate. Please try again or contact support.

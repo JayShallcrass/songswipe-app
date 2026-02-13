@@ -80,21 +80,21 @@ export default function HeroBackground() {
           )
         })}
 
-        {/* Floating musical notes */}
-        <g className="animate-hero-float" fill="url(#hero-note-grad)">
-          <text x="120" y="250" fontSize="28" fontFamily="serif" opacity="0.7">&#9835;</text>
+        {/* Floating musical notes (SVG paths) */}
+        <g className="animate-hero-float" fill="url(#hero-note-grad)" opacity="0.7" transform="translate(110, 225)">
+          <path d="M8 0v16a6 6 0 1 1-3-5.2V3h10v13a6 6 0 1 1-3-5.2V0H8z" />
         </g>
-        <g className="animate-hero-float-alt" fill="url(#hero-note-grad)">
-          <text x="1280" y="200" fontSize="32" fontFamily="serif" opacity="0.6">&#9834;</text>
+        <g className="animate-hero-float-alt" fill="url(#hero-note-grad)" opacity="0.6" transform="translate(1270, 172)">
+          <path d="M4 0v12a4.5 4.5 0 1 1-2-3.7V0h2z" />
         </g>
-        <g className="animate-hero-float-slow" fill="url(#hero-note-grad)">
-          <text x="680" y="150" fontSize="24" fontFamily="serif" opacity="0.5">&#9833;</text>
+        <g className="animate-hero-float-slow" fill="url(#hero-note-grad)" opacity="0.5" transform="translate(672, 128)">
+          <path d="M4 0v10a4 4 0 1 1-2-3.5V0h2z" />
         </g>
-        <g className="animate-hero-float" fill="url(#hero-note-grad)">
-          <text x="900" y="620" fontSize="28" fontFamily="serif" opacity="0.4">&#9835;</text>
+        <g className="animate-hero-float" fill="url(#hero-note-grad)" opacity="0.4" transform="translate(890, 595)">
+          <path d="M8 0v16a6 6 0 1 1-3-5.2V3h10v13a6 6 0 1 1-3-5.2V0H8z" />
         </g>
-        <g className="animate-hero-float-alt" fill="url(#hero-note-grad)">
-          <text x="400" y="600" fontSize="20" fontFamily="serif" opacity="0.45">&#9834;</text>
+        <g className="animate-hero-float-alt" fill="url(#hero-note-grad)" opacity="0.45" transform="translate(393, 582)">
+          <path d="M3 0v8a3 3 0 1 1-1.5-2.6V0H3z" />
         </g>
 
         {/* Circular waveform rings */}

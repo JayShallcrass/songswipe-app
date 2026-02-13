@@ -1,5 +1,16 @@
 'use client'
 
+import { ReactNode } from 'react'
+import {
+  CakeIcon,
+  HeartIcon,
+  SparklesIcon,
+  GiftIcon,
+  AcademicCapIcon,
+  MusicalNoteIcon,
+  StarIcon,
+} from '@heroicons/react/24/solid'
+
 interface AlbumArtProps {
   recipientName: string
   occasion: string
@@ -19,16 +30,16 @@ const occasionGradients: Record<string, string> = {
   'just-because': 'from-violet-500 to-purple-600',
 }
 
-const occasionIcons: Record<string, string> = {
-  birthday: '🎂',
-  valentines: '💕',
-  anniversary: '💍',
-  wedding: '💒',
-  graduation: '🎓',
-  christmas: '🎄',
-  'mothers-day': '🌸',
-  'fathers-day': '⭐',
-  'just-because': '🎵',
+const occasionIconMap: Record<string, ReactNode> = {
+  birthday: <CakeIcon className="w-full h-full text-white" />,
+  valentines: <HeartIcon className="w-full h-full text-white" />,
+  anniversary: <SparklesIcon className="w-full h-full text-white" />,
+  wedding: <GiftIcon className="w-full h-full text-white" />,
+  graduation: <AcademicCapIcon className="w-full h-full text-white" />,
+  christmas: <StarIcon className="w-full h-full text-white" />,
+  'mothers-day': <HeartIcon className="w-full h-full text-white" />,
+  'fathers-day': <StarIcon className="w-full h-full text-white" />,
+  'just-because': <MusicalNoteIcon className="w-full h-full text-white" />,
 }
 
 const sizeClasses = {
@@ -37,10 +48,16 @@ const sizeClasses = {
   lg: 'w-48 h-48 text-base',
 }
 
+const iconSizeClasses = {
+  sm: 'w-5 h-5',
+  md: 'w-9 h-9',
+  lg: 'w-14 h-14',
+}
+
 export default function AlbumArt({ recipientName, occasion, genre, size = 'md' }: AlbumArtProps) {
   const normalised = occasion.toLowerCase().replace(/\s+/g, '-').replace(/'/g, '')
   const gradient = occasionGradients[normalised] || 'from-brand-500 to-purple-600'
-  const icon = occasionIcons[normalised] || '🎵'
+  const icon = occasionIconMap[normalised] || <MusicalNoteIcon className="w-full h-full text-white" />
 
   return (
     <div
@@ -49,7 +66,7 @@ export default function AlbumArt({ recipientName, occasion, genre, size = 'md' }
       {/* Subtle overlay pattern */}
       <div className="absolute inset-0 bg-black/10" />
       <div className="relative z-10 text-center px-2">
-        <div className={size === 'sm' ? 'text-lg' : size === 'md' ? 'text-3xl' : 'text-5xl'}>
+        <div className={iconSizeClasses[size]}>
           {icon}
         </div>
         {size !== 'sm' && (

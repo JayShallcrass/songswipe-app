@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { MusicalNoteIcon } from '@heroicons/react/24/outline'
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="text-center md:text-left">
             <Link href="/" className="flex items-center gap-2 justify-center md:justify-start">
-              <span className="text-2xl">🎵</span>
+              <MusicalNoteIcon className="w-7 h-7 text-brand-500" />
               <span className="text-xl font-heading font-bold text-white">
                 SongSwipe
               </span>

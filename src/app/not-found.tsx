@@ -1,10 +1,11 @@
 import Link from 'next/link'
+import { MusicalNoteIcon } from '@heroicons/react/24/outline'
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center px-4">
       <div className="text-center max-w-md">
-        <div className="text-7xl mb-6">🎵</div>
+        <div className="flex justify-center mb-6"><MusicalNoteIcon className="w-20 h-20 text-brand-500" /></div>
         <h1 className="text-6xl font-heading font-bold mb-4 text-gradient">
           404
         </h1>

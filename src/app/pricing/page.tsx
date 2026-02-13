@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
+import { LockClosedIcon } from '@heroicons/react/24/solid'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -103,7 +104,7 @@ export default function PricingPage({
 
             {/* Secure payment */}
             <div className="flex items-center gap-1.5">
-              <span>🔒</span>
+              <LockClosedIcon className="w-4 h-4 text-zinc-400" />
               <span>Secure payment via Stripe</span>
             </div>
 

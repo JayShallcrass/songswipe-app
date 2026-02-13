@@ -58,7 +58,9 @@ export default async function Image({ params }: OGImageProps) {
             background: '#1F1128',
           }}
         >
-          <div style={{ fontSize: 96, marginBottom: 40 }}>🎵</div>
+          <svg width="96" height="96" viewBox="0 0 24 24" fill="white" style={{ marginBottom: 40 }}>
+            <path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" />
+          </svg>
           <div style={{ fontSize: 48, color: 'white', fontWeight: 'bold' }}>
             A personalised song gift
           </div>
@@ -90,7 +92,9 @@ export default async function Image({ params }: OGImageProps) {
           position: 'relative',
         }}
       >
-        <div style={{ fontSize: 80, marginBottom: 30 }}>🎁</div>
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="white" style={{ marginBottom: 30 }}>
+          <path d="M20 12v10H4V12M2 7h20v5H2zm10-5c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 0c-1.66 0-3 1.34-3 3h6c0-1.66-1.34-3-3-3zM12 7v15" stroke="white" strokeWidth="1" fill="none" />
+        </svg>
         <div
           style={{
             fontSize: 64,

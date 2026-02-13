@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
+import { DecorCurves, DecorWavesA } from '@/components/illustrations/PageDecor'
 
 interface FAQItem {
   question: string
@@ -130,8 +131,12 @@ function AccordionItem({ item }: { item: FAQItem }) {
 
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-surface-DEFAULT">
-      <div className="max-w-3xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-surface-DEFAULT relative overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <DecorCurves />
+        <DecorWavesA />
+      </div>
+      <div className="relative max-w-3xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-heading font-bold mb-3 text-white">
             Frequently Asked Questions

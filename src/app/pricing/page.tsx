@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 import { LockClosedIcon } from '@heroicons/react/24/solid'
+import { DecorPricing, DecorRings } from '@/components/illustrations/PageDecor'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -17,7 +18,11 @@ export default function PricingPage({
   const wasCanceled = plainParams.canceled === 'true'
 
   return (
-    <div className="min-h-screen bg-surface-DEFAULT">
+    <div className="min-h-screen bg-surface-DEFAULT relative overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <DecorPricing />
+        <DecorRings />
+      </div>
       {/* Main content wrapper */}
       <div className="max-w-5xl mx-auto px-4 py-16">
         {/* Canceled checkout banner */}

@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { useSongBalance } from '@/lib/hooks/useSongBalance'
 import { STAGE_ORDER } from '@/lib/swipe-data'
 import { MusicalNoteIcon } from '@heroicons/react/24/outline'
+import { DecorWavesA, DecorRings } from '@/components/illustrations/PageDecor'
 
 export default function CustomisePage() {
   const router = useRouter()
@@ -110,7 +111,13 @@ export default function CustomisePage() {
   }
 
   return (
-    <div className="bg-surface-DEFAULT min-h-screen">
+    <div className="bg-surface-DEFAULT min-h-screen relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <DecorWavesA />
+        <DecorRings />
+      </div>
+
       {/* App Header */}
       <header className="bg-surface-50 border-b border-surface-200 flex-shrink-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-2 sm:py-3 flex justify-between items-center">

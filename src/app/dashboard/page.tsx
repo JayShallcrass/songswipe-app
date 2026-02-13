@@ -17,6 +17,7 @@ import EmptyState from '@/components/dashboard/EmptyState'
 import Pagination from '@/components/dashboard/Pagination'
 import { MusicalNoteIcon, MicrophoneIcon, CalendarDaysIcon } from '@heroicons/react/24/solid'
 import { InboxIcon } from '@heroicons/react/24/outline'
+import { DecorWavesA } from '@/components/illustrations/PageDecor'
 
 type TabType = 'songs' | 'orders' | 'occasions'
 
@@ -76,8 +77,11 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-DEFAULT py-8 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-surface-DEFAULT py-8 px-4 relative overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <DecorWavesA />
+      </div>
+      <div className="relative max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="min-w-0">

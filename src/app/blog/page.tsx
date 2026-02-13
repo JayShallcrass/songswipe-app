@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import { DecorRings, DecorCurves } from '@/components/illustrations/PageDecor'
 
 export const metadata: Metadata = {
   title: 'Blog - SongSwipe | Personalised Song Ideas & Gift Guides',
@@ -50,7 +51,11 @@ export default function BlogPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-surface-DEFAULT">
+    <div className="min-h-screen bg-surface-DEFAULT relative overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <DecorRings />
+        <DecorCurves />
+      </div>
       {/* Blog Header */}
       <section className="py-16 px-4 text-center">
         <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 text-white">

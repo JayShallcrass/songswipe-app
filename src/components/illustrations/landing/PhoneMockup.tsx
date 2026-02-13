@@ -26,7 +26,6 @@ export default function PhoneMockup({ children, size = 'md', rotation = 0, class
         width: s.w,
         height: s.h,
         transform: `rotate(${rotation}deg)`,
-        filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.5))',
       }}
     >
       {/* Phone body */}

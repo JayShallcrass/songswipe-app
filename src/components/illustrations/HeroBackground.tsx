@@ -7,15 +7,22 @@
 export default function HeroBackground() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-      {/* Radial glow - coral/purple center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[700px]">
-        <div className="absolute inset-0 bg-gradient-radial from-brand-500/15 via-purple-600/10 to-transparent rounded-full blur-3xl" />
-      </div>
-
-      {/* Secondary glow - offset */}
-      <div className="absolute top-[30%] left-[60%] w-[500px] h-[400px]">
-        <div className="absolute inset-0 bg-gradient-radial from-purple-500/12 to-transparent rounded-full blur-3xl" />
-      </div>
+      {/* Radial glow - coral/purple center (SVG, no CSS blur) */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="hero-glow-1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#e74c3c" stopOpacity="0.15" />
+            <stop offset="40%" stopColor="#8b5cf6" stopOpacity="0.08" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="hero-glow-2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <ellipse cx="720" cy="400" rx="500" ry="350" fill="url(#hero-glow-1)" />
+        <ellipse cx="900" cy="280" rx="300" ry="220" fill="url(#hero-glow-2)" />
+      </svg>
 
       {/* Sound waves SVG */}
       <svg

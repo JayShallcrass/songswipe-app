@@ -54,7 +54,6 @@ export function SwipeCard({ card, isActive, isSelected, onClick, isPlaying, onTo
     <motion.div
       onClick={onClick}
       animate={{
-        scale: isActive ? 1 : 0.85,
         opacity: isActive ? 1 : 0.7,
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}

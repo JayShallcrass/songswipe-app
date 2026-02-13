@@ -31,6 +31,7 @@ export function CardCarousel({
   const containerRef = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
   const cardWidthRef = useRef(0)
+  const centerOffsetRef = useRef(0)
 
   // Reset when stage changes
   useEffect(() => {
@@ -55,8 +56,10 @@ export function CardCarousel({
         const containerWidth = containerRef.current.offsetWidth
         const isMobile = window.innerWidth < 640
         cardWidthRef.current = containerWidth * (isMobile ? 0.75 : 0.6)
-        // Snap to active card
-        x.set(-activeIndex * cardWidthRef.current)
+        // Center the active card in the container
+        centerOffsetRef.current = (containerWidth - cardWidthRef.current) / 2
+        // Snap to active card (centered)
+        x.set(-activeIndex * cardWidthRef.current + centerOffsetRef.current)
       }
     }
     updateCardWidth()
@@ -67,7 +70,7 @@ export function CardCarousel({
   const snapToIndex = useCallback((index: number) => {
     const clamped = Math.max(0, Math.min(index, cards.length - 1))
     setActiveIndex(clamped)
-    animate(x, -clamped * cardWidthRef.current, {
+    animate(x, -clamped * cardWidthRef.current + centerOffsetRef.current, {
       type: 'spring',
       stiffness: 300,
       damping: 30,
@@ -196,8 +199,8 @@ export function CardCarousel({
         <motion.div
           drag="x"
           dragConstraints={{
-            left: -(cards.length - 1) * (cardWidthRef.current || 200),
-            right: 0,
+            left: -(cards.length - 1) * (cardWidthRef.current || 200) + centerOffsetRef.current,
+            right: centerOffsetRef.current,
           }}
           dragElastic={0.15}
           onDragEnd={handleDragEnd}

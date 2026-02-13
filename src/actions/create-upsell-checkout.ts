@@ -1,17 +1,17 @@
 'use server'
 
 import { createCheckoutSession } from '@/lib/stripe'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { UPSELL_PRICE, validateUpsellPrice } from '@/lib/bundles/pricing'
 
 export async function createUpsellCheckout({ orderId }: { orderId: string }): Promise<{ url: string }> {
-  const supabase = createServerSupabaseClient()
-
-  // Verify user authentication
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) {
+  // Verify user authentication via session cookies
+  const user = await getAuthUser()
+  if (!user) {
     throw new Error('Authentication required')
   }
+
+  const supabase = createServerSupabaseClient()
 
   // Verify order ownership and check variant count
   const { data: order, error: orderError } = await supabase

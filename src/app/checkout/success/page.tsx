@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid'
@@ -12,6 +12,7 @@ function CheckoutSuccessContent() {
   const [orderId, setOrderId] = useState<string | null>(null)
   const [polling, setPolling] = useState(true)
   const [pollAttempts, setPollAttempts] = useState(0)
+  const generationTriggered = useRef(false)
 
   // Poll for order by session_id (webhook may not have fired yet)
   useEffect(() => {
@@ -45,6 +46,18 @@ function CheckoutSuccessContent() {
 
     return () => clearInterval(interval)
   }, [sessionId, orderId, pollAttempts])
+
+  // Kick off generation in the background as soon as order is found
+  useEffect(() => {
+    if (orderId && !generationTriggered.current) {
+      generationTriggered.current = true
+      fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      }).catch(() => {})
+    }
+  }, [orderId])
 
   // If no session_id, show error
   if (!sessionId) {
@@ -140,12 +153,6 @@ function CheckoutSuccessContent() {
               Go to Dashboard
             </Link>
           )}
-          <Link
-            href="/"
-            className="text-zinc-500 hover:text-white font-medium transition-colors"
-          >
-            Create Another Song
-          </Link>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 'use server'
 
 import { createCheckoutSession } from '@/lib/stripe'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { TWEAK_PRICE, validateTweakPrice } from '@/lib/bundles/pricing'
 
 export async function createTweakCheckout({
@@ -15,13 +15,13 @@ export async function createTweakCheckout({
   thingsToAvoid: string
   pronunciation: string
 }): Promise<{ url: string }> {
-  const supabase = createServerSupabaseClient()
-
-  // Verify user authentication
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) {
+  // Verify user authentication via session cookies
+  const user = await getAuthUser()
+  if (!user) {
     throw new Error('Authentication required')
   }
+
+  const supabase = createServerSupabaseClient()
 
   // Verify order ownership and check tweak_count
   const { data: order, error: orderError } = await supabase

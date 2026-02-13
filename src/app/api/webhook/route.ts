@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { getStripe } from '@/lib/stripe'
 import type Stripe from 'stripe'
 import { createServerSupabaseClient } from '@/lib/supabase'
+import { buildRichPrompt } from '@/lib/promptBuilder'
 import crypto from 'crypto'
 
 export async function POST(request: NextRequest) {
@@ -184,6 +185,133 @@ export async function POST(request: NextRequest) {
               body: JSON.stringify({ orderId: parentOrderId, secret: generationSecret }),
             }).catch(err => {
               console.error('Failed to trigger upsell generation:', err)
+            })
+          }
+          break
+        }
+
+        if (orderType === 'tweak') {
+          // Paid tweak: update customization text fields, rebuild prompt, add variant to PARENT order
+          if (!parentOrderId) {
+            console.error('Tweak order missing parent_order_id:', order.id)
+            break
+          }
+
+          // Read tweaked fields from session metadata
+          const tweakSpecialMemories = session.metadata?.tweakSpecialMemories ?? null
+          const tweakThingsToAvoid = session.metadata?.tweakThingsToAvoid ?? null
+          const tweakPronunciation = session.metadata?.tweakPronunciation ?? null
+
+          // Fetch the parent order's customization
+          const { data: parentOrder } = await supabase
+            .from('orders')
+            .select('customization_id, tweak_count')
+            .eq('id', parentOrderId)
+            .single()
+
+          if (!parentOrder) {
+            console.error('Parent order not found for tweak:', parentOrderId)
+            break
+          }
+
+          const { data: customization } = await supabase
+            .from('customizations')
+            .select('*')
+            .eq('id', parentOrder.customization_id)
+            .single()
+
+          if (!customization) {
+            console.error('Customization not found for tweak:', parentOrder.customization_id)
+            break
+          }
+
+          // Update customization text fields
+          const tweakUpdates: Record<string, string | null> = {}
+          if (tweakSpecialMemories !== null) tweakUpdates.special_memories = tweakSpecialMemories || null
+          if (tweakThingsToAvoid !== null) tweakUpdates.things_to_avoid = tweakThingsToAvoid || null
+          if (tweakPronunciation !== null) tweakUpdates.pronunciation = tweakPronunciation || null
+
+          if (Object.keys(tweakUpdates).length > 0) {
+            await supabase
+              .from('customizations')
+              .update(tweakUpdates)
+              .eq('id', customization.id)
+          }
+
+          // Rebuild prompt
+          const promptData = {
+            occasion: customization.occasion,
+            mood: customization.mood,
+            genre: customization.genre,
+            voice: (customization as any).voice,
+            language: (customization as any).language,
+            tempo: (customization as any).tempo,
+            relationship: (customization as any).relationship,
+            recipientName: customization.recipient_name,
+            yourName: customization.your_name,
+            songLength: customization.song_length,
+            specialMemories: tweakSpecialMemories !== null ? tweakSpecialMemories : customization.special_memories,
+            thingsToAvoid: tweakThingsToAvoid !== null ? tweakThingsToAvoid : customization.things_to_avoid,
+            pronunciation: tweakPronunciation !== null ? tweakPronunciation : customization.pronunciation,
+          }
+
+          const newPrompt = buildRichPrompt(promptData)
+          await supabase
+            .from('customizations')
+            .update({ prompt: newPrompt })
+            .eq('id', customization.id)
+
+          // Increment tweak_count on parent order
+          await supabase
+            .from('orders')
+            .update({ tweak_count: (parentOrder.tweak_count || 0) + 1 })
+            .eq('id', parentOrderId)
+
+          // Count existing variants on parent order
+          const { count: tweakExistingCount } = await supabase
+            .from('song_variants')
+            .select('id', { count: 'exact', head: true })
+            .eq('order_id', parentOrderId)
+
+          const tweakNextVariant = (tweakExistingCount || 0) + 1
+
+          const { error: tweakVariantError } = await supabase
+            .from('song_variants')
+            .insert({
+              order_id: parentOrderId,
+              user_id: userId,
+              variant_number: tweakNextVariant,
+              storage_path: `${parentOrderId}/variant-${tweakNextVariant}.mp3`,
+              generation_status: 'pending' as const,
+            })
+
+          if (tweakVariantError && tweakVariantError.code !== '23505') {
+            console.error('Failed to create tweak variant:', tweakVariantError)
+            break
+          }
+
+          // Set parent order back to generating
+          await supabase
+            .from('orders')
+            .update({ status: 'generating' })
+            .eq('id', parentOrderId)
+
+          console.log('Paid tweak variant added to parent order:', {
+            tweakOrderId: order.id,
+            parentOrderId,
+            variantNumber: tweakNextVariant,
+          })
+
+          // Trigger generation on the PARENT order
+          const tweakGenerationSecret = process.env.GENERATION_SECRET
+          if (tweakGenerationSecret) {
+            const tweakAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://songswipe.io'
+            fetch(`${tweakAppUrl}/api/generate/start`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderId: parentOrderId, secret: tweakGenerationSecret }),
+            }).catch(err => {
+              console.error('Failed to trigger tweak generation:', err)
             })
           }
           break

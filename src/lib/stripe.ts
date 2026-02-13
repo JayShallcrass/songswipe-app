@@ -36,7 +36,7 @@ export async function createCheckoutSession({
   userId: string
   email: string
   amount?: number
-  orderType?: 'base' | 'upsell' | 'bundle'
+  orderType?: 'base' | 'upsell' | 'bundle' | 'tweak'
   successUrl?: string
   cancelUrl?: string
   metadata?: Record<string, string>
@@ -55,6 +55,10 @@ export async function createCheckoutSession({
       const quantity = metadata.quantity || ''
       productName = `Song Bundle - ${bundleTier}`
       productDescription = `${quantity} prepaid songs`
+      break
+    case 'tweak':
+      productName = 'Song Tweak'
+      productDescription = 'Regenerate 1 variant with updated details'
       break
     case 'base':
     default:

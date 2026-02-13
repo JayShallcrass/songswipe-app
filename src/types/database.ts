@@ -9,7 +9,7 @@ export type Json =
 
 export type GenerationStatus = 'pending' | 'generating' | 'complete' | 'failed'
 
-export type OrderType = 'base' | 'upsell' | 'bundle'
+export type OrderType = 'base' | 'upsell' | 'bundle' | 'tweak'
 
 export interface Database {
   public: {
@@ -95,6 +95,7 @@ export interface Database {
           order_type: OrderType
           parent_order_id: string | null
           occasion_date: string | null
+          tweak_count: number
           created_at: string
           updated_at: string
         }
@@ -108,6 +109,7 @@ export interface Database {
           order_type?: OrderType
           parent_order_id?: string | null
           occasion_date?: string | null
+          tweak_count?: number
           created_at?: string
           updated_at?: string
         }
@@ -121,6 +123,7 @@ export interface Database {
           order_type?: OrderType
           parent_order_id?: string | null
           occasion_date?: string | null
+          tweak_count?: number
           created_at?: string
           updated_at?: string
         }

@@ -11,6 +11,7 @@ interface VariantStatus {
 interface GenerationStatusResponse {
   order_id: string
   order_status: 'paid' | 'generating' | 'completed' | 'failed'
+  tweak_count: number
   variants: VariantStatus[]
 }
 

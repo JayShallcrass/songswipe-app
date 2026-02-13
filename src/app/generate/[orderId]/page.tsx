@@ -7,6 +7,7 @@ import { useGenerationStatus } from '@/lib/hooks/useGenerationStatus'
 import { GenerationProgress } from '@/components/generation/GenerationProgress'
 import { VariantSwiper } from '@/components/generation/VariantSwiper'
 import { VariantUpsellModal } from '@/components/upsells/VariantUpsellModal'
+import { TweakModal } from '@/components/tweak/TweakModal'
 import { PostSelectionShare } from '@/components/generation/PostSelectionShare'
 
 export default function GenerationPage() {
@@ -30,9 +31,18 @@ export default function GenerationPage() {
     occasion: string
     occasionDate: string | null
   } | null>(null)
+  const [showTweakModal, setShowTweakModal] = useState(false)
+  const [tweakGenerating, setTweakGenerating] = useState(false)
+  const [tweakVariantReady, setTweakVariantReady] = useState(false)
+  const [tweakData, setTweakData] = useState<{
+    specialMemories: string
+    thingsToAvoid: string
+    pronunciation: string
+  } | null>(null)
   const generationStarted = useRef(false)
 
   const isUpsellReturn = searchParams.get('upsell') === 'success'
+  const isTweakReturn = searchParams.get('tweak') === 'success'
   const isPrepaid = searchParams.get('prepaid') === 'true'
   const prepaidRemaining = searchParams.get('remaining')
   const [upsellVariantReady, setUpsellVariantReady] = useState(false)
@@ -118,6 +128,52 @@ export default function GenerationPage() {
     }
     prevCompletedCount.current = completedCount
   }, [isUpsellReturn, completedCount])
+
+  // On tweak return from Stripe, show swiper with generating banner
+  useEffect(() => {
+    if (isTweakReturn && completedCount > 0 && !showSwiper) {
+      setShowSwiper(true)
+      setTweakGenerating(true)
+      setUpsellDismissed(true)
+    }
+  }, [isTweakReturn, completedCount, showSwiper])
+
+  // Track when tweak variant finishes (same logic as upsell variant tracking)
+  useEffect(() => {
+    if ((isTweakReturn || tweakGenerating) && completedCount > prevCompletedCount.current) {
+      // A new variant just completed while tweak was generating
+      setTweakGenerating(false)
+      setTweakVariantReady(true)
+      const timer = setTimeout(() => setTweakVariantReady(false), 4000)
+      return () => clearTimeout(timer)
+    }
+    prevCompletedCount.current = completedCount
+  }, [isTweakReturn, tweakGenerating, completedCount])
+
+  // Fetch customization data for tweak modal pre-population
+  useEffect(() => {
+    if (data && !tweakData) {
+      fetch(`/api/orders/${orderId}/customization`)
+        .then(res => res.ok ? res.json() : null)
+        .then(cust => {
+          if (cust) {
+            setTweakData({
+              specialMemories: cust.special_memories || '',
+              thingsToAvoid: cust.things_to_avoid || '',
+              pronunciation: cust.pronunciation || '',
+            })
+          }
+        })
+        .catch(() => {})
+    }
+  }, [data, orderId, tweakData])
+
+  // Handle tweak success (free tweak submitted)
+  const handleTweakSuccess = () => {
+    setShowTweakModal(false)
+    setTweakGenerating(true)
+    generationStarted.current = false
+  }
 
   // Trigger upsell modal after viewing all variants (5-second delay)
   useEffect(() => {
@@ -287,6 +343,18 @@ export default function GenerationPage() {
             onIndexChange={handleVariantIndexChange}
           />
 
+          {/* Tweak CTA */}
+          {tweakData && !selectedVariantId && (
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setShowTweakModal(true)}
+                className="text-zinc-400 hover:text-white text-sm transition-colors underline underline-offset-4 decoration-zinc-600 hover:decoration-zinc-400"
+              >
+                Not quite right? Tweak your details
+              </button>
+            </div>
+          )}
+
           {selectError && (
             <div className="mt-4 bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center">
               <p className="text-red-400 text-sm">{selectError}</p>
@@ -300,8 +368,37 @@ export default function GenerationPage() {
             onClose={handleCloseUpsell}
           />
 
+          {/* Tweak Modal */}
+          {tweakData && (
+            <TweakModal
+              orderId={orderId}
+              isOpen={showTweakModal}
+              onClose={() => setShowTweakModal(false)}
+              onSuccess={handleTweakSuccess}
+              tweakUsed={(data?.tweak_count ?? 0) >= 1}
+              initialData={tweakData}
+            />
+          )}
+
+          {/* Tweak variant generating banner */}
+          {tweakGenerating && data?.variants.some(v => v.generation_status === 'pending' || v.generation_status === 'generating') && (
+            <div className="mt-4 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-center">
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-purple-400 font-medium text-sm">Your tweaked variant is generating...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Tweak variant ready notification */}
+          {tweakVariantReady && (
+            <div className="mt-4 bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-center">
+              <p className="text-green-400 font-medium text-sm">Your tweaked variant is ready! Swipe through to find it.</p>
+            </div>
+          )}
+
           {/* 4th variant generating banner */}
-          {isUpsellReturn && data?.variants.some(v => v.generation_status === 'pending' || v.generation_status === 'generating') && (
+          {isUpsellReturn && !tweakGenerating && data?.variants.some(v => v.generation_status === 'pending' || v.generation_status === 'generating') && (
             <div className="mt-4 bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 text-center">
               <div className="flex items-center justify-center gap-2">
                 <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />

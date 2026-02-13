@@ -6,6 +6,9 @@ export const BASE_PRICE = 799 // pence
 // Upsell pricing (£0.99 -- impulse buy for extra variant)
 export const UPSELL_PRICE = 99 // pence
 
+// Tweak pricing (£0.99 -- same impulse-buy price, charged after free tweak used)
+export const TWEAK_PRICE = 99 // pence
+
 // Bundle tiers
 export const BUNDLE_TIERS: BundleTier[] = [
   {
@@ -38,6 +41,11 @@ export const BUNDLE_TIERS: BundleTier[] = [
 // Validate upsell price
 export function validateUpsellPrice(amount: number): boolean {
   return amount === UPSELL_PRICE
+}
+
+// Validate tweak price
+export function validateTweakPrice(amount: number): boolean {
+  return amount === TWEAK_PRICE
 }
 
 // Validate bundle price

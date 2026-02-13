@@ -365,15 +365,23 @@ export function PersonalisationForm({
               disabled={isLoading}
               className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             >
-              <option value="en-GB">English (British)</option>
-              <option value="en-US">English (American)</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-              <option value="it">Italian</option>
-              <option value="pt">Portuguese</option>
-              <option value="ja">Japanese</option>
-              <option value="ko">Korean</option>
+              <optgroup label="English">
+                <option value="en-GB">English (British)</option>
+                <option value="en-GB-SCT">English (Scottish)</option>
+                <option value="en-GB-WLS">English (Welsh)</option>
+                <option value="en-IE">English (Irish)</option>
+                <option value="en-US">English (American)</option>
+                <option value="en-US-S">English (Southern US)</option>
+              </optgroup>
+              <optgroup label="Other Languages">
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="it">Italian</option>
+                <option value="pt">Portuguese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+              </optgroup>
             </select>
             <p className="text-xs text-zinc-500 mt-1">
               This influences the vocal accent and any generated lyrics

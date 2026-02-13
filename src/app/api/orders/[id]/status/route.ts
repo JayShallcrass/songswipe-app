@@ -24,6 +24,7 @@ export async function GET(
       .select(`
         id,
         status,
+        tweak_count,
         song_variants (
           id,
           variant_number,
@@ -47,6 +48,7 @@ export async function GET(
     return NextResponse.json({
       order_id: order.id,
       order_status: order.status,
+      tweak_count: order.tweak_count,
       variants: order.song_variants || [],
     })
   } catch (error) {

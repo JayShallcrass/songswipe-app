@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { occasionQuestions } from '@/lib/elevenlabs'
 import { universalPromptCategories } from '@/lib/promptCategories'
+import { moderateText } from '@/lib/moderation'
 import { AccordionSection } from './AccordionSection'
 import { PromptCategory } from './PromptCategory'
 
@@ -98,6 +99,38 @@ export function PersonalisationForm({
   const [tempo, setTempo] = useState('mid-tempo')
   const [relationship, setRelationship] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [moderationWarnings, setModerationWarnings] = useState<Record<string, boolean>>({})
+  const [tosAccepted, setTosAccepted] = useState(false)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
+
+  const hasModerationWarnings = Object.values(moderationWarnings).some(Boolean)
+
+  // Debounced moderation check across all text fields
+  const runModerationCheck = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      const fields: Record<string, string> = {
+        recipientName,
+        pronunciation,
+        yourName,
+        freeformMemories,
+        thingsToAvoid,
+        ...promptAnswers,
+      }
+      const warnings: Record<string, boolean> = {}
+      for (const [key, value] of Object.entries(fields)) {
+        if (value && value.trim()) {
+          warnings[key] = !moderateText(value)
+        }
+      }
+      setModerationWarnings(warnings)
+    }, 400)
+  }, [recipientName, pronunciation, yourName, freeformMemories, thingsToAvoid, promptAnswers])
+
+  useEffect(() => {
+    runModerationCheck()
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+  }, [runModerationCheck])
 
   // Hydrate from localStorage on mount
   useEffect(() => {
@@ -178,6 +211,7 @@ export function PersonalisationForm({
 
   const handleSubmit = () => {
     if (!validate()) return
+    if (hasModerationWarnings) return
 
     onSubmit({
       recipientName,
@@ -254,6 +288,9 @@ export function PersonalisationForm({
           {errors.recipientName && (
             <p className="text-red-500 text-sm mt-1">{errors.recipientName}</p>
           )}
+          {moderationWarnings.recipientName && (
+            <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+          )}
         </div>
 
         <div>
@@ -272,6 +309,9 @@ export function PersonalisationForm({
           <p className="text-xs text-zinc-500 mt-1">
             Help us get the name right in the song
           </p>
+          {moderationWarnings.pronunciation && (
+            <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+          )}
         </div>
 
         <div>
@@ -288,6 +328,9 @@ export function PersonalisationForm({
           />
           {errors.yourName && (
             <p className="text-red-500 text-sm mt-1">{errors.yourName}</p>
+          )}
+          {moderationWarnings.yourName && (
+            <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
           )}
         </div>
       </div>
@@ -471,6 +514,9 @@ export function PersonalisationForm({
                           onChange={(e) => handlePromptAnswerChange(question, e.target.value)}
                           disabled={isLoading}
                         />
+                        {moderationWarnings[question] && (
+                          <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -504,6 +550,9 @@ export function PersonalisationForm({
             onChange={(e) => setFreeformMemories(e.target.value)}
             disabled={isLoading}
           />
+          {moderationWarnings.freeformMemories && (
+            <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+          )}
         </AccordionSection>
 
         {/* Additional Options - collapsed by default */}
@@ -520,6 +569,9 @@ export function PersonalisationForm({
               onChange={(e) => setThingsToAvoid(e.target.value)}
               disabled={isLoading}
             />
+            {moderationWarnings.thingsToAvoid && (
+              <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+            )}
           </div>
 
           <div>
@@ -538,6 +590,41 @@ export function PersonalisationForm({
         </AccordionSection>
       </div>
 
+      {/* Moderation warning banner */}
+      {hasModerationWarnings && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 sm:p-4 mb-4">
+          <p className="text-red-400 text-sm font-medium">
+            Some fields contain language that violates our{' '}
+            <a href="/terms#acceptable-use" className="underline hover:text-red-300">
+              Acceptable Use Policy
+            </a>
+            . Please revise the highlighted fields before continuing.
+          </p>
+        </div>
+      )}
+
+      {/* ToS acknowledgement */}
+      <label className="flex items-start gap-3 mb-4 sm:mb-6 cursor-pointer group">
+        <input
+          type="checkbox"
+          checked={tosAccepted}
+          onChange={(e) => setTosAccepted(e.target.checked)}
+          disabled={isLoading}
+          className="mt-1 h-4 w-4 rounded border-surface-300 bg-surface-100 text-brand-500 focus:ring-brand-500 accent-brand-500"
+        />
+        <span className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors">
+          I confirm this content complies with the{' '}
+          <a
+            href="/terms#acceptable-use"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-400 underline hover:text-brand-300"
+          >
+            Acceptable Use Policy
+          </a>
+        </span>
+      </label>
+
       {/* Action buttons - always visible */}
       <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
         <button
@@ -549,7 +636,7 @@ export function PersonalisationForm({
         </button>
         <button
           onClick={handleSubmit}
-          disabled={isLoading}
+          disabled={isLoading || !tosAccepted || hasModerationWarnings}
           className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Processing...' : 'Continue to Payment'}

@@ -3,6 +3,7 @@ import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { createCheckoutSession } from '@/lib/stripe'
 import { getUserBundleBalance, redeemBundleCredit } from '@/lib/bundles/redemption'
 import { buildRichPrompt } from '@/lib/promptBuilder'
+import { moderateFormFields } from '@/lib/moderation'
 
 // Zod schema for validation
 const customisationSchema = {
@@ -55,6 +56,32 @@ export async function POST(request: NextRequest) {
 
     const userId = user.id
     const supabase = createServerSupabaseClient()
+
+    // Content moderation check
+    const moderationResult = moderateFormFields({
+      recipientName: customisation.recipientName,
+      yourName: customisation.yourName,
+      pronunciation: customisation.pronunciation,
+      specialMemories: customisation.specialMemories,
+      thingsToAvoid: customisation.thingsToAvoid,
+    })
+
+    if (!moderationResult.clean) {
+      // Log to moderation_logs for admin review
+      await supabase.from('moderation_logs').insert({
+        user_id: userId,
+        field_name: moderationResult.flaggedField || 'unknown',
+        flagged_content: customisation[moderationResult.flaggedField as keyof typeof customisation] as string || '',
+        action_taken: 'blocked',
+      }).then(({ error }) => {
+        if (error) console.error('Failed to log moderation event:', error)
+      })
+
+      return NextResponse.json(
+        { error: 'Content violates our Acceptable Use Policy. Please revise your submission.' },
+        { status: 400 }
+      )
+    }
 
     // Create rich prompt from all selections
     const prompt = buildRichPrompt(customisation)

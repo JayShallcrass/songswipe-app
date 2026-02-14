@@ -32,10 +32,8 @@ function friendlyError(supabaseMessage: string, action: string): string {
 
 export async function POST(request: NextRequest) {
   const requestUrl = new URL(request.url)
-  const formData = await request.formData()
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
-  const action = formData.get('action') as string
+  const body = await request.json()
+  const { email, password, action } = body as { email: string; password: string; action: string }
 
   const cookieStore = cookies()
   const supabase = createServerClient(
@@ -56,8 +54,6 @@ export async function POST(request: NextRequest) {
     }
   )
 
-  const tabParam = action === 'signup' ? '&tab=signup' : ''
-
   try {
     if (action === 'signup') {
       const { error } = await supabase.auth.signUp({
@@ -69,39 +65,34 @@ export async function POST(request: NextRequest) {
       })
 
       if (error) {
-        return NextResponse.redirect(
-          `${requestUrl.origin}/auth/login?error=${encodeURIComponent(friendlyError(error.message, action))}${tabParam}`,
-          { status: 303 }
+        return NextResponse.json(
+          { error: friendlyError(error.message, action) },
+          { status: 400 }
         )
       }
 
-      return NextResponse.redirect(
-        `${requestUrl.origin}/auth/login?message=Check your email for the confirmation link`,
-        { status: 303 }
-      )
+      return NextResponse.json({
+        message: 'Check your email for the confirmation link',
+      })
     } else {
-      // Sign in
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (error) {
-        return NextResponse.redirect(
-          `${requestUrl.origin}/auth/login?error=${encodeURIComponent(friendlyError(error.message, action))}${tabParam}`,
-          { status: 303 }
+        return NextResponse.json(
+          { error: friendlyError(error.message, action) },
+          { status: 400 }
         )
       }
 
-      return NextResponse.redirect(
-        `${requestUrl.origin}/dashboard`,
-        { status: 303 }
-      )
+      return NextResponse.json({ redirect: '/dashboard' })
     }
   } catch {
-    return NextResponse.redirect(
-      `${requestUrl.origin}/auth/login?error=Something went wrong. Please try again.${tabParam}`,
-      { status: 303 }
+    return NextResponse.json(
+      { error: 'Something went wrong. Please try again.' },
+      { status: 500 }
     )
   }
 }

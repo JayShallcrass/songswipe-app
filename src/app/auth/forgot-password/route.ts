@@ -8,9 +8,9 @@ export async function POST(request: NextRequest) {
   const email = formData.get('email') as string
 
   if (!email) {
-    return NextResponse.redirect(
-      `${requestUrl.origin}/auth/login?error=${encodeURIComponent('Please enter your email address first.')}`,
-      { status: 303 }
+    return NextResponse.json(
+      { error: 'Please enter your email address first.' },
+      { status: 400 }
     )
   }
 
@@ -38,8 +38,7 @@ export async function POST(request: NextRequest) {
     redirectTo: `${requestUrl.origin}/auth/callback?next=/dashboard`,
   })
 
-  return NextResponse.redirect(
-    `${requestUrl.origin}/auth/login?message=${encodeURIComponent('If an account exists with that email, you\'ll receive a password reset link shortly.')}`,
-    { status: 303 }
-  )
+  return NextResponse.json({
+    message: 'If an account exists with that email, you\'ll receive a password reset link shortly.',
+  })
 }

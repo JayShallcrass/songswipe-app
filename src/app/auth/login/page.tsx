@@ -1,17 +1,83 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense, useState, FormEvent } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { LockClosedIcon, CreditCardIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid'
 
 function LoginForm() {
+  const router = useRouter()
   const searchParams = useSearchParams()
-  const error = searchParams.get('error')
-  const message = searchParams.get('message')
+  const urlMessage = searchParams.get('message')
   const initialTab = searchParams.get('tab') === 'signup' ? 'signup' : 'signin'
 
   const [tab, setTab] = useState<'signin' | 'signup'>(initialTab)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(searchParams.get('error'))
+  const [message, setMessage] = useState<string | null>(urlMessage)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+
+    try {
+      const res = await fetch('/auth/login/actions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, action: tab === 'signup' ? 'signup' : 'signin' }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong. Please try again.')
+        setLoading(false)
+        return
+      }
+
+      if (data.message) {
+        setMessage(data.message)
+        setLoading(false)
+        return
+      }
+
+      if (data.redirect) {
+        router.push(data.redirect)
+        return
+      }
+    } catch {
+      setError('Could not connect. Please check your internet and try again.')
+      setLoading(false)
+    }
+  }
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError('Enter your email address above, then tap Forgot your password.')
+      return
+    }
+    setError(null)
+    setLoading(true)
+
+    try {
+      const formData = new FormData()
+      formData.append('email', email)
+
+      await fetch('/auth/forgot-password', {
+        method: 'POST',
+        body: formData,
+      })
+
+      setMessage('If an account exists with that email, you\'ll receive a password reset link shortly.')
+    } catch {
+      setError('Could not send reset email. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-surface-DEFAULT py-12 px-4">
@@ -31,7 +97,7 @@ function LoginForm() {
             <div className="flex mb-6 border-b border-surface-200">
               <button
                 type="button"
-                onClick={() => setTab('signin')}
+                onClick={() => { setTab('signin'); setError(null) }}
                 className={`flex-1 pb-3 text-sm font-semibold transition-colors ${
                   tab === 'signin'
                     ? 'text-white border-b-2 border-brand-500'
@@ -42,7 +108,7 @@ function LoginForm() {
               </button>
               <button
                 type="button"
-                onClick={() => setTab('signup')}
+                onClick={() => { setTab('signup'); setError(null) }}
                 className={`flex-1 pb-3 text-sm font-semibold transition-colors ${
                   tab === 'signup'
                     ? 'text-white border-b-2 border-brand-500'
@@ -87,7 +153,8 @@ function LoginForm() {
               <form action="/auth/login/google" method="POST">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 py-3 px-4 rounded-xl font-medium hover:bg-gray-100 transition-colors shadow-sm"
+                  disabled={loading}
+                  className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 py-3 px-4 rounded-xl font-medium hover:bg-gray-100 transition-colors shadow-sm disabled:opacity-50"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -109,14 +176,7 @@ function LoginForm() {
               </div>
 
               {/* Email/Password Form */}
-              <form
-                action="/auth/login/actions"
-                method="POST"
-                className="space-y-4"
-                id="auth-form"
-              >
-                <input type="hidden" name="action" value={tab === 'signup' ? 'signup' : 'signin'} />
-
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-1">
                     {tab === 'signin' ? 'Email' : 'Your email'}
@@ -127,6 +187,8 @@ function LoginForm() {
                     name="email"
                     required
                     autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors placeholder-zinc-600"
                     placeholder="you@example.com"
                   />
@@ -148,6 +210,8 @@ function LoginForm() {
                     required
                     minLength={6}
                     autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors placeholder-zinc-600"
                     placeholder="••••••••"
                   />
@@ -155,8 +219,15 @@ function LoginForm() {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-brand-500 to-amber-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-brand-500 to-amber-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-2"
                 >
+                  {loading && (
+                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                  )}
                   {tab === 'signin' ? 'Sign In' : 'Create Account'}
                 </button>
               </form>
@@ -171,11 +242,10 @@ function LoginForm() {
               {tab === 'signin' && (
                 <div className="mt-3 text-center">
                   <button
-                    type="submit"
-                    form="auth-form"
-                    formAction="/auth/forgot-password"
-                    formNoValidate
-                    className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+                    type="button"
+                    onClick={handleForgotPassword}
+                    disabled={loading}
+                    className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors disabled:opacity-50"
                   >
                     Forgot your password?
                   </button>
@@ -189,7 +259,7 @@ function LoginForm() {
                     Don&apos;t have an account?{' '}
                     <button
                       type="button"
-                      onClick={() => setTab('signup')}
+                      onClick={() => { setTab('signup'); setError(null) }}
                       className="text-brand-500 hover:text-brand-400 font-medium"
                     >
                       Create one
@@ -200,7 +270,7 @@ function LoginForm() {
                     Already have an account?{' '}
                     <button
                       type="button"
-                      onClick={() => setTab('signin')}
+                      onClick={() => { setTab('signin'); setError(null) }}
                       className="text-brand-500 hover:text-brand-400 font-medium"
                     >
                       Sign in
@@ -213,12 +283,13 @@ function LoginForm() {
 
           {message && (
             <div className="mt-6 text-center">
-              <Link
-                href="/auth/login"
+              <button
+                type="button"
+                onClick={() => { setMessage(null); setError(null) }}
                 className="text-brand-500 hover:text-brand-400 font-medium"
               >
                 Back to Login
-              </Link>
+              </button>
             </div>
           )}
         </div>

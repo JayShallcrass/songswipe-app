@@ -6,7 +6,7 @@ import Link from 'next/link'
 // Promo config - update these to change/disable the banner
 const PROMO_CODE = 'VALENTINE50'
 const PROMO_DISCOUNT = '50%'
-const PROMO_END = new Date('2026-02-16T23:59:59Z') // Sunday 16th Feb midnight UTC
+const PROMO_END = new Date('2026-02-15T23:59:59Z') // Saturday 15th Feb end of day UTC
 
 function getTimeLeft(target: Date): { hours: number; minutes: number; seconds: number } | null {
   const diff = target.getTime() - Date.now()

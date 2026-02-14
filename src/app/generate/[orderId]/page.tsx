@@ -5,7 +5,7 @@ import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useGenerationStatus } from '@/lib/hooks/useGenerationStatus'
 import { GenerationProgress } from '@/components/generation/GenerationProgress'
-import { VariantSwiper } from '@/components/generation/VariantSwiper'
+import { VariantCarousel } from '@/components/generation/VariantCarousel'
 import { VariantUpsellModal } from '@/components/upsells/VariantUpsellModal'
 import { TweakModal } from '@/components/tweak/TweakModal'
 import { PostSelectionShare } from '@/components/generation/PostSelectionShare'
@@ -19,7 +19,6 @@ export default function GenerationPage() {
   const [showSwiper, setShowSwiper] = useState(false)
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
   const [selectError, setSelectError] = useState<string | null>(null)
-  const [hasSwipedAll, setHasSwipedAll] = useState(false)
   const [showUpsellModal, setShowUpsellModal] = useState(false)
   const [upsellDismissed, setUpsellDismissed] = useState(false)
   const [generationError, setGenerationError] = useState<string | null>(null)
@@ -96,6 +95,27 @@ export default function GenerationPage() {
     }
   }, [orderId, isGenerating])
 
+  // Retry failed variants
+  const retryFailedVariants = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/orders/${orderId}/retry-failed`, {
+        method: 'POST',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to retry variants')
+      }
+      const result = await response.json()
+      if (result.resetCount > 0) {
+        // Reset generation state so the auto-start effect can re-trigger
+        generationStarted.current = false
+        setGenerationError(null)
+      }
+    } catch (err) {
+      console.error('Retry failed:', err)
+      setGenerationError(err instanceof Error ? err.message : 'Failed to retry')
+    }
+  }, [orderId])
+
   // Auto-start generation as fallback if webhook trigger didn't fire.
   useEffect(() => {
     if (
@@ -116,7 +136,6 @@ export default function GenerationPage() {
     if (isUpsellReturn && completedCount > 0 && !showSwiper) {
       setShowSwiper(true)
       setUpsellDismissed(true)
-      setHasSwipedAll(false)
     }
   }, [isUpsellReturn, completedCount, showSwiper])
 
@@ -176,23 +195,16 @@ export default function GenerationPage() {
     generationStarted.current = false
   }
 
-  // Trigger upsell modal after viewing all variants (5-second delay)
+  // Trigger upsell modal after browsing variants (15-second delay from carousel appearing)
   useEffect(() => {
-    if (hasSwipedAll && !upsellDismissed && !selectedVariantId) {
+    if (showSwiper && !upsellDismissed && !selectedVariantId) {
       const timer = setTimeout(() => {
         setShowUpsellModal(true)
-      }, 5000)
+      }, 15000)
 
       return () => clearTimeout(timer)
     }
-  }, [hasSwipedAll, upsellDismissed, selectedVariantId])
-
-  // Handle variant index change
-  const handleVariantIndexChange = (index: number, total: number) => {
-    if (index === total - 1 && !hasSwipedAll) {
-      setHasSwipedAll(true)
-    }
-  }
+  }, [showSwiper, upsellDismissed, selectedVariantId])
 
   // Handle upsell modal close
   const handleCloseUpsell = () => {
@@ -337,11 +349,10 @@ export default function GenerationPage() {
             </p>
           </div>
 
-          <VariantSwiper
+          <VariantCarousel
             orderId={orderId}
             variants={completedVariants}
             onSelect={handleSelect}
-            onIndexChange={handleVariantIndexChange}
           />
 
           {/* Tweak CTA */}
@@ -394,7 +405,7 @@ export default function GenerationPage() {
           {/* Tweak variant ready notification */}
           {tweakVariantReady && (
             <div className="mt-4 bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-center">
-              <p className="text-green-400 font-medium text-sm">Your tweaked variant is ready! Swipe through to find it.</p>
+              <p className="text-green-400 font-medium text-sm">Your tweaked variant is ready! Browse through to find it.</p>
             </div>
           )}
 
@@ -411,7 +422,7 @@ export default function GenerationPage() {
           {/* 4th variant ready notification */}
           {upsellVariantReady && (
             <div className="mt-4 bg-green-500/10 border border-green-500/20 rounded-xl p-4 text-center">
-              <p className="text-green-400 font-medium text-sm">Your 4th variant is ready! Swipe through to find it.</p>
+              <p className="text-green-400 font-medium text-sm">Your 4th variant is ready! Browse through to find it.</p>
             </div>
           )}
         </div>
@@ -438,6 +449,7 @@ export default function GenerationPage() {
         <GenerationProgress
           orderId={orderId}
           onAllComplete={() => setShowSwiper(true)}
+          onRetryFailed={retryFailedVariants}
         />
 
         {/* Generation error with retry */}

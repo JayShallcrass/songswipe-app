@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import Header from '@/components/Header'
+import PromoBanner from '@/components/PromoBanner'
 import CookieConsent from '@/components/CookieConsent'
 import { Providers } from '@/lib/providers'
 import './globals.css'
@@ -58,6 +59,7 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="antialiased font-body">
         <Providers>
+          <PromoBanner />
           <Header />
           {children}
           <CookieConsent />

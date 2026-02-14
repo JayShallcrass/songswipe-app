@@ -4,24 +4,93 @@ Allow: /
 # Sitemap
 Sitemap: https://songswipe.io/sitemap.xml
 
-# AI bots
+# Block AI training crawlers
 User-agent: GPTBot
-Allow: /
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
 
 User-agent: ClaudeBot
-Allow: /
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
 
 User-agent: CCBot
-Allow: /
+Disallow: /
 
 User-agent: anthropic-ai
-Allow: /
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
 
 User-agent: Bytespider
-Allow: /
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: img2dataset
+Disallow: /
 
 User-agent: AwarioRssBot
-Allow: /
+Disallow: /
 
 User-agent: AwarioSmartBot
-Allow: /
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: magpie-crawler
+Disallow: /
+
+User-agent: Sidetrade indexer bot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

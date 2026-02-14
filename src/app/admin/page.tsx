@@ -13,6 +13,18 @@ interface Stats {
   unresolvedFailedJobs: number
 }
 
+interface RevenueDay {
+  date: string
+  revenue: number
+}
+
+interface RevenueChart {
+  days: RevenueDay[]
+  revenueToday: number
+  revenueWeek: number
+  revenueMonth: number
+}
+
 function StatCard({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
   return (
     <div className="bg-surface-50 border border-surface-200 rounded-xl p-5">
@@ -23,16 +35,64 @@ function StatCard({ label, value, sub }: { label: string; value: string | number
   )
 }
 
+function RevenueBarChart({ data }: { data: RevenueDay[] }) {
+  const maxRevenue = Math.max(...data.map((d) => d.revenue), 1)
+
+  return (
+    <div className="bg-surface-50 border border-surface-200 rounded-xl p-5">
+      <h3 className="text-sm font-medium text-zinc-400 mb-4">Revenue (Last 30 Days)</h3>
+      <div className="flex items-end gap-[3px] h-32">
+        {data.map((day) => {
+          const height = maxRevenue > 0 ? (day.revenue / maxRevenue) * 100 : 0
+          const date = new Date(day.date)
+          const isToday = day.date === new Date().toISOString().split('T')[0]
+
+          return (
+            <div
+              key={day.date}
+              className="flex-1 flex flex-col items-center justify-end h-full group relative"
+            >
+              {/* Tooltip */}
+              <div className="absolute bottom-full mb-2 bg-surface-100 border border-surface-300 rounded-lg px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                <div className="font-semibold">{date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</div>
+                <div className="text-zinc-400">{day.revenue > 0 ? `£${day.revenue.toFixed(2)}` : 'No revenue'}</div>
+              </div>
+              <div
+                className={`w-full rounded-t transition-all ${
+                  isToday
+                    ? 'bg-gradient-to-t from-brand-500 to-amber-500'
+                    : day.revenue > 0
+                      ? 'bg-brand-500/60 group-hover:bg-brand-500/80'
+                      : 'bg-surface-300/30'
+                }`}
+                style={{ height: `${Math.max(height, 2)}%` }}
+              />
+            </div>
+          )
+        })}
+      </div>
+      {/* X-axis labels */}
+      <div className="flex justify-between mt-2">
+        <span className="text-[10px] text-zinc-600">30d ago</span>
+        <span className="text-[10px] text-zinc-600">Today</span>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminOverview() {
   const [stats, setStats] = useState<Stats | null>(null)
+  const [chart, setChart] = useState<RevenueChart | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const fetchStats = async () => {
+  const fetchData = async () => {
     try {
-      const res = await fetch('/api/admin/stats')
-      if (res.ok) {
-        setStats(await res.json())
-      }
+      const [statsRes, chartRes] = await Promise.all([
+        fetch('/api/admin/stats'),
+        fetch('/api/admin/stats/revenue-chart'),
+      ])
+      if (statsRes.ok) setStats(await statsRes.json())
+      if (chartRes.ok) setChart(await chartRes.json())
     } catch {
       // silently retry on next interval
     } finally {
@@ -41,8 +101,8 @@ export default function AdminOverview() {
   }
 
   useEffect(() => {
-    fetchStats()
-    const interval = setInterval(fetchStats, 30000)
+    fetchData()
+    const interval = setInterval(fetchData, 30000)
     return () => clearInterval(interval)
   }, [])
 
@@ -55,6 +115,7 @@ export default function AdminOverview() {
             <div key={i} className="h-24 bg-surface-50 rounded-xl" />
           ))}
         </div>
+        <div className="h-48 bg-surface-50 rounded-xl" />
       </div>
     )
   }
@@ -67,11 +128,31 @@ export default function AdminOverview() {
     <div>
       <h1 className="text-2xl font-bold text-white mb-6">Overview</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Revenue summary cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
           label="Total Revenue"
           value={`£${stats.totalRevenue.toFixed(2)}`}
         />
+        <StatCard
+          label="Revenue Today"
+          value={`£${(chart?.revenueToday ?? 0).toFixed(2)}`}
+        />
+        <StatCard
+          label="Revenue This Week"
+          value={`£${(chart?.revenueWeek ?? 0).toFixed(2)}`}
+        />
+        <StatCard
+          label="Revenue This Month"
+          value={`£${(chart?.revenueMonth ?? 0).toFixed(2)}`}
+        />
+      </div>
+
+      {/* Revenue chart */}
+      {chart && <div className="mb-6"><RevenueBarChart data={chart.days} /></div>}
+
+      {/* Operational stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label="Orders Today"
           value={stats.ordersToday}
@@ -85,18 +166,6 @@ export default function AdminOverview() {
         <StatCard
           label="Active Users"
           value={stats.activeUsers}
-        />
-        <StatCard
-          label="Orders This Week"
-          value={stats.ordersWeek}
-        />
-        <StatCard
-          label="Orders This Month"
-          value={stats.ordersMonth}
-        />
-        <StatCard
-          label="Failed Songs"
-          value={stats.songsFailed}
         />
         <StatCard
           label="Unresolved Failed Jobs"

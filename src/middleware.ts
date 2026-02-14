@@ -2,7 +2,16 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
+// Known AI/scraper bot user-agent patterns (checked at the edge before any compute)
+const BLOCKED_BOTS = /GPTBot|ChatGPT-User|ClaudeBot|Claude-Web|CCBot|anthropic-ai|Google-Extended|Bytespider|Applebot-Extended|cohere-ai|PerplexityBot|Amazonbot|FacebookBot|meta-externalagent|Diffbot|Omgilibot|YouBot|Timpibot|img2dataset|Scrapy|DataForSeoBot|magpie-crawler|PetalBot|SemrushBot|AhrefsBot|MJ12bot|DotBot/i
+
 export async function middleware(request: NextRequest) {
+  // Block known AI scrapers / aggressive crawlers at the edge
+  const ua = request.headers.get('user-agent') || ''
+  if (BLOCKED_BOTS.test(ua)) {
+    return new NextResponse('Forbidden', { status: 403 })
+  }
+
   const response = NextResponse.next()
 
   // Security headers

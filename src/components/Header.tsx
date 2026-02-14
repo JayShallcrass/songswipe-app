@@ -14,7 +14,8 @@ export default function Header() {
       pathname?.startsWith('/auth') ||
       pathname?.startsWith('/customise') ||
       pathname?.startsWith('/order') ||
-      pathname?.startsWith('/checkout')) {
+      pathname?.startsWith('/checkout') ||
+      pathname?.startsWith('/share')) {
     return null
   }
 

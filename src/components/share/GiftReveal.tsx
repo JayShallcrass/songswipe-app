@@ -4,13 +4,18 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SongPlayer } from '@/components/song/SongPlayer'
 import AlbumArt from '@/components/AlbumArt'
+import { ShareButtons } from '@/components/share/ShareButtons'
 import Link from 'next/link'
+import { MusicalNoteIcon } from '@heroicons/react/24/outline'
 
 interface GiftRevealProps {
   recipientName: string
+  senderName: string
   message: string
   shareToken: string
+  shareUrl: string
   occasion: string
+  genre?: string
 }
 
 type Stage = 'box' | 'revealing' | 'revealed'
@@ -43,7 +48,7 @@ function ConfettiParticle({ index }: { index: number }) {
   )
 }
 
-export function GiftReveal({ recipientName, message, shareToken, occasion }: GiftRevealProps) {
+export function GiftReveal({ recipientName, senderName, message, shareToken, shareUrl, occasion, genre }: GiftRevealProps) {
   const [stage, setStage] = useState<Stage>('box')
   const [showSkip, setShowSkip] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
@@ -105,12 +110,30 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
     setStage('revealed')
   }
 
+  const handleDownload = () => {
+    const link = document.createElement('a')
+    link.href = `/api/share/${shareToken}/download`
+    link.download = ''
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const isPreReveal = stage === 'box' || stage === 'revealing'
+
   return (
-    <div className="min-h-screen bg-surface-DEFAULT flex items-center justify-center relative overflow-hidden">
-      {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-radial from-amber-600/10 via-brand-500/5 to-transparent rounded-full blur-3xl" />
-      </div>
+    <div className={`min-h-screen bg-surface-DEFAULT relative overflow-hidden ${isPreReveal ? 'flex items-center justify-center' : ''}`}>
+      {/* Ambient glow - SVG radial gradient (no blur filter) */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="35%" r="50%">
+            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.08" />
+            <stop offset="40%" stopColor="#f97316" stopOpacity="0.04" />
+            <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#glow)" />
+      </svg>
 
       {/* Confetti */}
       {showConfetti && (
@@ -128,7 +151,7 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="text-center space-y-8 px-4 relative z-10"
+            className="text-center space-y-8 px-6 relative z-10"
           >
             {/* Gift Box */}
             <motion.div
@@ -142,9 +165,12 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
             </motion.div>
 
             {/* Heading */}
-            <h1 className="text-3xl md:text-4xl font-heading font-bold text-white">
-              {recipientName}, you have received a gift!
-            </h1>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-heading font-bold text-white">
+                {recipientName}, you have a gift!
+              </h1>
+              <p className="text-zinc-400 mt-2 text-sm">From {senderName}</p>
+            </div>
 
             {/* Open Button */}
             <motion.button
@@ -188,91 +214,154 @@ export function GiftReveal({ recipientName, message, shareToken, occasion }: Gif
         {stage === 'revealed' && (
           <motion.div
             key="revealed"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto px-4 space-y-8 w-full relative z-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative z-10 w-full"
           >
-            {/* Album Art + Title */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-col items-center"
-            >
-              <AlbumArt
-                recipientName={recipientName}
-                occasion={occasion}
-                size="lg"
-              />
-            </motion.div>
-
-            {/* Heading */}
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-4xl md:text-5xl font-heading font-bold text-center text-gradient"
-            >
-              Your Personalised Song
-            </motion.h2>
-
-            {/* Personal Message Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="glass rounded-2xl p-8"
-            >
-              <p className="text-lg md:text-xl text-zinc-300 italic text-center">
-                {message}
-              </p>
-            </motion.div>
-
-            {/* Audio Player */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
-              <SongPlayer audioUrl={audioUrl} isLoading={isLoadingAudio} />
-            </motion.div>
-
-            {/* Create Your Own CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="bg-surface-50 border border-surface-200 rounded-2xl p-8 text-center"
-            >
-              <h3 className="text-xl font-heading font-bold text-white mb-2">
-                Create a song for someone you love
-              </h3>
-              <p className="text-zinc-500 text-sm mb-6">
-                Personalised AI songs for birthdays, Valentine&apos;s, anniversaries, and more.
-              </p>
-              <Link
-                href="/auth/login"
-                className="inline-flex items-center justify-center px-8 py-3 text-white bg-gradient-to-r from-brand-500 to-amber-500 rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            <div className="max-w-lg mx-auto px-5 pt-8 pb-12 space-y-6">
+              {/* Mini logo */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="flex items-center justify-center gap-1.5"
               >
-                Create a Song
-              </Link>
-            </motion.div>
+                <MusicalNoteIcon className="w-5 h-5 text-brand-500" />
+                <span className="text-sm font-heading font-semibold text-zinc-500">SongSwipe</span>
+              </motion.div>
 
-            {/* Branding */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="text-center pt-4 pb-8"
-            >
-              <p className="text-zinc-600 text-sm">
-                Created with{' '}
-                <span className="text-gradient font-semibold">
-                  SongSwipe
-                </span>
-              </p>
-            </motion.div>
+              {/* Main song card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-surface-50 border border-surface-200 rounded-3xl overflow-hidden"
+              >
+                {/* Album art + occasion tag */}
+                <div className="flex flex-col items-center pt-8 pb-4 px-6">
+                  <AlbumArt
+                    recipientName={recipientName}
+                    occasion={occasion}
+                    genre={genre}
+                    size="lg"
+                  />
+                  <div className="mt-4 text-center">
+                    <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white">
+                      Your {occasion} Song
+                    </h2>
+                    <p className="text-zinc-500 text-sm mt-1">
+                      A personalised song from {senderName}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Message from sender */}
+                {message && (
+                  <div className="mx-6 mb-4 bg-surface-100 rounded-xl p-4 border border-surface-200">
+                    <p className="text-sm text-zinc-400 italic text-center leading-relaxed">
+                      &ldquo;{message}&rdquo;
+                    </p>
+                  </div>
+                )}
+
+                {/* Player */}
+                <div className="px-6 pb-6">
+                  <SongPlayer audioUrl={audioUrl} isLoading={isLoadingAudio} />
+                </div>
+              </motion.div>
+
+              {/* Action buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex gap-3"
+              >
+                {/* Download button */}
+                <button
+                  onClick={handleDownload}
+                  disabled={!audioUrl}
+                  className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-surface-50 border border-surface-200 rounded-xl text-white font-medium hover:bg-surface-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
+                  Download
+                </button>
+
+                {/* Save to library hint */}
+                <button
+                  onClick={handleDownload}
+                  disabled={!audioUrl}
+                  className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-surface-50 border border-surface-200 rounded-xl text-white font-medium hover:bg-surface-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
+                  </svg>
+                  Save to Library
+                </button>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-xs text-zinc-600 text-center"
+              >
+                Download the MP3 to add it to Apple Music, Spotify Local Files, or any music app
+              </motion.p>
+
+              {/* Share section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <ShareButtons
+                  url={shareUrl}
+                  title={`${occasion} Song for ${recipientName}`}
+                  recipientName={recipientName}
+                  occasion={occasion}
+                />
+              </motion.div>
+
+              {/* Create your own CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="bg-surface-50 border border-surface-200 rounded-2xl p-6 sm:p-8 text-center"
+              >
+                <h3 className="text-lg sm:text-xl font-heading font-bold text-white mb-2">
+                  Create a song for someone you love
+                </h3>
+                <p className="text-zinc-500 text-sm mb-5">
+                  Personalised AI songs for birthdays, anniversaries, and more.
+                </p>
+                <Link
+                  href="/auth/login"
+                  className="inline-flex items-center justify-center px-8 py-3 text-white bg-gradient-to-r from-brand-500 to-amber-500 rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                  Create a Song
+                </Link>
+              </motion.div>
+
+              {/* Footer branding */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="text-center pb-4"
+              >
+                <p className="text-zinc-600 text-sm">
+                  Created with{' '}
+                  <Link href="/" className="text-gradient font-semibold hover:underline">
+                    SongSwipe
+                  </Link>
+                </p>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

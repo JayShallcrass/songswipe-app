@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import { generateShareUrl } from '@/lib/share/generateShareUrl'
 import { GiftReveal } from '@/components/share/GiftReveal'
-import { ShareButtons } from '@/components/share/ShareButtons'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
@@ -131,26 +130,14 @@ export default async function SharePage({ params }: PageProps) {
   const formattedOccasion = formatOccasion(data.occasion)
 
   return (
-    <>
-      {/* Gift Reveal Animation */}
-      <GiftReveal
-        recipientName={data.recipientName}
-        message={personalMessage}
-        shareToken={token}
-        occasion={formattedOccasion}
-      />
-
-      {/* Share Buttons Section */}
-      <div className="bg-gradient-to-b from-gray-900 via-amber-900/20 to-gray-900 py-12">
-        <div className="max-w-2xl mx-auto px-4">
-          <ShareButtons
-            url={shareUrl}
-            title={`${formattedOccasion} Song for ${data.recipientName}`}
-            recipientName={data.recipientName}
-            occasion={formattedOccasion}
-          />
-        </div>
-      </div>
-    </>
+    <GiftReveal
+      recipientName={data.recipientName}
+      senderName={data.senderName}
+      message={personalMessage}
+      shareToken={token}
+      shareUrl={shareUrl}
+      occasion={formattedOccasion}
+      genre={data.genre}
+    />
   )
 }

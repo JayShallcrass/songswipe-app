@@ -126,6 +126,7 @@ function LoginForm() {
                     id="email"
                     name="email"
                     required
+                    autoComplete="email"
                     className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors placeholder-zinc-600"
                     placeholder="you@example.com"
                   />
@@ -146,6 +147,7 @@ function LoginForm() {
                     name="password"
                     required
                     minLength={6}
+                    autoComplete={tab === 'signin' ? 'current-password' : 'new-password'}
                     className="w-full px-4 py-3 bg-surface-100 border border-surface-200 rounded-xl text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors placeholder-zinc-600"
                     placeholder="••••••••"
                   />

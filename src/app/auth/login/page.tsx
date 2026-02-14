@@ -1,14 +1,17 @@
+'use client'
+
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { LockClosedIcon, CreditCardIcon } from '@heroicons/react/24/solid'
 
-export default function LoginPage({
-  searchParams,
-}: {
-  searchParams: { error?: string; message?: string }
-}) {
-  const plainParams = { ...searchParams }
-  const error = plainParams?.error
-  const message = plainParams?.message
+function LoginForm() {
+  const searchParams = useSearchParams()
+  const error = searchParams.get('error')
+  const message = searchParams.get('message')
+  const initialTab = searchParams.get('tab') === 'signup' ? 'signup' : 'signin'
+
+  const [tab, setTab] = useState<'signin' | 'signup'>(initialTab)
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-surface-DEFAULT py-12 px-4">
@@ -23,12 +26,47 @@ export default function LoginPage({
 
         {/* Login Card */}
         <div className="bg-surface-50 border border-surface-200 rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-white mb-6 text-center">
-            {message ? 'Check Your Email' : 'Welcome Back'}
+          {/* Tabs */}
+          {!message && (
+            <div className="flex mb-6 border-b border-surface-200">
+              <button
+                type="button"
+                onClick={() => setTab('signin')}
+                className={`flex-1 pb-3 text-sm font-semibold transition-colors ${
+                  tab === 'signin'
+                    ? 'text-white border-b-2 border-brand-500'
+                    : 'text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => setTab('signup')}
+                className={`flex-1 pb-3 text-sm font-semibold transition-colors ${
+                  tab === 'signup'
+                    ? 'text-white border-b-2 border-brand-500'
+                    : 'text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                Create Account
+              </button>
+            </div>
+          )}
+
+          <h1 className="text-2xl font-bold text-white mb-1 text-center">
+            {message ? 'Check Your Email' : tab === 'signin' ? 'Welcome back' : 'Create your account'}
           </h1>
+          {!message && (
+            <p className="text-sm text-zinc-500 text-center mb-6">
+              {tab === 'signin'
+                ? 'Sign in to view your songs'
+                : 'Free to sign up. Only pay when you order.'}
+            </p>
+          )}
 
           {message && (
-            <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm">
+            <div className="mt-4 mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm">
               {message}
             </div>
           )}
@@ -68,6 +106,8 @@ export default function LoginPage({
 
               {/* Email/Password Form */}
               <form action="/auth/login/actions" method="POST" className="space-y-4">
+                <input type="hidden" name="action" value={tab === 'signup' ? 'signup' : 'signin'} />
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-zinc-400 mb-1">
                     Email
@@ -97,25 +137,40 @@ export default function LoginPage({
                   />
                 </div>
 
-                <div className="flex gap-4">
-                  <button
-                    type="submit"
-                    name="action"
-                    value="signin"
-                    className="flex-1 bg-gradient-to-r from-brand-500 to-amber-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    type="submit"
-                    name="action"
-                    value="signup"
-                    className="flex-1 text-zinc-300 py-3 px-4 rounded-xl font-semibold border border-surface-300 hover:bg-surface-100 transition-colors"
-                  >
-                    Sign Up
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-brand-500 to-amber-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-brand-600 hover:to-amber-600 transition-all shadow-md hover:shadow-lg"
+                >
+                  {tab === 'signin' ? 'Sign In' : 'Create Account'}
+                </button>
               </form>
+
+              {/* Tab switcher link */}
+              <p className="mt-5 text-center text-sm text-zinc-500">
+                {tab === 'signin' ? (
+                  <>
+                    Don&apos;t have an account?{' '}
+                    <button
+                      type="button"
+                      onClick={() => setTab('signup')}
+                      className="text-brand-500 hover:text-brand-400 font-medium"
+                    >
+                      Create one
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    Already have an account?{' '}
+                    <button
+                      type="button"
+                      onClick={() => setTab('signin')}
+                      className="text-brand-500 hover:text-brand-400 font-medium"
+                    >
+                      Sign in
+                    </button>
+                  </>
+                )}
+              </p>
             </>
           )}
 
@@ -146,5 +201,17 @@ export default function LoginPage({
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-surface-DEFAULT">
+        <div className="animate-pulse text-zinc-500">Loading...</div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }

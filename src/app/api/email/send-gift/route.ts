@@ -58,11 +58,11 @@ export async function POST(request: NextRequest) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background:#f9fafb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<body style="margin:0;padding:0;background:#0f0d0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <div style="max-width:520px;margin:0 auto;padding:40px 20px;">
-    <div style="background:white;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+    <div style="background:#1a1816;border-radius:16px;overflow:hidden;border:1px solid #2a2622;">
       <!-- Header -->
-      <div style="background:linear-gradient(135deg,#a855f7,#ec4899);padding:32px 24px;text-align:center;">
+      <div style="background:linear-gradient(135deg,#f97316,#f59e0b);padding:32px 24px;text-align:center;">
         <div style="font-size:48px;margin-bottom:12px;">🎁</div>
         <h1 style="color:white;font-size:24px;font-weight:700;margin:0;">
           ${recipientName}, you have a gift!
@@ -71,14 +71,14 @@ export async function POST(request: NextRequest) {
 
       <!-- Body -->
       <div style="padding:32px 24px;">
-        <p style="color:#374151;font-size:16px;line-height:1.6;margin:0 0 16px;">
+        <p style="color:#d4d4d8;font-size:16px;line-height:1.6;margin:0 0 16px;">
           ${senderName} created a personalised ${occasionText.toLowerCase()} song just for you.
         </p>
 
         ${personalMessage ? `
-        <div style="background:#f3f4f6;border-radius:12px;padding:16px;margin:0 0 24px;">
-          <p style="color:#6b7280;font-size:13px;margin:0 0 4px;font-weight:600;">Personal message:</p>
-          <p style="color:#374151;font-size:15px;line-height:1.5;margin:0;font-style:italic;">
+        <div style="background:#0f0d0a;border-radius:12px;padding:16px;margin:0 0 24px;border:1px solid #2a2622;">
+          <p style="color:#a1a1aa;font-size:13px;margin:0 0 4px;font-weight:600;">Personal message:</p>
+          <p style="color:#d4d4d8;font-size:15px;line-height:1.5;margin:0;font-style:italic;">
             "${personalMessage}"
           </p>
         </div>
@@ -86,16 +86,16 @@ export async function POST(request: NextRequest) {
 
         <!-- CTA Button -->
         <div style="text-align:center;margin:24px 0;">
-          <a href="${shareUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#a855f7,#ec4899);color:white;font-size:16px;font-weight:600;text-decoration:none;border-radius:50px;">
+          <a href="${shareUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#f97316,#f59e0b);color:white;font-size:16px;font-weight:600;text-decoration:none;border-radius:50px;">
             Listen to Your Song
           </a>
         </div>
       </div>
 
       <!-- Footer -->
-      <div style="border-top:1px solid #f3f4f6;padding:20px 24px;text-align:center;">
-        <p style="color:#9ca3af;font-size:12px;margin:0;">
-          Created with <span style="background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:600;">SongSwipe</span>
+      <div style="border-top:1px solid #2a2622;padding:20px 24px;text-align:center;">
+        <p style="color:#71717a;font-size:12px;margin:0;">
+          Created with <span style="background:linear-gradient(135deg,#f97316,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:600;">SongSwipe</span>
         </p>
       </div>
     </div>

@@ -18,8 +18,8 @@ function friendlyError(supabaseMessage: string, action: string): string {
     if (msg.includes('already registered') || msg.includes('already been registered')) {
       return 'An account with this email already exists. Try signing in instead.'
     }
-    if (msg.includes('password') && (msg.includes('short') || msg.includes('weak') || msg.includes('least'))) {
-      return 'Password must be at least 6 characters.'
+    if (msg.includes('password') && (msg.includes('short') || msg.includes('weak') || msg.includes('least') || msg.includes('characters'))) {
+      return 'Password must be at least 6 characters and include uppercase, lowercase, and a digit.'
     }
   }
 

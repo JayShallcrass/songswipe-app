@@ -200,7 +200,7 @@ function LoginForm() {
                       {tab === 'signin' ? 'Password' : 'Choose a password'}
                     </label>
                     {tab === 'signup' && (
-                      <span className="text-xs text-zinc-600">Min. 6 characters</span>
+                      <span className="text-xs text-zinc-600">Min. 6, upper + lower + digit</span>
                     )}
                   </div>
                   <input

@@ -24,27 +24,37 @@ export function SongPlayer({ audioUrl, isLoading }: SongPlayerProps) {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
-  // Time update listener
+  // Time update listener - re-attach when audioUrl changes (audio element mounts)
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
+
+    // Blob URLs may already have metadata loaded
+    if (audio.duration && isFinite(audio.duration)) {
+      setDuration(audio.duration)
+    }
 
     const onTimeUpdate = () => {
       if (!isDragging) setCurrentTime(audio.currentTime)
     }
     const onLoadedMetadata = () => setDuration(audio.duration)
+    const onDurationChange = () => {
+      if (audio.duration && isFinite(audio.duration)) setDuration(audio.duration)
+    }
     const onEnded = () => setIsPlaying(false)
 
     audio.addEventListener('timeupdate', onTimeUpdate)
     audio.addEventListener('loadedmetadata', onLoadedMetadata)
+    audio.addEventListener('durationchange', onDurationChange)
     audio.addEventListener('ended', onEnded)
 
     return () => {
       audio.removeEventListener('timeupdate', onTimeUpdate)
       audio.removeEventListener('loadedmetadata', onLoadedMetadata)
+      audio.removeEventListener('durationchange', onDurationChange)
       audio.removeEventListener('ended', onEnded)
     }
-  }, [isDragging])
+  }, [isDragging, audioUrl])
 
   const togglePlay = () => {
     const audio = audioRef.current

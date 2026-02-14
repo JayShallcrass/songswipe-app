@@ -271,46 +271,23 @@ export function GiftReveal({ recipientName, senderName, message, shareToken, sha
                 </div>
               </motion.div>
 
-              {/* Action buttons */}
+              {/* Download button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="flex gap-3"
               >
-                {/* Download button */}
                 <button
                   onClick={handleDownload}
                   disabled={!audioUrl}
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-surface-50 border border-surface-200 rounded-xl text-white font-medium hover:bg-surface-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-surface-50 border border-surface-200 rounded-xl text-white font-medium hover:bg-surface-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                   </svg>
-                  Download
-                </button>
-
-                {/* Save to library hint */}
-                <button
-                  onClick={handleDownload}
-                  disabled={!audioUrl}
-                  className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-surface-50 border border-surface-200 rounded-xl text-white font-medium hover:bg-surface-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z" />
-                  </svg>
-                  Save to Library
+                  Download MP3
                 </button>
               </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-xs text-zinc-600 text-center"
-              >
-                Download the MP3 to add it to Apple Music, Spotify Local Files, or any music app
-              </motion.p>
 
               {/* Share section */}
               <motion.div

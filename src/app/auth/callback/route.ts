@@ -51,6 +51,16 @@ export async function GET(request: NextRequest) {
 
   if (exchangeError) {
     console.error('Code exchange error:', exchangeError)
+
+    // PKCE verifier missing = user opened the confirmation link in a different
+    // browser or device. Their account IS confirmed, they just need to sign in.
+    const msg = exchangeError.message.toLowerCase()
+    if (msg.includes('pkce') || msg.includes('code verifier')) {
+      return NextResponse.redirect(
+        new URL('/auth/login?message=Your account is confirmed! Sign in with your email and password.', request.url)
+      )
+    }
+
     return NextResponse.redirect(
       new URL(`/auth/login?error=${encodeURIComponent(exchangeError.message)}`, request.url)
     )

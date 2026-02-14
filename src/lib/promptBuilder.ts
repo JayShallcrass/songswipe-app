@@ -107,12 +107,12 @@ export function buildRichPrompt(c: Record<string, any>): string {
 
   // Special memories / content direction
   if (c.specialMemories) {
-    lines.push(`Weave in these personal details: ${sanitiseInput(c.specialMemories)}`)
+    lines.push(`Weave in these personal details: ${sanitiseInput(c.specialMemories, 2000)}`)
   }
 
   // Things to avoid
   if (c.thingsToAvoid) {
-    lines.push(`Avoid mentioning: ${sanitiseInput(c.thingsToAvoid, 200)}`)
+    lines.push(`Avoid mentioning: ${sanitiseInput(c.thingsToAvoid, 500)}`)
   }
 
   // Duration

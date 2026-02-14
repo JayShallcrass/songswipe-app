@@ -22,8 +22,8 @@ const customisationSchema = {
       relationship: z.string().optional(),
       pronunciation: z.string().max(100).optional(),
       songTitle: z.string().max(100).optional(),
-      specialMemories: z.string().max(500).optional(),
-      thingsToAvoid: z.string().max(300).optional(),
+      specialMemories: z.string().max(2000).optional(),
+      thingsToAvoid: z.string().max(500).optional(),
       occasionDate: z.string().optional(),
     })
     return schema.safeParse(body)

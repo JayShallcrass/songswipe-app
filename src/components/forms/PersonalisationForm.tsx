@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { occasionQuestions } from '@/lib/elevenlabs'
 import { universalPromptCategories } from '@/lib/promptCategories'
 import { moderateText } from '@/lib/moderation'
 import { AccordionSection } from './AccordionSection'
 import { PromptCategory } from './PromptCategory'
+import { InfoTooltip } from '@/components/ui/InfoTooltip'
 
 export interface PersonalisationData {
   recipientName: string
@@ -152,6 +153,35 @@ export function PersonalisationForm({
 
   const hasModerationWarnings = Object.values(moderationWarnings).some(Boolean)
 
+  // Character budget for specialMemories (matches Zod .max(2000))
+  const MEMORIES_CHAR_LIMIT = 2000
+  const memoriesLength = useMemo(
+    () => buildSpecialMemories(promptAnswers, freeformMemories).length,
+    [promptAnswers, freeformMemories]
+  )
+  const memoriesOverLimit = memoriesLength > MEMORIES_CHAR_LIMIT
+  const memoriesNearLimit = memoriesLength > MEMORIES_CHAR_LIMIT * 0.8
+
+  // Song length guidance: soft thresholds for recommended detail per duration
+  const SONG_LENGTH_THRESHOLDS: Record<string, number> = { '60': 400, '90': 800, '120': 1500 }
+  const NEXT_DURATION: Record<string, string> = { '60': '90', '90': '120' }
+  const memoriesOverThreshold = memoriesLength > (SONG_LENGTH_THRESHOLDS[songLength] ?? 1500)
+  const [guidanceDismissed, setGuidanceDismissed] = useState(false)
+  const prevSongLengthRef = useRef(songLength)
+  const prevThresholdCrossRef = useRef(memoriesOverThreshold)
+
+  // Reset dismissed state when song length changes or user crosses a new threshold
+  useEffect(() => {
+    if (songLength !== prevSongLengthRef.current) {
+      setGuidanceDismissed(false)
+      prevSongLengthRef.current = songLength
+    }
+    if (memoriesOverThreshold && !prevThresholdCrossRef.current) {
+      setGuidanceDismissed(false)
+    }
+    prevThresholdCrossRef.current = memoriesOverThreshold
+  }, [songLength, memoriesOverThreshold])
+
   // Debounced moderation check across all text fields
   const runModerationCheck = useCallback(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -262,6 +292,7 @@ export function PersonalisationForm({
   const handleSubmit = () => {
     if (!validate()) return
     if (hasModerationWarnings) return
+    if (memoriesOverLimit) return
 
     onSubmit({
       recipientName,
@@ -327,6 +358,7 @@ export function PersonalisationForm({
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1">
             Recipient&apos;s Name *
+            <InfoTooltip text="This name will be woven into the song lyrics. Use the name they go by day-to-day." />
           </label>
           <input
             type="text"
@@ -347,6 +379,7 @@ export function PersonalisationForm({
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1">
             Pronounced as <span className="text-zinc-500 font-normal">(optional)</span>
+            <InfoTooltip text="Write it phonetically so the vocalist gets it right, e.g. 'Ay-mee' for Aimee." />
           </label>
           <input
             type="text"
@@ -388,6 +421,7 @@ export function PersonalisationForm({
         <div>
           <label className="block text-sm font-medium text-zinc-300 mb-1">
             Song Title <span className="text-zinc-500 font-normal">(optional)</span>
+            <InfoTooltip text="Optional. If left blank, the AI will create a title based on your selections." />
           </label>
           <input
             type="text"
@@ -458,6 +492,7 @@ export function PersonalisationForm({
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">
               Song length
+              <InfoTooltip text="Shorter songs are punchy and sweet. Longer songs can include more of your personal details." />
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
@@ -487,6 +522,7 @@ export function PersonalisationForm({
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">
               Language & accent
+              <InfoTooltip text="Sets the vocal accent and language for any generated lyrics." />
             </label>
             <select
               value={language}
@@ -521,6 +557,7 @@ export function PersonalisationForm({
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">
               Tempo
+              <InfoTooltip text="Affects the energy and pace of the song. Match it to the mood you've selected." />
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
@@ -549,7 +586,7 @@ export function PersonalisationForm({
         </AccordionSection>
 
         {/* Special Memories - expanded by default */}
-        <AccordionSection title="Special Memories" defaultOpen>
+        <AccordionSection title={<>Special Memories <InfoTooltip text="The more specific your answers, the more personal the lyrics. Focus on 2-3 key details for shorter songs." /></>} defaultOpen>
           <p className="text-sm text-zinc-500">
             Tap a prompt to answer it, or write your own below
           </p>
@@ -639,13 +676,62 @@ export function PersonalisationForm({
           {moderationWarnings.freeformMemories && (
             <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
           )}
+
+          {/* Character budget counter */}
+          <div className="flex justify-end">
+            <p className={`text-xs font-medium ${
+              memoriesOverLimit
+                ? 'text-red-400'
+                : memoriesNearLimit
+                  ? 'text-amber-400'
+                  : 'text-zinc-500'
+            }`}>
+              {memoriesLength.toLocaleString()} / {MEMORIES_CHAR_LIMIT.toLocaleString()} characters
+            </p>
+          </div>
+
+          {/* Song length guidance banner */}
+          {memoriesOverThreshold && !guidanceDismissed && (
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 flex items-start gap-3">
+              <div className="flex-1">
+                <p className="text-amber-400 text-sm">
+                  {NEXT_DURATION[songLength]
+                    ? `You've added a lot of detail for a ${songLength}-second song. Longer songs can weave in more of your memories.`
+                    : 'Consider trimming some details for the best result.'}
+                </p>
+                {NEXT_DURATION[songLength] && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSongLength(NEXT_DURATION[songLength])
+                      setGuidanceDismissed(true)
+                    }}
+                    className="mt-2 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-500/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 transition-colors"
+                  >
+                    Change to {NEXT_DURATION[songLength]} seconds
+                  </button>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setGuidanceDismissed(true)}
+                className="text-amber-500/60 hover:text-amber-400 transition-colors flex-shrink-0 mt-0.5"
+                aria-label="Dismiss"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+          )}
         </AccordionSection>
 
         {/* Additional Options - collapsed by default */}
         <AccordionSection title="Additional Options">
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">
-              Things to Avoid (Optional)
+              Things to Avoid <span className="text-zinc-500 font-normal">(Optional)</span>
+              <InfoTooltip text="Anything sensitive or off-limits. The AI will steer clear of these topics in the lyrics." />
             </label>
             <input
               type="text"
@@ -675,6 +761,15 @@ export function PersonalisationForm({
           </div>
         </AccordionSection>
       </div>
+
+      {/* Character limit warning banner */}
+      {memoriesOverLimit && (
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 sm:p-4 mb-4">
+          <p className="text-red-400 text-sm font-medium">
+            Your memories and prompt answers exceed the {MEMORIES_CHAR_LIMIT.toLocaleString()}-character limit. Please shorten some answers to continue.
+          </p>
+        </div>
+      )}
 
       {/* Moderation warning banner */}
       {hasModerationWarnings && (
@@ -722,7 +817,7 @@ export function PersonalisationForm({
         </button>
         <button
           onClick={handleSubmit}
-          disabled={isLoading || !tosAccepted || hasModerationWarnings}
+          disabled={isLoading || !tosAccepted || hasModerationWarnings || memoriesOverLimit}
           className="flex-1 py-3 sm:py-4 bg-gradient-to-r from-brand-500 to-amber-500 text-white rounded-full font-semibold hover:from-brand-600 hover:to-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? 'Processing...' : 'Continue to Payment'}

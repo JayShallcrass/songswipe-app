@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 interface AccordionSectionProps {
-  title: string
+  title: React.ReactNode
   defaultOpen?: boolean
   children: React.ReactNode
 }

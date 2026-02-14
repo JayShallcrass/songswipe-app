@@ -166,6 +166,7 @@ function LoginForm() {
                     type="submit"
                     form="auth-form"
                     formAction="/auth/forgot-password"
+                    formNoValidate
                     className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
                   >
                     Forgot your password?

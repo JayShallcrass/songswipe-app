@@ -23,7 +23,7 @@ export function PromptCategory({
 }: PromptCategoryProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const activeCount = category.questions.filter((q) => activePrompts.has(q)).length
+  const activeCount = category.questions.filter((q) => activePrompts.has(q.text)).length
 
   return (
     <div className="border border-surface-300 rounded-lg overflow-hidden">
@@ -61,19 +61,19 @@ export function PromptCategory({
         <div className="px-3 sm:px-4 py-3">
           {/* Toggle chips */}
           <div className="flex flex-wrap gap-2 mb-2">
-            {category.questions.map((question) => (
+            {category.questions.map((q) => (
               <button
-                key={question}
+                key={q.text}
                 type="button"
-                onClick={() => onTogglePrompt(question)}
+                onClick={() => onTogglePrompt(q.text)}
                 disabled={disabled}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
-                  activePrompts.has(question)
+                  activePrompts.has(q.text)
                     ? 'bg-brand-500/10 border-brand-500 text-brand-400'
                     : 'bg-surface-100 border-surface-300 text-zinc-300 hover:bg-surface-100 hover:border-brand-500/50'
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
-                {question}
+                {q.text}
               </button>
             ))}
           </div>
@@ -81,10 +81,10 @@ export function PromptCategory({
           {/* Animated inputs for active prompts */}
           <AnimatePresence>
             {category.questions
-              .filter((q) => activePrompts.has(q))
-              .map((question) => (
+              .filter((q) => activePrompts.has(q.text))
+              .map((q) => (
                 <motion.div
-                  key={question}
+                  key={q.text}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -93,14 +93,14 @@ export function PromptCategory({
                 >
                   <div className="mb-2">
                     <label className="block text-sm font-medium text-brand-400 mb-1">
-                      {question}
+                      {q.text}
                     </label>
                     <input
                       type="text"
                       className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                       placeholder="Type your answer..."
-                      value={promptAnswers[question] || ''}
-                      onChange={(e) => onAnswerChange(question, e.target.value)}
+                      value={promptAnswers[q.text] || ''}
+                      onChange={(e) => onAnswerChange(q.text, e.target.value)}
                       disabled={disabled}
                     />
                   </div>

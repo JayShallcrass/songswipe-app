@@ -6,7 +6,6 @@ import { occasionQuestions } from '@/lib/elevenlabs'
 import { universalPromptCategories } from '@/lib/promptCategories'
 import { moderateText } from '@/lib/moderation'
 import { AccordionSection } from './AccordionSection'
-import { PromptCategory } from './PromptCategory'
 import { InfoTooltip } from '@/components/ui/InfoTooltip'
 
 export interface PersonalisationData {
@@ -252,6 +251,16 @@ export function PersonalisationForm({
   const occasion = selections.occasion || ''
   const suggestions = occasionQuestions[occasion] || []
 
+  // Deduplicate: universal prompts that match an occasion chip are filtered out
+  const suggestionsSet = useMemo(() => new Set(suggestions), [suggestions])
+
+  // Single-open accordion state
+  const [openSection, setOpenSection] = useState<'details' | 'memories' | 'options' | null>('memories')
+
+  const handleAccordionToggle = (section: 'details' | 'memories' | 'options') => {
+    setOpenSection(prev => prev === section ? null : section)
+  }
+
   const handleTogglePrompt = (question: string) => {
     setActivePrompts((prev) => {
       const next = new Set(prev)
@@ -455,39 +464,39 @@ export function PersonalisationForm({
         </div>
       </div>
 
+      {/* Relationship selector - always visible */}
+      <div className="mb-4 sm:mb-6">
+        <label className="block text-sm font-medium text-zinc-300 mb-1">
+          Your relationship to {recipientName || 'them'}
+        </label>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {[
+            { id: 'partner', label: 'Partner' },
+            { id: 'friend', label: 'Friend' },
+            { id: 'family', label: 'Family' },
+            { id: 'colleague', label: 'Colleague' },
+          ].map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => setRelationship(opt.id)}
+              disabled={isLoading}
+              className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all border ${
+                relationship === opt.id
+                  ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                  : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
+              } disabled:opacity-50`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Accordion sections */}
       <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-8">
         {/* Song Details - collapsed by default */}
-        <AccordionSection title="Song Details">
-          {/* Relationship */}
-          <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1">
-              Your relationship to {recipientName || 'them'}
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                { id: 'partner', label: 'Partner' },
-                { id: 'friend', label: 'Friend' },
-                { id: 'family', label: 'Family' },
-                { id: 'colleague', label: 'Colleague' },
-              ].map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => setRelationship(opt.id)}
-                  disabled={isLoading}
-                  className={`py-2.5 px-3 rounded-lg text-sm font-medium transition-all border ${
-                    relationship === opt.id
-                      ? 'bg-brand-500/10 border-brand-500 text-brand-400'
-                      : 'bg-surface-100 border-surface-300 text-zinc-300 hover:border-brand-500/50 hover:bg-surface-100'
-                  } disabled:opacity-50`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
+        <AccordionSection title="Song Details" isOpen={openSection === 'details'} onToggle={() => handleAccordionToggle('details')}>
           {/* Song Length */}
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">
@@ -586,7 +595,7 @@ export function PersonalisationForm({
         </AccordionSection>
 
         {/* Special Memories - expanded by default */}
-        <AccordionSection title={<>Special Memories <InfoTooltip text="The more specific your answers, the more personal the lyrics. Focus on 2-3 key details for shorter songs." /></>} defaultOpen>
+        <AccordionSection title={<>Special Memories <InfoTooltip text="The more specific your answers, the more personal the lyrics. Focus on 2-3 key details for shorter songs." /></>} isOpen={openSection === 'memories'} onToggle={() => handleAccordionToggle('memories')}>
           <p className="text-sm text-zinc-500">
             Tap a prompt to answer it, or write your own below
           </p>
@@ -647,22 +656,70 @@ export function PersonalisationForm({
             </div>
           )}
 
-          {/* Universal prompt categories */}
-          <div className="space-y-2">
+          {/* Universal prompt categories - flat chip groups */}
+          <div className="space-y-4">
             <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
               Browse more prompts
             </p>
-            {universalPromptCategories.map((category) => (
-              <PromptCategory
-                key={category.id}
-                category={category}
-                activePrompts={activePrompts}
-                promptAnswers={promptAnswers}
-                onTogglePrompt={handleTogglePrompt}
-                onAnswerChange={handlePromptAnswerChange}
-                disabled={isLoading}
-              />
-            ))}
+            {universalPromptCategories.map((category) => {
+              const filtered = category.questions
+                .filter(q => !suggestionsSet.has(q.text))
+                .filter(q => !q.for || !relationship || q.for.includes(relationship))
+              if (filtered.length === 0) return null
+              return (
+                <div key={category.id}>
+                  <p className="text-xs font-medium text-zinc-600 mb-2">{category.title}</p>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {filtered.map((q) => (
+                      <button
+                        key={q.text}
+                        type="button"
+                        onClick={() => handleTogglePrompt(q.text)}
+                        disabled={isLoading}
+                        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border ${
+                          activePrompts.has(q.text)
+                            ? 'bg-brand-500/10 border-brand-500 text-brand-400'
+                            : 'bg-surface-100 border-surface-300 text-zinc-300 hover:bg-surface-100 hover:border-brand-500/50'
+                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      >
+                        {q.text}
+                      </button>
+                    ))}
+                  </div>
+                  <AnimatePresence>
+                    {filtered
+                      .filter((q) => activePrompts.has(q.text))
+                      .map((q) => (
+                        <motion.div
+                          key={q.text}
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mb-3">
+                            <label className="block text-sm font-medium text-brand-400 mb-1">
+                              {q.text}
+                            </label>
+                            <input
+                              type="text"
+                              className="w-full px-4 py-3 bg-surface-100 border border-surface-300 rounded-lg text-white placeholder:text-zinc-600 focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                              placeholder="Type your answer..."
+                              value={promptAnswers[q.text] || ''}
+                              onChange={(e) => handlePromptAnswerChange(q.text, e.target.value)}
+                              disabled={isLoading}
+                            />
+                            {moderationWarnings[q.text] && (
+                              <p className="text-red-400 text-xs mt-1">Please remove inappropriate language</p>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
           </div>
 
           {/* Freeform textarea - always visible */}
@@ -727,7 +784,7 @@ export function PersonalisationForm({
         </AccordionSection>
 
         {/* Additional Options - collapsed by default */}
-        <AccordionSection title="Additional Options">
+        <AccordionSection title="Additional Options" isOpen={openSection === 'options'} onToggle={() => handleAccordionToggle('options')}>
           <div>
             <label className="block text-sm font-medium text-zinc-300 mb-1">
               Things to Avoid <span className="text-zinc-500 font-normal">(Optional)</span>

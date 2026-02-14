@@ -5,17 +5,29 @@ import { useState } from 'react'
 interface AccordionSectionProps {
   title: React.ReactNode
   defaultOpen?: boolean
+  isOpen?: boolean
+  onToggle?: () => void
   children: React.ReactNode
 }
 
-export function AccordionSection({ title, defaultOpen = false, children }: AccordionSectionProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
+export function AccordionSection({ title, defaultOpen = false, isOpen: controlledOpen, onToggle, children }: AccordionSectionProps) {
+  const [internalOpen, setInternalOpen] = useState(defaultOpen)
+  const isControlled = controlledOpen !== undefined
+  const isOpen = isControlled ? controlledOpen : internalOpen
+
+  const handleToggle = () => {
+    if (isControlled) {
+      onToggle?.()
+    } else {
+      setInternalOpen(prev => !prev)
+    }
+  }
 
   return (
     <div className="border border-surface-200 rounded-xl overflow-hidden">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="w-full flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 bg-surface-100 hover:bg-surface-100/80 transition-colors"
       >
         <span className="font-semibold text-sm sm:text-base text-white">{title}</span>

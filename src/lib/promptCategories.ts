@@ -1,8 +1,13 @@
+export interface PromptQuestion {
+  text: string
+  for?: string[]  // undefined = all relationships. When set, only show for these.
+}
+
 export interface PromptCategory {
   id: string
   title: string
   subtitle: string
-  questions: string[]
+  questions: PromptQuestion[]
 }
 
 export const universalPromptCategories: PromptCategory[] = [
@@ -11,11 +16,11 @@ export const universalPromptCategories: PromptCategory[] = [
     title: 'Personality & Traits',
     subtitle: 'What makes them unique?',
     questions: [
-      'What\'s their most infectious quality?',
-      'How would their friends describe them?',
-      'What\'s their signature phrase or saying?',
-      'What makes them laugh the hardest?',
-      'What\'s their hidden talent?',
+      { text: 'What\'s their most infectious quality?' },
+      { text: 'How would their friends describe them?' },
+      { text: 'What\'s their signature phrase or saying?' },
+      { text: 'What makes them laugh the hardest?', for: ['partner', 'friend', 'family'] },
+      { text: 'What\'s their hidden talent?' },
     ],
   },
   {
@@ -23,11 +28,14 @@ export const universalPromptCategories: PromptCategory[] = [
     title: 'Shared Experiences',
     subtitle: 'Your journey together',
     questions: [
-      'What\'s your favourite adventure together?',
-      'What\'s a tradition only you two share?',
-      'What\'s a moment you\'ll never forget?',
-      'What\'s the craziest thing you\'ve done together?',
-      'What song always reminds you of them?',
+      { text: 'What\'s your favourite adventure together?', for: ['partner', 'friend', 'family'] },
+      { text: 'What\'s a tradition only you two share?', for: ['partner', 'friend', 'family'] },
+      { text: 'What\'s a moment you\'ll never forget?' },
+      { text: 'What\'s the craziest thing you\'ve done together?', for: ['partner', 'friend'] },
+      { text: 'What song always reminds you of them?', for: ['partner', 'friend', 'family'] },
+      { text: 'What made you fall for them?', for: ['partner'] },
+      { text: 'What\'s your favourite date night?', for: ['partner'] },
+      { text: 'How did your friendship start?', for: ['friend'] },
     ],
   },
   {
@@ -35,11 +43,11 @@ export const universalPromptCategories: PromptCategory[] = [
     title: 'Fun Facts & Quirks',
     subtitle: 'The little things',
     questions: [
-      'Any nicknames or pet names?',
-      'What\'s their guilty pleasure?',
-      'What\'s an inside joke between you?',
-      'What\'s their go-to karaoke song?',
-      'What\'s their comfort food?',
+      { text: 'Any nicknames or pet names?', for: ['partner', 'friend', 'family'] },
+      { text: 'What\'s their guilty pleasure?', for: ['partner', 'friend', 'family'] },
+      { text: 'What\'s an inside joke between you?', for: ['partner', 'friend'] },
+      { text: 'What\'s their go-to karaoke song?', for: ['partner', 'friend', 'family'] },
+      { text: 'What\'s their comfort food?', for: ['partner', 'friend', 'family'] },
     ],
   },
   {
@@ -47,11 +55,13 @@ export const universalPromptCategories: PromptCategory[] = [
     title: 'What You Appreciate',
     subtitle: 'Why they matter',
     questions: [
-      'What do you admire most about them?',
-      'How have they changed your life?',
-      'What would you thank them for?',
-      'What do you love most about them?',
-      'What makes them irreplaceable?',
+      { text: 'What do you admire most about them?' },
+      { text: 'How have they changed your life?', for: ['partner', 'friend', 'family'] },
+      { text: 'What would you thank them for?' },
+      { text: 'What do you love most about them?', for: ['partner', 'family'] },
+      { text: 'What makes them irreplaceable?', for: ['partner', 'friend', 'family'] },
+      { text: 'What did they teach you growing up?', for: ['family'] },
+      { text: 'What family tradition means the most?', for: ['family'] },
     ],
   },
   {
@@ -59,11 +69,13 @@ export const universalPromptCategories: PromptCategory[] = [
     title: 'Milestones & Achievements',
     subtitle: 'Their wins',
     questions: [
-      'What\'s their proudest moment?',
-      'What challenge did they overcome?',
-      'What\'s a goal they\'ve achieved?',
-      'What are they working toward?',
-      'What makes them an inspiration?',
+      { text: 'What\'s their proudest moment?' },
+      { text: 'What challenge did they overcome?' },
+      { text: 'What\'s a goal they\'ve achieved?' },
+      { text: 'What are they working toward?' },
+      { text: 'What makes them an inspiration?' },
+      { text: 'What\'s their superpower at work?', for: ['colleague'] },
+      { text: 'What project together are you proudest of?', for: ['colleague'] },
     ],
   },
 ]

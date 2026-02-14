@@ -2,6 +2,34 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
+function friendlyError(supabaseMessage: string, action: string): string {
+  const msg = supabaseMessage.toLowerCase()
+
+  if (action === 'signin') {
+    if (msg.includes('invalid login credentials') || msg.includes('invalid_credentials')) {
+      return 'Incorrect email or password. If you don\'t have an account yet, switch to Create Account.'
+    }
+    if (msg.includes('email not confirmed')) {
+      return 'Please check your inbox and confirm your email before signing in.'
+    }
+  }
+
+  if (action === 'signup') {
+    if (msg.includes('already registered') || msg.includes('already been registered')) {
+      return 'An account with this email already exists. Try signing in instead.'
+    }
+    if (msg.includes('password') && (msg.includes('short') || msg.includes('weak') || msg.includes('least'))) {
+      return 'Password must be at least 6 characters.'
+    }
+  }
+
+  if (msg.includes('rate limit') || msg.includes('too many requests')) {
+    return 'Too many attempts. Please wait a moment and try again.'
+  }
+
+  return supabaseMessage
+}
+
 export async function POST(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const formData = await request.formData()
@@ -28,6 +56,8 @@ export async function POST(request: NextRequest) {
     }
   )
 
+  const tabParam = action === 'signup' ? '&tab=signup' : ''
+
   try {
     if (action === 'signup') {
       const { error } = await supabase.auth.signUp({
@@ -40,7 +70,7 @@ export async function POST(request: NextRequest) {
 
       if (error) {
         return NextResponse.redirect(
-          `${requestUrl.origin}/auth/login?error=${encodeURIComponent(error.message)}`,
+          `${requestUrl.origin}/auth/login?error=${encodeURIComponent(friendlyError(error.message, action))}${tabParam}`,
           { status: 303 }
         )
       }
@@ -58,7 +88,7 @@ export async function POST(request: NextRequest) {
 
       if (error) {
         return NextResponse.redirect(
-          `${requestUrl.origin}/auth/login?error=${encodeURIComponent(error.message)}`,
+          `${requestUrl.origin}/auth/login?error=${encodeURIComponent(friendlyError(error.message, action))}${tabParam}`,
           { status: 303 }
         )
       }
@@ -68,9 +98,9 @@ export async function POST(request: NextRequest) {
         { status: 303 }
       )
     }
-  } catch (error) {
+  } catch {
     return NextResponse.redirect(
-      `${requestUrl.origin}/auth/login?error=An unexpected error occurred`,
+      `${requestUrl.origin}/auth/login?error=Something went wrong. Please try again.${tabParam}`,
       { status: 303 }
     )
   }

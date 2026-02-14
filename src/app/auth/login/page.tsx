@@ -3,7 +3,7 @@
 import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { LockClosedIcon, CreditCardIcon } from '@heroicons/react/24/solid'
+import { LockClosedIcon, CreditCardIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid'
 
 function LoginForm() {
   const searchParams = useSearchParams()
@@ -66,14 +66,18 @@ function LoginForm() {
           )}
 
           {message && (
-            <div className="mt-4 mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm">
-              {message}
+            <div className="mt-4 mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm flex items-start gap-3">
+              <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>{message}</span>
             </div>
           )}
 
           {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
-              {error}
+            <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-sm flex items-start gap-3">
+              <ExclamationTriangleIcon className="w-5 h-5 shrink-0 mt-0.5 text-amber-400" />
+              <span className="text-amber-200">{error}</span>
             </div>
           )}
 
@@ -100,12 +104,17 @@ function LoginForm() {
                   <div className="w-full border-t border-surface-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-surface-50 text-zinc-500">or</span>
+                  <span className="px-4 bg-surface-50 text-zinc-500">or use email</span>
                 </div>
               </div>
 
               {/* Email/Password Form */}
-              <form action="/auth/login/actions" method="POST" className="space-y-4">
+              <form
+                action="/auth/login/actions"
+                method="POST"
+                className="space-y-4"
+                id="auth-form"
+              >
                 <input type="hidden" name="action" value={tab === 'signup' ? 'signup' : 'signin'} />
 
                 <div>
@@ -123,9 +132,14 @@ function LoginForm() {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-zinc-400 mb-1">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="password" className="block text-sm font-medium text-zinc-400">
+                      Password
+                    </label>
+                    {tab === 'signup' && (
+                      <span className="text-xs text-zinc-600">Min. 6 characters</span>
+                    )}
+                  </div>
                   <input
                     type="password"
                     id="password"
@@ -145,8 +159,22 @@ function LoginForm() {
                 </button>
               </form>
 
+              {/* Forgot password (sign in only) */}
+              {tab === 'signin' && (
+                <div className="mt-3 text-center">
+                  <button
+                    type="submit"
+                    form="auth-form"
+                    formAction="/auth/forgot-password"
+                    className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+                  >
+                    Forgot your password?
+                  </button>
+                </div>
+              )}
+
               {/* Tab switcher link */}
-              <p className="mt-5 text-center text-sm text-zinc-500">
+              <p className={`${tab === 'signin' ? 'mt-4' : 'mt-5'} text-center text-sm text-zinc-500`}>
                 {tab === 'signin' ? (
                   <>
                     Don&apos;t have an account?{' '}

@@ -1,17 +1,17 @@
 'use server'
 
 import { createCheckoutSession } from '@/lib/stripe'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { validateBundlePrice, getBundleTier } from '@/lib/bundles/pricing'
 
 export async function createBundleCheckout({ bundleTierId }: { bundleTierId: string }): Promise<{ url: string }> {
-  const supabase = createServerSupabaseClient()
-
-  // Verify user authentication
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) {
+  // Verify user authentication (cookie-based)
+  const user = await getAuthUser()
+  if (!user) {
     throw new Error('Authentication required')
   }
+
+  const supabase = createServerSupabaseClient()
 
   // Look up bundle tier
   const tier = getBundleTier(bundleTierId)

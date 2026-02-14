@@ -1,17 +1,17 @@
 'use server'
 
 import { createCheckoutSession } from '@/lib/stripe'
-import { createServerSupabaseClient } from '@/lib/supabase'
+import { createServerSupabaseClient, getAuthUser } from '@/lib/supabase'
 import { getUserBundleBalance, redeemBundleCredit } from '@/lib/bundles/redemption'
 
 export async function createCheckout(customisationId: string) {
-  const supabase = createServerSupabaseClient()
-
-  // Verify user authentication
-  const { data: { user }, error: authError } = await supabase.auth.getUser()
-  if (authError || !user) {
+  // Verify user authentication (cookie-based)
+  const user = await getAuthUser()
+  if (!user) {
     throw new Error('Authentication required')
   }
+
+  const supabase = createServerSupabaseClient()
 
   // Verify customisation ownership
   const { data: customisation, error: customisationError } = await supabase
